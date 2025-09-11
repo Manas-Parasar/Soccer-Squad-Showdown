@@ -66,28 +66,31 @@
             </div>
         </div>
 
-        <div id="player-source-selection" class="card shadow-lg p-4 mb-5 bg-white rounded d-none">
+        <div id="player-source-selection" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
             <h2 class="card-title text-center text-secondary mb-4">Select Player Source</h2>
             <div class="d-flex justify-content-center gap-3">
                 <button id="predefined-players-btn" class="btn btn-primary btn-lg">Use Predefined Players</button>
                 <button id="api-players-btn" class="btn btn-secondary btn-lg">Fetch from API (Coming Soon)</button>
             </div>
+            <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-secondary go-back-btn" data-target-section="tournament-section">Go Back to Tournament Setup</button>
+            </div>
         </div>
 
-        <div id="formation-selection-section" class="card shadow-lg p-4 mb-5 bg-white rounded d-none">
-            <h2 class="card-title text-center text-secondary mb-4">Select Formation</h2>
-            <div id="formation-options" class="d-flex flex-wrap justify-content-center gap-3">
+                <div id="formation-selection-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
+            <h2 class="card-title text-center text-secondary mb-4">Choose Formation</h2>
+            <div id="formation-options" class="d-flex justify-content-center gap-3 mb-4">
                 <button class="btn btn-outline-primary formation-btn" data-formation="4-3-3">4-3-3</button>
                 <button class="btn btn-outline-primary formation-btn" data-formation="4-4-2">4-4-2</button>
                 <button class="btn btn-outline-primary formation-btn" data-formation="3-5-2">3-5-2</button>
                 <button class="btn btn-outline-primary formation-btn" data-formation="4-2-3-1">4-2-3-1</button>
             </div>
-            <div class="d-flex justify-content-center mt-3">
-                <button class="btn btn-secondary go-back-btn" data-target-section="player-source-selection">Go Back to Player Source</button>
+            <div class="d-flex justify-content-center">
+                <button id="simulate-match-btn" class="btn btn-success btn-lg" disabled>Simulate Match</button>
             </div>
         </div>
 
-        <div id="player-selection-section" class="card shadow-lg p-4 mb-5 bg-white rounded d-none">
+        <div id="player-selection-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
             <h2 class="card-title text-center text-secondary mb-4">Select Your Squad (11 Players)</h2>
             <div class="row">
                 <div class="col-12">
@@ -106,8 +109,9 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center mt-4">
+            <div class="d-flex justify-content-center gap-2 mt-4">
                 <button id="confirm-team-btn" class="btn btn-success btn-lg" disabled>Confirm Team</button>
+                <button id="clear-team-btn" class="btn btn-danger btn-lg">Clear Team</button>
             </div>
             <div class="d-flex justify-content-center mt-3">
                 <button class="btn btn-secondary go-back-btn" data-target-section="formation-selection-section">Go Back to Formation Selection</button>
@@ -229,7 +233,7 @@
             </div>
         </div>
 
-        <div id="opponent-selection-section" class="card shadow-lg p-4 mb-5 bg-white rounded d-none">
+        <div id="opponent-selection-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
             <h2 class="card-title text-center text-secondary mb-4">Select Opponent Squad (11 Players)</h2>
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -256,6 +260,10 @@
                     <div id="opponent-available-players" class="player-grid border p-2">
                         <!-- Opponent players will be loaded here by JavaScript -->
                     </div>
+                    <h4 class="text-center mt-4">Selected Opponent Players</h4>
+                    <div id="opponent-selected-players" class="player-grid border p-2">
+                        <!-- Selected opponent players will be displayed here -->
+                    </div>
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-4">
@@ -266,7 +274,7 @@
             </div>
         </div>
 
-        <div id="live-simulation-section" class="card shadow-lg p-4 mb-5 bg-white rounded d-none">
+        <div id="live-simulation-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
             <h2 class="card-title text-center text-secondary mb-4">Live Match</h2>
             <div class="match-score-container mb-3">
                 <div class="team-score user-score">
@@ -285,7 +293,7 @@
             </div>
         </div>
 
-        <div id="match-results-section" class="card shadow-lg p-4 mb-5 bg-white rounded d-none">
+        <div id="match-results-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
             <h2 class="card-title text-center text-secondary mb-4">Match Details</h2>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -313,9 +321,12 @@
                 <button id="keep-team-btn" class="btn btn-primary me-2">Keep Team for Next Round</button>
                 <button id="change-players-btn" class="btn btn-secondary">Change Players</button>
             </div>
+            <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-secondary go-back-btn" data-target-section="game-results-page">Go Back to Match Result</button>
+            </div>
         </div>
 
-        <div id="game-results-page" style="display: none;" class="card shadow-lg p-4 mb-5 bg-white rounded">
+        <div id="game-results-page" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
             <h2 class="card-title text-center text-secondary mb-4">Match Result</h2>
             <p class="lead text-center" id="final-score">User Team 2 - 1 AI Team</p>
             <p class="text-center fw-bold" id="match-winner">You Won!</p>
@@ -324,14 +335,20 @@
                 <button id="re-sim-match-btn" class="btn btn-warning">Re-Sim Match</button>
                 <button id="next-game-tournament-btn" class="btn btn-success">Next Game of Tournament</button>
             </div>
+            <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-secondary go-back-btn" data-target-section="player-selection-section">Go Back to Player Selection</button>
+            </div>
         </div>
 
-        <div id="tournament-complete-section" style="display: none;" class="card shadow-lg p-4 mb-5 bg-white rounded">
+        <div id="tournament-complete-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
             <h2 class="card-title text-center text-secondary mb-4">Tournament Complete!</h2>
             <p class="lead text-center">Winner: <span id="tournament-winner" class="fw-bold">User Team</span></p>
             <p class="text-center">Final Score: <span id="final-tournament-score">User 3 - 2 AI</span></p>
             <div class="d-flex justify-content-center mt-4">
                 <button id="reset-tournament-btn" class="btn btn-primary btn-lg">Play New Tournament</button>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-secondary go-back-btn" data-target-section="tournament-section">Go Back to Tournament Setup</button>
             </div>
         </div>
 

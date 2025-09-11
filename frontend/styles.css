@@ -88,10 +88,21 @@ body {
     box-shadow 0.3s ease;
 }
 
+/* Existing card.hidden */
 .card.hidden {
   opacity: 0;
   pointer-events: none;
   position: absolute;
+  visibility: hidden; /* Added for smooth transition */
+}
+
+.hidden {
+    display: none;
+}
+
+/* New class for sections that should fade in/out */
+.fade-in-section {
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
 .card:hover {
@@ -366,7 +377,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHwiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cGF0aCBkPSJNNTAgMEw5My4zIDIzLjJWNzYuOEw1MCAxMDBsLTQzLjMtMjMuMlYyMy4yTDUwIDB6TTk2LjY1IDc1TDUwIDk2LjY1IDMuMzUgNzUgMy.35IDI1TDUwIDMuMzVsNDYuNjUgMjEuNjV2NTAuNXeiIgZmlsbD0idHJhbnNwYXJlbnQiIHN0cm9rZT0icmdiYSgwLCAyMTIsIDI1NSwgMC4wNSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPj");
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cG9seWdvbiBwb2ludHM9IjUwIDAsIDEwMCAyNSwgMTAwIDc1LCA1MCAxMDAsIDAgNzUsIDAgMjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLCAyMTIsIDI1NSwgMC4wNSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==");
   background-size: 100px 100px;
   opacity: 0.5;
 }
