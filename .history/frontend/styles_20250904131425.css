@@ -1,0 +1,64 @@
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  color: white;
+  text-align: center;
+}
+.hidden {
+  display: none;
+}
+.main-menu {
+  margin-top: 100px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+button:hover {
+  transform: scale(1.1);
+  background-color: gold;
+  color: black;
+}
+.player-select,
+.match-field {
+  margin-top: 50px;
+}
+#playerList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.player {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.player:hover {
+  transform: scale(1.2);
+}
+#field {
+  width: 800px;
+  height: 400px;
+  margin: 0 auto;
+  position: relative;
+  background: green;
+  border: 2px solid white;
+}
+#field img.player {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transition: all 0.5s ease;
+}
+#scoreboard {
+  font-size: 30px;
+  margin-top: 20px;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soccer Squad Showdown</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="main-menu">
+      <h1>Soccer Squad Showdown</h1>
+      <button id="playBtn">Play Now</button>
+    </div>
+
+    <div class="player-select hidden">
+      <h2>Select Your Team</h2>
+      <input type="text" id="searchInput" placeholder="Search Player" />
+      <div id="playerList"></div>
+      <button id="startMatchBtn">Start Match</button>
+    </div>
+
+    <div class="match-field hidden">
+      <div id="field"></div>
+      <div id="scoreboard">0 - 0</div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

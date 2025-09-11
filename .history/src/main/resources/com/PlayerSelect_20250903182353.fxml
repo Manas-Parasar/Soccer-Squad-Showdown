@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.sss.controller.PlayerSelectController" prefWidth="1100" prefHeight="700" styleClass="bg">
+    <top>
+        <HBox spacing="8" styleClass="topbar" alignment="CENTER_LEFT">
+            <TextField fx:id="searchField" promptText="Search players (type a name and press Search)"/>
+            <Button fx:id="searchBtn" text="Search" onAction="#onSearch" styleClass="accent"/>
+            <Label fx:id="statusLabel" text="Selected: ..."/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button fx:id="nextBtn" text="Next ➜" onAction="#onNext" disable="true" styleClass="accent"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="8">
+            <ListView fx:id="searchResultsList" prefHeight="160"/>
+            <TabPane fx:id="tabPane"/>
+        </VBox>
+    </center>
+</BorderPane>

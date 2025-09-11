@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.sss.controller.MatchController" prefWidth="1100" prefHeight="700" styleClass="pitch">
+    <top>
+        <HBox spacing="16" alignment="CENTER" styleClass="scorebar">
+            <Label text="User" styleClass="team-label"/>
+            <Label fx:id="userScoreLabel" styleClass="score"/>
+            <Text text="vs" styleClass="vs"/>
+            <Label fx:id="aiScoreLabel" styleClass="score"/>
+            <Label text="AI" styleClass="team-label"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label text="Minute:" />
+            <Label fx:id="minuteLabel" />
+        </HBox>
+    </top>
+    <center>
+        <ListView fx:id="eventList"/>
+    </center>
+    <bottom>
+        <VBox spacing="6" alignment="CENTER">
+            <Text fx:id="vsText"/>
+            <ProgressBar fx:id="matchProgress" prefWidth="800"/>
+        </VBox>
+    </bottom>
+</BorderPane>
