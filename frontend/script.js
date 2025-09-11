@@ -189,6 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Live Simulation Elements
     const liveSimulationSection = document.getElementById("live-simulation-section");
+    const liveCommentaryContainer = document.querySelector(".live-commentary-container");
     const liveCommentaryFeed = document.getElementById("live-commentary-feed");
     const liveUserScore = document.getElementById("live-user-score");
     const liveAiScore = document.getElementById("live-ai-score");
@@ -1833,7 +1834,7 @@ document.addEventListener("DOMContentLoaded", () => {
             liveCommentaryFeed.appendChild(eventElement);
             // Use a timeout to ensure the DOM is updated before scrolling
             setTimeout(() => {
-                liveCommentaryFeed.scrollTop = liveCommentaryFeed.scrollHeight;
+                liveCommentaryContainer.scrollTop = liveCommentaryContainer.scrollHeight;
             }, 10);
           }
           playByPlay += `${minute}' - ${text}
