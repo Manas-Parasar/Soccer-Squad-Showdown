@@ -10,7 +10,7 @@
   --circle-hover-bg: rgba(0, 212, 255, 0.2);
   --card-bg: linear-gradient(145deg, #1a2a3a, #1f3c5a);
   --card-border: #2a4a6a;
-      --text-light: #e0e0e0;
+      --text-light: #f5f5f5;
   --text-dark: #333333;
   --text-accent: #00d4ff;
   --stat-bar-bg: #2a4a6a;
@@ -826,4 +826,29 @@ span#final-tournament-score
 
 #player-selection-section h4 {
     color: var(--text-accent);
+}
+
+.commentary-event .text {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.commentary-event .minute {
+    font-weight: bold;
+    color: var(--text-accent);
+}
+
+@keyframes goal-text-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px #ffd700, 0 0 16px #ffd700;
+  }
+  50% {
+    text-shadow: 0 0 12px #fff, 0 0 24px #ffd700;
+  }
+}
+
+.commentary-event.goal .text {
+  font-weight: bold;
+  animation: goal-text-glow 1.5s infinite;
 }

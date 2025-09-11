@@ -186,6 +186,14 @@ document.addEventListener("DOMContentLoaded", () => {
       "final-tournament-score"
     );
     const resetTournamentBtn = document.getElementById("reset-tournament-btn");
+    
+    // Live Simulation Elements
+    const liveSimulationSection = document.getElementById("live-simulation-section");
+    const liveCommentaryFeed = document.getElementById("live-commentary-feed");
+    const liveUserScore = document.getElementById("live-user-score");
+    const liveAiScore = document.getElementById("live-ai-score");
+    const skipSimulationBtn = document.getElementById("skip-simulation-btn");
+
 
     // --- State Variables ---
     const MAX_PLAYERS = 11;
@@ -196,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentFormation = null;
     let tournament = {};
     let draggedSlotId = null; // Changed from draggedPlayerIndex to draggedSlotId
+    let isSimulationSkipped = false;
 
     // --- Predefined Player Data ---
     const predefinedPlayers = {
@@ -1747,7 +1756,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Simulates the match (client-side logic)
-    function simulateMatch() {
+    async function simulateMatch() {
+        isSimulationSkipped = false;
       if (!isValidTeam()) {
         alert(
           "Please select exactly 11 players and ensure all position requirements for the chosen formation are met."
@@ -1762,7 +1772,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let aiTeamPlayers;
       if (tournament.opponentSelectionMode === "aiGenerated") {
-        aiTeamPlayers = generateAITeam().players;
+        aiTeamPlayers = generateAITeam(selectedPlayers).players;
       } else {
         // userPicked
         if (!isValidOpponentTeam()) {
@@ -1775,11 +1785,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       tournament.opponents.push(aiTeamPlayers);
 
+      // --- UI Updates for Live Sim ---
+      if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
+      if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
+      if(liveSimulationSection) liveSimulationSection.classList.remove("hidden");
+      if(liveCommentaryFeed) liveCommentaryFeed.innerHTML = '';
+      if(liveUserScore) liveUserScore.textContent = '0';
+      if(liveAiScore) liveAiScore.textContent = '0';
+
+
       // --- Game Simulation Logic ---
       const userTeam = {
-        players: selectedPlayers.filter((p) => p),
+        players: lineup.map(slot => slot.player).filter(p => p),
         formation: currentFormation,
-        strength: calculateTeamStrength(selectedPlayers.filter((p) => p)),
+        strength: calculateTeamStrength(lineup.map(slot => slot.player).filter(p => p)),
       };
 
       const aiTeam = {
@@ -1800,122 +1819,109 @@ document.addEventListener("DOMContentLoaded", () => {
       let userPasses = 0;
       let aiPasses = 0;
 
-      playByPlay += `Match Start: User Team (${userTeam.strength}) vs AI Team (${aiTeam.strength})
-
+      const addCommentaryEvent = (event) => {
+          const { minute, team, type, text, icon } = event;
+          const eventElement = document.createElement('div');
+          eventElement.classList.add('commentary-event', team, type);
+          eventElement.innerHTML = `
+              <span class="icon">${icon}</span>
+              <div class="text">
+                  <span class="minute">${minute}'</span> - ${text}
+              </div>
+          `;
+          if(liveCommentaryFeed) {
+            liveCommentaryFeed.appendChild(eventElement);
+            // Use a timeout to ensure the DOM is updated before scrolling
+            setTimeout(() => {
+                liveCommentaryFeed.scrollTop = liveCommentaryFeed.scrollHeight;
+            }, 10);
+          }
+          playByPlay += `${minute}' - ${text}
 `;
+      };
 
-      // Simple simulation loop
+      const delay = ms => new Promise(res => setTimeout(res, ms));
+
+      const getRandomPlayer = (team, positionGroup = null) => {
+          let eligiblePlayers = team.players;
+          if (positionGroup) {
+              eligiblePlayers = team.players.filter(p => getPositionGroup(p.preferredPosition) === positionGroup);
+          }
+          if (eligiblePlayers.length === 0) {
+            eligiblePlayers = team.players; // fallback to any player
+          }
+          return eligiblePlayers[Math.floor(Math.random() * eligiblePlayers.length)];
+      };
+
+      addCommentaryEvent({ minute: 0, team: 'neutral', type: 'start', text: `Match Start: User Team (${userTeam.strength}) vs AI Team (${aiTeam.strength})`, icon: '⏱️' });
+      if (!isSimulationSkipped) await delay(800);
+
+      // Main simulation loop
       for (let i = 0; i < 10; i++) {
-        // Simulate 10 "phases" of play
-        const userAttackChance =
-          userTeam.strength / (userTeam.strength + aiTeam.strength);
-        const aiAttackChance =
-          aiTeam.strength / (userTeam.strength + aiTeam.strength);
-
-        // Simulate possession
-        if (Math.random() < userAttackChance) {
-          userPossession += Math.random() * 10; // User keeps possession more
-        } else {
-          aiPossession += Math.random() * 10; // AI keeps possession
-        }
-
-        // Simulate passes (more passes for higher possession)
-        userPasses += Math.floor(Math.random() * (userPossession / 10 + 5));
-        aiPasses += Math.floor(Math.random() * (aiPossession / 10 + 5));
+        if (isSimulationSkipped) break;
+        const minute = i * 9 + Math.floor(Math.random() * 5) + 1;
+        const userAttackChance = userTeam.strength / (userTeam.strength + aiTeam.strength);
 
         if (Math.random() < userAttackChance) {
-          playByPlay += `Minute ${i * 9 + 1}: User Team attacks! `;
-          userShots++;
-          if (Math.random() < 0.6) {
-            // Chance to get a shot
-            const userAttackingPlayers = userTeam.players.filter(
-              (p) =>
-                getGeneralPositionType(p.position) === "Forward" ||
-                getGeneralPositionType(p.position) === "Midfielder"
-            );
-            const attackingPlayer =
-              userAttackingPlayers.length > 0
-                ? userAttackingPlayers[
-                    Math.floor(Math.random() * userAttackingPlayers.length)
-                  ]
-                : { name: "Unknown Attacker" };
-            playByPlay += `${attackingPlayer.name} takes a shot! `;
-            if (Math.random() < 0.4) {
-              // Chance to score
-              userScore++;
-              playByPlay += `GOAL! User Team scores! (${userScore}-${aiScore})
-`;
-            } else {
-              const aiDefendingPlayers = aiTeam.players.filter(
-                (p) =>
-                  getGeneralPositionType(p.position) === "Goalkeeper" ||
-                  getGeneralPositionType(p.position) === "Defender"
-              );
-              const defendingPlayer =
-                aiDefendingPlayers.length > 0
-                  ? aiDefendingPlayers[
-                      Math.floor(Math.random() * aiDefendingPlayers.length)
-                    ]
-                  : { name: "Unknown Defender" };
-              playByPlay += `${defendingPlayer.name} makes a save/block!
-`;
+            userPossession += 10;
+            userPasses += Math.floor(Math.random() * 10) + 5;
+            const attackingPlayer = getRandomPlayer(userTeam, 'FWD');
+            const assistingPlayer = getRandomPlayer(userTeam, 'MID');
+            addCommentaryEvent({ minute, team: 'user', type: 'attack', text: `${assistingPlayer.name} passes to ${attackingPlayer.name}!`, icon: '⚔️' });
+            if (!isSimulationSkipped) await delay(800);
+
+            userShots++;
+            if (Math.random() < 0.5) { // Shot on target
+                addCommentaryEvent({ minute, team: 'user', type: 'shot', text: `${attackingPlayer.name} takes a shot!`, icon: '🥅' });
+                if (!isSimulationSkipped) await delay(800);
+
+                if (Math.random() < 0.4) { // GOAL
+                    userScore++;
+                    if(liveUserScore) liveUserScore.textContent = userScore;
+                    addCommentaryEvent({ minute, team: 'user', type: 'goal', text: `GOAL! A brilliant finish from ${attackingPlayer.name}! (${userScore}-${aiScore})`, icon: '⚽' });
+                    if (!isSimulationSkipped) await delay(800);
+                } else { // SAVE
+                    const defendingPlayer = getRandomPlayer(aiTeam, 'GK');
+                    addCommentaryEvent({ minute, team: 'ai', type: 'defense', text: `What a save by ${defendingPlayer.name}!`, icon: '🛡️' });
+                    if (!isSimulationSkipped) await delay(800);
+                }
+            } else { // Shot off target
+                addCommentaryEvent({ minute, team: 'user', type: 'shot', text: `${attackingPlayer.name}'s shot goes wide.`, icon: '🥅' });
+                if (!isSimulationSkipped) await delay(800);
             }
-          } else {
-            playByPlay += `Attack thwarted by AI defense.
-`;
-          }
-        } else if (Math.random() < aiAttackChance) {
-          playByPlay += `Minute ${i * 9 + 1}: AI Team attacks! `;
-          aiShots++;
-          if (Math.random() < 0.6) {
-            // Chance to get a shot
-            const aiAttackingPlayers = aiTeam.players.filter(
-              (p) =>
-                getGeneralPositionType(p.position) === "Forward" ||
-                getGeneralPositionType(p.position) === "Midfielder"
-            );
-            const attackingPlayer =
-              aiAttackingPlayers.length > 0
-                ? aiAttackingPlayers[
-                    Math.floor(Math.random() * aiAttackingPlayers.length)
-                  ]
-                : { name: "Unknown Attacker" };
-            playByPlay += `${attackingPlayer.name} takes a shot! `;
-            if (Math.random() < 0.4) {
-              // Chance to score
-              aiScore++;
-              playByPlay += `GOAL! AI Team scores! (${userScore}-${aiScore})
-`;
-            } else {
-              const userDefendingPlayers = userTeam.players.filter(
-                (p) =>
-                  getGeneralPositionType(p.position) === "Goalkeeper" ||
-                  getGeneralPositionType(p.position) === "Defender"
-              );
-              const defendingPlayer =
-                userDefendingPlayers.length > 0
-                  ? userDefendingPlayers[
-                      Math.floor(Math.random() * userDefendingPlayers.length)
-                    ]
-                  : { name: "Unknown Defender" };
-              playByPlay += `${defendingPlayer.name} makes a save/block!
-`;
-            }
-          } else {
-            playByPlay += `Attack thwarted by User defense.
-`;
-          }
         } else {
-          playByPlay += `Minute ${
-            i * 9 + 1
-          }: Midfield battle. No clear chance.
-`;
+            aiPossession += 10;
+            aiPasses += Math.floor(Math.random() * 10) + 5;
+            const attackingPlayer = getRandomPlayer(aiTeam, 'FWD');
+            const assistingPlayer = getRandomPlayer(aiTeam, 'MID');
+            addCommentaryEvent({ minute, team: 'ai', type: 'attack', text: `${assistingPlayer.name} finds ${attackingPlayer.name} in space.`, icon: '⚔️' });
+            if (!isSimulationSkipped) await delay(800);
+
+            aiShots++;
+            if (Math.random() < 0.5) { // Shot on target
+                addCommentaryEvent({ minute, team: 'ai', type: 'shot', text: `${attackingPlayer.name} shoots!`, icon: '🥅' });
+                if (!isSimulationSkipped) await delay(800);
+
+                if (Math.random() < 0.4) { // GOAL
+                    aiScore++;
+                    if(liveAiScore) liveAiScore.textContent = aiScore;
+                    addCommentaryEvent({ minute, team: 'ai', type: 'goal', text: `GOAL! ${attackingPlayer.name} puts it in the back of the net! (${userScore}-${aiScore})`, icon: '⚽' });
+                    if (!isSimulationSkipped) await delay(800);
+                } else { // SAVE
+                    const defendingPlayer = getRandomPlayer(userTeam, 'GK');
+                    addCommentaryEvent({ minute, team: 'user', type: 'defense', text: `Incredible save from ${defendingPlayer.name}!`, icon: '🛡️' });
+                    if (!isSimulationSkipped) await delay(800);
+                }
+            } else { // Shot off target
+                addCommentaryEvent({ minute, team: 'ai', type: 'shot', text: `Close! ${attackingPlayer.name}'s effort is just off target.`, icon: '🥅' });
+                if (!isSimulationSkipped) await delay(800);
+            }
         }
       }
 
-      playByPlay += `
-Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
-`;
+      addCommentaryEvent({ minute: 90, team: 'neutral', type: 'end', text: `Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team`, icon: '⏱️' });
+      if (!isSimulationSkipped) await delay(2000);
+
 
       // Normalize possession to percentages
       const totalPossession = userPossession + aiPossession;
@@ -2015,8 +2021,7 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
       if(finalScoreSpan) finalScoreSpan.textContent = `Final Score: ${userScore} - ${aiScore}`;
       if(matchWinnerParagraph) matchWinnerParagraph.textContent = matchWinnerText;
 
-      if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
-      if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
+      if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
       if(gameResultsPage) gameResultsPage.classList.remove("hidden"); // Show the new results page
 
       updateTournamentUI();
@@ -2065,13 +2070,16 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
       return "Unknown";
     }
 
-    // Generates a random AI team
-    function generateAITeam() {
+    // Generates a random AI team, excluding players from the user's team
+    function generateAITeam(excludedPlayers = []) {
+      const excludedPlayerNames = excludedPlayers.map(p => p.name);
+
+      const availableForwards = predefinedPlayers.forwards.filter(p => !excludedPlayerNames.includes(p.name));
+      const availableMidfielders = predefinedPlayers.midfielders.filter(p => !excludedPlayerNames.includes(p.name));
+      const availableDefenders = predefinedPlayers.defenders.filter(p => !excludedPlayerNames.includes(p.name));
+      const availableGoalkeepers = predefinedPlayers.goalkeepers.filter(p => !excludedPlayerNames.includes(p.name));
+
       const aiPlayers = [];
-      const availableForwards = [...predefinedPlayers.forwards];
-      const availableMidfielders = [...predefinedPlayers.midfielders];
-      const availableDefenders = [...predefinedPlayers.defenders];
-      const availableGoalkeepers = [...predefinedPlayers.goalkeepers];
 
       // Shuffle and pick players for AI team (simplified 4-4-2 for AI)
       function getRandomPlayers(arr, count) {
@@ -2080,11 +2088,11 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
       }
 
       aiPlayers.push(...getRandomPlayers(availableGoalkeepers, 1));
-      aiPlayers.push(...getRandomPlayers(availableForwards, 2));
-      aiPlayers.push(...getRandomPlayers(availableMidfielders, 4));
       aiPlayers.push(...getRandomPlayers(availableDefenders, 4));
+      aiPlayers.push(...getRandomPlayers(availableMidfielders, 4));
+      aiPlayers.push(...getRandomPlayers(availableForwards, 2));
 
-      return { players: aiPlayers, formation: "4-4-2" }; // AI always plays 4-4-2 for simplicity
+      return { players: aiPlayers, formation: "4-4-2" };
     }
 
     // Calculates a simple team chemistry score
@@ -2160,6 +2168,7 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
       if(playerSourceSelection) playerSourceSelection.classList.add("hidden"); // Hide player source selection initially
       if(gameResultsPage) gameResultsPage.classList.add("hidden"); // Hide game results page
       if(tournamentCompleteSection) tournamentCompleteSection.classList.add("hidden");
+      if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
       if(tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
 
       if(lineupDisplay) lineupDisplay.innerHTML = ""; // Clear lineup display
@@ -2192,7 +2201,7 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
       }
 
       // For AI opponents, generate a new AI opponent and immediately simulate the match
-      const newAiTeam = generateAITeam().players;
+      const newAiTeam = generateAITeam(selectedPlayers).players;
       tournament.opponents.push(newAiTeam); // Add new AI opponent to the list
       saveTournament(); // Save updated tournament state before simulating
 
@@ -2202,16 +2211,9 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
 
     // --- Event Listeners ---
     if(predefinedPlayersBtn) predefinedPlayersBtn.addEventListener("click", () => {
-      if (tournament.opponentSelectionMode === "aiGenerated") {
         if(playerSourceSelection) playerSourceSelection.classList.add("hidden");
         if(formationSelectionSection) formationSelectionSection.classList.remove("hidden");
         renderPlayers(allPlayersData, availablePlayersDiv, true); // Render for user selection
-      } else {
-        // userPicked
-        if(playerSourceSelection) playerSourceSelection.classList.add("hidden");
-        if(opponentSelectionSection) opponentSelectionSection.classList.remove("hidden");
-        renderPlayers(allPlayersData, opponentAvailablePlayersDiv, true, true); // Render for opponent selection
-      }
     });
 
     if(apiPlayersBtn) apiPlayersBtn.addEventListener("click", () =>
@@ -2223,7 +2225,14 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
     if(confirmTeamBtn) confirmTeamBtn.addEventListener("click", () => {
       if (isValidTeam()) {
         if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
-        simulateMatch(); // Directly simulate after confirming team
+        if (tournament.opponentSelectionMode === "aiGenerated") {
+            const aiTeam = generateAITeam(selectedPlayers);
+            tournament.opponents.push(aiTeam.players);
+            simulateMatch();
+        } else {
+            if(opponentSelectionSection) opponentSelectionSection.classList.remove("hidden");
+            renderPlayers(allPlayersData, opponentAvailablePlayersDiv, true, true);
+        }
       } else {
         alert(
           `Please select exactly ${MAX_PLAYERS} players and ensure all position requirements for the chosen formation are met.`
@@ -2240,7 +2249,7 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
       confirmOpponentTeamBtn.addEventListener("click", () => {
         if (isValidOpponentTeam()) {
           if(opponentSelectionSection) opponentSelectionSection.classList.add("hidden");
-          if(playerSourceSelection) playerSourceSelection.classList.remove("hidden"); // Go back to player source selection for user
+          simulateMatch();
         }
       });
     }
@@ -2251,7 +2260,9 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
       }
     });
 
-    // simulateMatchBtn.addEventListener('click', simulateMatch); // Removed, now called by confirmTeamBtn
+    if(skipSimulationBtn) skipSimulationBtn.addEventListener("click", () => {
+        isSimulationSkipped = true;
+    });
 
     if (viewDetailedResultsBtn) {
       viewDetailedResultsBtn.addEventListener("click", () => {
@@ -2322,14 +2333,8 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
       updateTournamentUI();
 
       if(tournamentSection) tournamentSection.classList.add("hidden");
-      if (tournament.opponentSelectionMode === "aiGenerated") {
-        tournament.opponents.push(generateAITeam().players); // Generate first AI opponent
-        if(playerSourceSelection) playerSourceSelection.classList.remove("hidden");
-      } else {
-        // userPicked
-        if(opponentSelectionSection) opponentSelectionSection.classList.remove("hidden");
-        renderPlayers(allPlayersData, opponentAvailablePlayersDiv, true, true); // Render for opponent selection
-      }
+      if(playerSourceSelection) playerSourceSelection.classList.remove("hidden");
+      
     });
 
     // Navbar Home and Brand link functionality
@@ -2399,6 +2404,7 @@ Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team
     if(opponentSelectionSection) opponentSelectionSection.classList.add("hidden");
     if(gameResultsPage) gameResultsPage.classList.add("hidden"); // Hide game results page
     if(tournamentCompleteSection) tournamentCompleteSection.classList.add("hidden");
+    if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
     if(tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
 
     // Populate allPlayersData initially so it's ready for any selection mode
