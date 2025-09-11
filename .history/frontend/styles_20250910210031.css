@@ -10,7 +10,7 @@
   --circle-hover-bg: rgba(0, 212, 255, 0.2);
   --card-bg: linear-gradient(145deg, #1a2a3a, #1f3c5a);
   --card-border: #2a4a6a;
-      --text-light: #e0e0e0;
+  --text-light: #e0e0e0;
   --text-dark: #333333;
   --text-accent: #00d4ff;
   --stat-bar-bg: #2a4a6a;
@@ -18,7 +18,7 @@
   --stat-bar-fill-ai: #dc3545;
   --white: #ffffff;
   --light-gray: #f8f9fa;
-  --dark-gray: #343a40;
+  --dark-gray: #1284f7;
 
   /* New/Enhanced Variables */
   --primary-btn-bg: linear-gradient(45deg, #00d4ff, #00aaff);
@@ -119,11 +119,6 @@ body {
   color: var(--text-light);
   border-color: var(--text-accent);
   box-shadow: 0 0 0 0.25rem var(--shadow-light);
-}
-
-.form-label,
-.form-check-label {
-  color: var(--text-accent);
 }
 
 /* General Button Styling */
@@ -366,7 +361,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHwiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cGF0aCBkPSJNNTAgMEw5My4zIDIzLjJWNzYuOEw1MCAxMDBsLTQzLjMtMjMuMlYyMy4yTDUwIDB6TTk2LjY1IDc1TDUwIDk2LjY1IDMuMzUgNzUgMy.35IDI1TDUwIDMuMzVsNDYuNjUgMjEuNjV2NTAuNXeiIgZmlsbD0idHJhbnNwYXJlbnQiIHN0cm9rZT0icmdiYSgwLCAyMTIsIDI1NSwgMC4wNSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPj");
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cGF0aCBkPSJNNTAgMEw5My4zIDIzLjJWNzYuOEw1MCAxMDBsLTQzLjMtMjMuMlYyMy4yTDUwIDB6TTk2LjY1IDc1TDUwIDk2LjY1IDMuMzUgNzUgMy4zNSAyNUw1MCAzLjM1bDQ2LjY1IDIxLjY1djUwLjV6IiBmaWxsPSJ0cmFuc3BhcmVudCIgc3Ryb2tlPSJyZ2JhKDAsIDIxMiwgMjU1LCAwLjA1KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+");
   background-size: 100px 100px;
   opacity: 0.5;
 }
@@ -787,32 +782,4 @@ footer {
     font-size: 0.8rem;
     padding: 0.5rem 1rem;
   }
-}
-.form-label,
-.form-check-label {
-    color: var(--text-accent);
-}
-
-/* Apply accent color to smaller text elements not in buttons */
-#tournament-section h5,
-#player-selection-section h5,
-#opponent-selection-section h5,
-#game-results-page p.lead,
-#game-results-page p#match-winner,
-#tournament-complete-section p.lead,
-#tournament-complete-section p:not(.lead), /* Target the final score p tag */
-span#selected-player-count,
-span#opponent-selected-player-count,
-span#opponentSelectedCount,
-span#user-tournament-score,
-span#ai-tournament-score,
-span#final-score,
-span#tournament-winner,
-span#final-tournament-score
-{
-    color: var(--text-accent);
-}
-
-#player-selection-section h4 {
-    color: var(--text-accent);
 }
