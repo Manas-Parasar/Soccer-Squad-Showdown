@@ -329,50 +329,82 @@
             </div>
         </div>
 
-        <div id="match-results-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
-            <h2 class="card-title text-center text-secondary mb-4">Match Details</h2>
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <div id="post-match-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
+            <!-- Header: Score, Team Names, Chemistry -->
+            <div class="match-header">
+                <div class="team-info user-team">
+                    <img src="images/default.jpg" alt="User Team Logo" class="team-logo">
+                    <span class="team-name">Your Team</span>
+                    <div class="team-chemistry" data-bs-toggle="tooltip" title="Chemistry Breakdown">
+                        <div class="chemistry-bar">
+                            <div class="chemistry-fill"></div>
+                        </div>
+                        <span class="chemistry-value">85%</span>
+                    </div>
+                </div>
+                <div class="score-container">
+                    <span class="final-score">3 - 1</span>
+                    <span class="match-winner">You Won!</span>
+                </div>
+                <div class="team-info ai-team">
+                    <img src="images/default.jpg" alt="AI Team Logo" class="team-logo">
+                    <span class="team-name">Opponent</span>
+                    <div class="team-chemistry" data-bs-toggle="tooltip" title="Chemistry Breakdown">
+                        <div class="chemistry-bar">
+                            <div class="chemistry-fill"></div>
+                        </div>
+                        <span class="chemistry-value">78%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body: Tabs for Summary, Stats, Ratings -->
+            <ul class="nav nav-tabs" id="post-match-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="play-by-play-tab" data-bs-toggle="tab" data-bs-target="#play-by-play" type="button" role="tab" aria-controls="play-by-play" aria-selected="true">Play-by-Play</button>
+                    <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary-content" type="button" role="tab">Summary</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="chemistry-tab" data-bs-toggle="tab" data-bs-target="#chemistry" type="button" role="tab" aria-controls="chemistry" aria-selected="false">Chemistry</button>
+                    <button class="nav-link" id="team-stats-tab" data-bs-toggle="tab" data-bs-target="#team-stats-content" type="button" role="tab">Team Stats</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="analysis-tab" data-bs-toggle="tab" data-bs-target="#analysis" type="button" role="tab" aria-controls="analysis" aria-selected="false">Analysis</button>
+                    <button class="nav-link" id="player-ratings-tab" data-bs-toggle="tab" data-bs-target="#player-ratings-content" type="button" role="tab">Player Ratings</button>
                 </li>
             </ul>
-            <div class="tab-content p-3 border border-top-0" id="myTabContent">
-                <div class="tab-pane fade show active" id="play-by-play" role="tabpanel" aria-labelledby="play-by-play-tab">
-                    <pre id="play-by-play-content" class="bg-light p-3 rounded"></pre>
+            <div class="tab-content" id="post-match-tabs-content">
+                <!-- Summary Tab -->
+                <div class="tab-pane fade show active" id="summary-content" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="text-center">Key Events</h4>
+                            <div class="timeline">
+                                <!-- Timeline events will be injected here -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="text-center">Goal Scorers & Assists</h4>
+                            <div id="goal-scorers-list">
+                                <!-- Goal scorer cards will be injected here -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="tab-pane fade" id="chemistry" role="tabpanel" aria-labelledby="chemistry-tab">
-                    <p id="chemistry-content"></p>
+                <!-- Team Stats Tab -->
+                <div class="tab-pane fade" id="team-stats-content" role="tabpanel">
+                    <!-- Detailed stats will be injected here -->
                 </div>
-                <div class="tab-pane fade" id="analysis" role="tabpanel" aria-labelledby="analysis-tab">
-                    <div id="analysis-content"></div>
+                <!-- Player Ratings Tab -->
+                <div class="tab-pane fade" id="player-ratings-content" role="tabpanel">
+                    <div class="player-ratings-grid">
+                        <!-- Player rating cards will be injected here -->
+                    </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center mt-4">
-                <button id="keep-team-btn" class="btn btn-primary me-2">Keep Team for Next Round</button>
-                <button id="change-players-btn" class="btn btn-secondary">Change Players</button>
-            </div>
-            <div class="d-flex justify-content-center mt-3">
-                <button class="btn btn-secondary go-back-btn" data-target-section="game-results-page">Go Back to Match Result</button>
-            </div>
-        </div>
 
-        <div id="game-results-page" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
-            <h2 class="card-title text-center text-secondary mb-4">Match Result</h2>
-            <p class="lead text-center" id="final-score">User Team 2 - 1 AI Team</p>
-            <p class="text-center fw-bold" id="match-winner">You Won!</p>
+            <!-- Footer: Action Buttons -->
             <div class="d-flex justify-content-center gap-2 mt-4">
-                <button id="view-detailed-results-btn" class="btn btn-info">View Post-Match Analysis</button>
                 <button id="re-sim-match-btn" class="btn btn-warning">Re-Sim Match</button>
-                <button id="next-game-tournament-btn" class="btn btn-success">Next Game of Tournament</button>
-            </div>
-            <div class="d-flex justify-content-center mt-3">
-                <button class="btn btn-secondary go-back-btn" data-target-section="player-selection-section">Go Back to Player Selection</button>
+                <button id="next-game-tournament-btn" class="btn btn-success">Next Game</button>
+                <button id="main-menu-btn" class="btn btn-secondary">Main Menu</button>
             </div>
         </div>
 

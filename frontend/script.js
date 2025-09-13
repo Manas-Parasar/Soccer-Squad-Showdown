@@ -1709,30 +1709,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // --- Game Simulation Logic ---
       const userTeam = {
-        players: lineup.map(slot => slot.player).filter(p => p),
+        players: lineup.map(slot => {
+            return { ...slot.player, position: slot.positionType, matchRating: 6.5 }; // Add position and initial rating
+        }),
         formation: currentFormation,
         strength: calculateTeamStrength(lineup.map(slot => slot.player).filter(p => p)),
       };
 
       const aiTeam = {
-        players: aiTeamPlayers,
+        players: aiTeamPlayers.map(player => {
+            return { ...player, matchRating: 6.5 }; // Add initial rating
+        }),
         formation: "4-4-2", // AI always plays 4-4-2 for simplicity
         strength: calculateTeamStrength(aiTeamPlayers),
       };
 
-      let playByPlay = "";
+      let timelineEvents = [];
       let userScore = 0;
       let aiScore = 0;
 
       // New detailed stats
-      let userShots = 0;
-      let aiShots = 0;
-      let userPossession = 0;
-      let aiPossession = 0;
-      let userPasses = 0;
-      let aiPasses = 0;
+      let userShots = 0, aiShots = 0;
+      let userShotsOnTarget = 0, aiShotsOnTarget = 0;
+      let userPossession = 0, aiPossession = 0;
+      let userPasses = 0, aiPasses = 0;
+      let userPassAccuracy = 0, aiPassAccuracy = 0;
+      let userTackles = 0, aiTackles = 0;
+      let userFouls = 0, aiFouls = 0;
+      let userCorners = 0, aiCorners = 0;
+      let userOffsides = 0, aiOffsides = 0;
 
-      const addCommentaryEvent = (event) => {
+
+      const addTimelineEvent = (event) => {
+          timelineEvents.push(event);
           const { minute, team, type, text, icon } = event;
           const eventElement = document.createElement('div');
           eventElement.classList.add('commentary-event', team, type);
@@ -1749,7 +1758,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 liveCommentaryContainer.scrollTop = liveCommentaryContainer.scrollHeight;
             }, 10);
           }
-          playByPlay += `${minute}' - ${text}\n`;
       };
 
       const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -1765,7 +1773,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return eligiblePlayers[Math.floor(Math.random() * eligiblePlayers.length)];
       };
 
-      addCommentaryEvent({ minute: 0, team: 'neutral', type: 'start', text: `Match Start: User Team (${userTeam.strength}) vs AI Team (${aiTeam.strength})`, icon: '⏱️' });
+      addTimelineEvent({ minute: 0, team: 'neutral', type: 'start', text: `Match Start: User Team (${userTeam.strength}) vs AI Team (${aiTeam.strength})`, icon: '⏱️' });
       if (!isSimulationSkipped) await delay(800);
 
       // Main simulation loop
@@ -1779,26 +1787,31 @@ document.addEventListener("DOMContentLoaded", () => {
             userPasses += Math.floor(Math.random() * 10) + 5;
             const attackingPlayer = getRandomPlayer(userTeam, 'FWD');
             const assistingPlayer = getRandomPlayer(userTeam, 'MID');
-            addCommentaryEvent({ minute, team: 'user', type: 'attack', text: `${assistingPlayer.name} passes to ${attackingPlayer.name}!`, icon: '⚔️' });
+            addTimelineEvent({ minute, team: 'user', type: 'attack', text: `${assistingPlayer.name} passes to ${attackingPlayer.name}!`, icon: '⚔️' });
             if (!isSimulationSkipped) await delay(800);
 
             userShots++;
             if (Math.random() < 0.5) { // Shot on target
-                addCommentaryEvent({ minute, team: 'user', type: 'shot', text: `${attackingPlayer.name} takes a shot!`, icon: '🥅' });
+                userShotsOnTarget++;
+                addTimelineEvent({ minute, team: 'user', type: 'shot', text: `${attackingPlayer.name} takes a shot!`, icon: '🥅' });
                 if (!isSimulationSkipped) await delay(800);
 
                 if (Math.random() < 0.4) { // GOAL
                     userScore++;
                     if(liveUserScore) liveUserScore.textContent = userScore;
-                    addCommentaryEvent({ minute, team: 'user', type: 'goal', text: `GOAL! A brilliant finish from ${attackingPlayer.name}! (${userScore}-${aiScore})`, icon: '⚽' });
+                    const goalEvent = { minute, team: 'user', type: 'goal', text: `GOAL! A brilliant finish from ${attackingPlayer.name}! (${userScore}-${aiScore})`, icon: '⚽', player: attackingPlayer, assist: assistingPlayer };
+                    addTimelineEvent(goalEvent);
+                    attackingPlayer.matchRating += 1.5;
+                    assistingPlayer.matchRating += 0.8;
                     if (!isSimulationSkipped) await delay(800);
                 } else { // SAVE
                     const defendingPlayer = getRandomPlayer(aiTeam, 'GK');
-                    addCommentaryEvent({ minute, team: 'ai', type: 'defense', text: `What a save by ${defendingPlayer.name}!`, icon: '🛡️' });
+                    addTimelineEvent({ minute, team: 'ai', type: 'defense', text: `What a save by ${defendingPlayer.name}!`, icon: '🛡️' });
+                    defendingPlayer.matchRating += 0.5;
                     if (!isSimulationSkipped) await delay(800);
                 }
             } else { // Shot off target
-                addCommentaryEvent({ minute, team: 'user', type: 'shot', text: `${attackingPlayer.name}'s shot goes wide.`, icon: '🥅' });
+                addTimelineEvent({ minute, team: 'user', type: 'shot', text: `${attackingPlayer.name}'s shot goes wide.`, icon: '🥅' });
                 if (!isSimulationSkipped) await delay(800);
             }
         } else {
@@ -1806,98 +1819,53 @@ document.addEventListener("DOMContentLoaded", () => {
             aiPasses += Math.floor(Math.random() * 10) + 5;
             const attackingPlayer = getRandomPlayer(aiTeam, 'FWD');
             const assistingPlayer = getRandomPlayer(aiTeam, 'MID');
-            addCommentaryEvent({ minute, team: 'ai', type: 'attack', text: `${assistingPlayer.name} finds ${attackingPlayer.name} in space.`, icon: '⚔️' });
+            addTimelineEvent({ minute, team: 'ai', type: 'attack', text: `${assistingPlayer.name} finds ${attackingPlayer.name} in space.`, icon: '⚔️' });
             if (!isSimulationSkipped) await delay(800);
 
             aiShots++;
             if (Math.random() < 0.5) { // Shot on target
-                addCommentaryEvent({ minute, team: 'ai', type: 'shot', text: `${attackingPlayer.name} shoots!`, icon: '🥅' });
+                aiShotsOnTarget++;
+                addTimelineEvent({ minute, team: 'ai', type: 'shot', text: `${attackingPlayer.name} shoots!`, icon: '🥅' });
                 if (!isSimulationSkipped) await delay(800);
 
                 if (Math.random() < 0.4) { // GOAL
                     aiScore++;
                     if(liveAiScore) liveAiScore.textContent = aiScore;
-                    addCommentaryEvent({ minute, team: 'ai', type: 'goal', text: `GOAL! ${attackingPlayer.name} puts it in the back of the net! (${userScore}-${aiScore})`, icon: '⚽' });
+                    const goalEvent = { minute, team: 'ai', type: 'goal', text: `GOAL! ${attackingPlayer.name} puts it in the back of the net! (${userScore}-${aiScore})`, icon: '⚽', player: attackingPlayer, assist: assistingPlayer };
+                    addTimelineEvent(goalEvent);
+                    attackingPlayer.matchRating += 1.5;
+                    assistingPlayer.matchRating += 0.8;
                     if (!isSimulationSkipped) await delay(800);
                 } else { // SAVE
                     const defendingPlayer = getRandomPlayer(userTeam, 'GK');
-                    addCommentaryEvent({ minute, team: 'user', type: 'defense', text: `Incredible save from ${defendingPlayer.name}!`, icon: '🛡️' });
+                    addTimelineEvent({ minute, team: 'user', type: 'defense', text: `Incredible save from ${defendingPlayer.name}!`, icon: '🛡️' });
+                    defendingPlayer.matchRating += 0.5;
                     if (!isSimulationSkipped) await delay(800);
                 }
             } else { // Shot off target
-                addCommentaryEvent({ minute, team: 'ai', type: 'shot', text: `Close! ${attackingPlayer.name}'s effort is just off target.`, icon: '🥅' });
+                addTimelineEvent({ minute, team: 'ai', type: 'shot', text: `Close! ${attackingPlayer.name}'s effort is just off target.`, icon: '🥅' });
                 if (!isSimulationSkipped) await delay(800);
             }
         }
       }
 
-      addCommentaryEvent({ minute: 90, team: 'neutral', type: 'end', text: `Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team`, icon: '⏱️' });
+      addTimelineEvent({ minute: 90, team: 'neutral', type: 'end', text: `Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team`, icon: '⏱️' });
       if (!isSimulationSkipped) await delay(2000);
 
-
-      // Normalize possession to percentages
+      // Finalize stats
       const totalPossession = userPossession + aiPossession;
-      userPossession = 
-        totalPossession > 0
-          ? Math.round((userPossession / totalPossession) * 100)
-          : 50;
+      userPossession = totalPossession > 0 ? Math.round((userPossession / totalPossession) * 100) : 50;
       aiPossession = 100 - userPossession;
-
-      const totalShots = userShots + aiShots || 1;
-      const userShotsPerc = (userShots / totalShots) * 100;
-      const aiShotsPerc = (aiShots / totalShots) * 100;
-
-      const totalPasses = userPasses + aiPasses || 1;
-      const userPassesPerc = (userPasses / totalPasses) * 100;
-      const aiPassesPerc = (aiPasses / totalPasses) * 100;
-
-      let postMatchAnalysisHtml = `
-          <h4 class="text-center mb-4">Match Statistics</h4>
-          <div class="stat-bar-container">
-              <div class="stat-values">
-                  <span class="user-stat">${userScore}</span>
-                  <span>Goals</span>
-                  <span class="ai-stat">${aiScore}</span>
-              </div>
-              <div class="stat-bar">
-                  <div class="stat-bar-user" style="--stat-width: ${(userScore / (userScore + aiScore || 1)) * 100}%;"></div>
-                  <div class="stat-bar-ai" style="--stat-width: ${(aiScore / (userScore + aiScore || 1)) * 100}%;"></div>
-              </div>
-          </div>
-          <div class="stat-bar-container">
-              <div class="stat-values">
-                  <span class="user-stat">${userShots}</span>
-                  <span>Shots</span>
-                  <span class="ai-stat">${aiShots}</span>
-              </div>
-              <div class="stat-bar">
-                  <div class="stat-bar-user" style="--stat-width: ${userShotsPerc}%;"></div>
-                  <div class="stat-bar-ai" style="--stat-width: ${aiShotsPerc}%;"></div>
-              </div>
-          </div>
-          <div class="stat-bar-container">
-              <div class="stat-values">
-                  <span class="user-stat">${userPossession}%</span>
-                  <span>Possession</span>
-                  <span class="ai-stat">${aiPossession}%</span>
-              </div>
-              <div class="stat-bar">
-                  <div class="stat-bar-user" style="--stat-width: ${userPossession}%;"></div>
-                  <div class="stat-bar-ai" style="--stat-width: ${aiPossession}%;"></div>
-              </div>
-          </div>
-          <div class="stat-bar-container">
-              <div class="stat-values">
-                  <span class="user-stat">${userPasses}</span>
-                  <span>Passes</span>
-                  <span class="ai-stat">${aiPasses}</span>
-              </div>
-              <div class="stat-bar">
-                  <div class="stat-bar-user" style="--stat-width: ${userPassesPerc}%;"></div>
-                  <div class="stat-bar-ai" style="--stat-width: ${aiPassesPerc}%;"></div>
-              </div>
-          </div>
-      `;
+      userPassAccuracy = userPasses > 0 ? Math.round(((userPasses - Math.floor(Math.random() * userPasses / 5)) / userPasses) * 100) : 0;
+      aiPassAccuracy = aiPasses > 0 ? Math.round(((aiPasses - Math.floor(Math.random() * aiPasses / 5)) / aiPasses) * 100) : 0;
+      userTackles = Math.floor(Math.random() * 10) + 5;
+      aiTackles = Math.floor(Math.random() * 10) + 5;
+      userFouls = Math.floor(Math.random() * 5);
+      aiFouls = Math.floor(Math.random() * 5);
+      userCorners = Math.floor(Math.random() * 8);
+      aiCorners = Math.floor(Math.random() * 8);
+      userOffsides = Math.floor(Math.random() * 4);
+      aiOffsides = Math.floor(Math.random() * 4);
 
       let matchWinnerText = "It's a draw!";
       if (userScore > aiScore) {
@@ -1910,31 +1878,45 @@ document.addEventListener("DOMContentLoaded", () => {
         tournament.draws++;
       }
 
-      tournament.results.push({
-        userScore,
-        aiScore,
-        userShots,
-        aiShots,
-        userPossession,
-        aiPossession,
-        userPasses,
-        aiPasses,
-      });
+      const matchData = {
+          userScore,
+          aiScore,
+          matchWinnerText,
+          userTeam,
+          aiTeam,
+          timelineEvents,
+          stats: {
+              user: {
+                  shots: userShots,
+                  shotsOnTarget: userShotsOnTarget,
+                  possession: userPossession,
+                  passAccuracy: userPassAccuracy,
+                  tackles: userTackles,
+                  fouls: userFouls,
+                  corners: userCorners,
+                  offsides: userOffsides,
+              },
+              ai: {
+                  shots: aiShots,
+                  shotsOnTarget: aiShotsOnTarget,
+                  possession: aiPossession,
+                  passAccuracy: aiPassAccuracy,
+                  tackles: aiTackles,
+                  fouls: aiFouls,
+                  corners: aiCorners,
+                  offsides: aiOffsides,
+              }
+          }
+      };
+
+      tournament.results.push(matchData);
       saveTournament();
-
-      // Display results on detailed match analysis section
-      if(playByPlayContent) playByPlayContent.textContent = playByPlay;
-      if(chemistryContent) chemistryContent.textContent = `Team Chemistry Score: ${calculateTeamChemistry(
-        selectedPlayers.filter((p) => p)
-      )}/100`;
-      if(analysisContent) analysisContent.innerHTML = postMatchAnalysisHtml;
-
-      // Display results on the new game results page
-      if(finalScoreSpan) finalScoreSpan.textContent = `Final Score: ${userScore} - ${aiScore}`;
-      if(matchWinnerParagraph) matchWinnerParagraph.textContent = matchWinnerText;
+      
+      renderPostMatch(matchData);
 
       if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
-      if(gameResultsPage) gameResultsPage.classList.remove("hidden"); // Show the new results page
+      const postMatchSection = document.getElementById('post-match-section');
+      if(postMatchSection) postMatchSection.classList.remove("hidden");
 
       updateTournamentUI();
 
@@ -1953,9 +1935,171 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if(tournamentWinnerSpan) tournamentWinnerSpan.textContent = tournamentWinner;
         if(finalTournamentScoreSpan) finalTournamentScoreSpan.textContent = `User ${tournament.userWins} - ${tournament.aiWins} AI (${tournament.draws} draws)`;
-        if(gameResultsPage) gameResultsPage.classList.add("hidden"); // Hide game results page
+        if(postMatchSection) postMatchSection.classList.add("hidden"); // Hide post match section
         if(tournamentCompleteSection) tournamentCompleteSection.classList.remove("hidden"); // Show tournament complete section
       }
+    }
+
+    function renderPostMatch(matchData) {
+        renderMatchHeader(matchData);
+        renderTimeline(matchData.timelineEvents);
+        renderGoalScorers(matchData.timelineEvents);
+        renderTeamStats(matchData.stats);
+        renderPlayerRatings(matchData.userTeam.players, matchData.aiTeam.players);
+    }
+
+    function renderMatchHeader(matchData) {
+        const userTeamInfo = document.querySelector('.match-header .user-team');
+        const aiTeamInfo = document.querySelector('.match-header .ai-team');
+        const scoreContainer = document.querySelector('.score-container');
+
+        if (userTeamInfo) {
+            userTeamInfo.querySelector('.team-name').textContent = 'Your Team';
+            const userChem = calculateTeamChemistry(matchData.userTeam.players);
+            userTeamInfo.querySelector('.chemistry-value').textContent = `${userChem}%`;
+            userTeamInfo.querySelector('.chemistry-fill').style.width = `${userChem}%`;
+        }
+        if (aiTeamInfo) {
+            aiTeamInfo.querySelector('.team-name').textContent = 'Opponent';
+            const aiChem = calculateTeamChemistry(matchData.aiTeam.players);
+            aiTeamInfo.querySelector('.chemistry-value').textContent = `${aiChem}%`;
+            aiTeamInfo.querySelector('.chemistry-fill').style.width = `${aiChem}%`;
+        }
+        if (scoreContainer) {
+            scoreContainer.querySelector('.final-score').textContent = `${matchData.userScore} - ${matchData.aiScore}`;
+            scoreContainer.querySelector('.match-winner').textContent = matchData.matchWinnerText;
+        }
+    }
+
+    function renderTimeline(events) {
+        const timelineContainer = document.querySelector('.timeline');
+        if (!timelineContainer) return;
+        timelineContainer.innerHTML = '';
+        events.forEach(event => {
+            const eventElement = document.createElement('div');
+            eventElement.className = `timeline-event ${event.team}`;
+            eventElement.innerHTML = `
+                <div class="event-icon">${event.icon}</div>
+                <div class="event-details"><strong>${event.minute}'</strong> - ${event.text}</div>
+            `;
+            timelineContainer.appendChild(eventElement);
+        });
+    }
+
+    function renderGoalScorers(events) {
+        const goalScorersContainer = document.getElementById('goal-scorers-list');
+        if (!goalScorersContainer) return;
+        goalScorersContainer.innerHTML = '';
+        const goalEvents = events.filter(e => e.type === 'goal');
+        goalEvents.forEach(event => {
+            const scorerCard = document.createElement('div');
+            scorerCard.className = 'goal-scorer-card';
+            scorerCard.innerHTML = `
+                <img src="${event.player.imageUrl}" alt="${event.player.name}">
+                <div class="scorer-info">
+                    <div class="scorer-name">${event.player.name} (${event.minute}')</div>
+                    ${event.assist ? `<div class="assist-info">Assist by ${event.assist.name}</div>` : ''}
+                </div>
+            `;
+            goalScorersContainer.appendChild(scorerCard);
+        });
+    }
+
+    function renderTeamStats(stats) {
+        const statsContainer = document.getElementById('team-stats-content');
+        if (!statsContainer) return;
+        statsContainer.innerHTML = `
+            <div class="stat-bar-container">
+                <div class="stat-values">
+                    <span class="user-stat">${stats.user.shots} (${stats.user.shotsOnTarget})</span>
+                    <span>Shots (On Target)</span>
+                    <span class="ai-stat">${stats.ai.shots} (${stats.ai.shotsOnTarget})</span>
+                </div>
+                <div class="stat-bar">
+                    <div class="stat-bar-user" style="width: ${stats.user.shots / (stats.user.shots + stats.ai.shots || 1) * 100}%"></div>
+                    <div class="stat-bar-ai" style="width: ${stats.ai.shots / (stats.user.shots + stats.ai.shots || 1) * 100}%"></div>
+                </div>
+            </div>
+            <div class="stat-bar-container">
+                <div class="stat-values">
+                    <span class="user-stat">${stats.user.possession}%</span>
+                    <span>Possession</span>
+                    <span class="ai-stat">${stats.ai.possession}%</span>
+                </div>
+                <div class="stat-bar">
+                    <div class="stat-bar-user" style="width: ${stats.user.possession}%"></div>
+                    <div class="stat-bar-ai" style="width: ${stats.ai.possession}%"></div>
+                </div>
+            </div>
+            <div class="stat-bar-container">
+                <div class="stat-values">
+                    <span class="user-stat">${stats.user.passAccuracy}%</span>
+                    <span>Pass Accuracy</span>
+                    <span class="ai-stat">${stats.ai.passAccuracy}%</span>
+                </div>
+                <div class="stat-bar">
+                    <div class="stat-bar-user" style="width: ${stats.user.passAccuracy}%"></div>
+                    <div class="stat-bar-ai" style="width: ${stats.ai.passAccuracy}%"></div>
+                </div>
+            </div>
+            <div class="stat-bar-container">
+                <div class="stat-values">
+                    <span class="user-stat">${stats.user.tackles}</span>
+                    <span>Tackles</span>
+                    <span class="ai-stat">${stats.ai.tackles}</span>
+                </div>
+            </div>
+            <div class="stat-bar-container">
+                <div class="stat-values">
+                    <span class="user-stat">${stats.user.fouls}</span>
+                    <span>Fouls</span>
+                    <span class="ai-stat">${stats.ai.fouls}</span>
+                </div>
+            </div>
+            <div class="stat-bar-container">
+                <div class="stat-values">
+                    <span class="user-stat">${stats.user.corners}</span>
+                    <span>Corners</span>
+                    <span class="ai-stat">${stats.ai.corners}</span>
+                </div>
+            </div>
+            <div class="stat-bar-container">
+                <div class="stat-values">
+                    <span class="user-stat">${stats.user.offsides}</span>
+                    <span>Offsides</span>
+                    <span class="ai-stat">${stats.ai.offsides}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderPlayerRatings(userPlayers, aiPlayers) {
+        const ratingsContainer = document.querySelector('.player-ratings-grid');
+        if (!ratingsContainer) return;
+        ratingsContainer.innerHTML = '<h3>Your Team</h3>';
+        userPlayers.forEach(player => {
+            const ratingCard = document.createElement('div');
+            ratingCard.className = 'player-rating-card';
+            ratingCard.innerHTML = `
+                <img src="${player.imageUrl}" alt="${player.name}" class="player-img">
+                <div class="player-name">${player.name}</div>
+                <div class="player-position">${player.position}</div>
+                <div class="match-rating">${player.matchRating.toFixed(1)}</div>
+            `;
+            ratingsContainer.appendChild(ratingCard);
+        });
+        ratingsContainer.innerHTML += '<h3 class="mt-4">Opponent Team</h3>';
+        aiPlayers.forEach(player => {
+            const ratingCard = document.createElement('div');
+            ratingCard.className = 'player-rating-card';
+            ratingCard.innerHTML = `
+                <img src="${player.imageUrl}" alt="${player.name}" class="player-img">
+                <div class="player-name">${player.name}</div>
+                <div class="player-position">${player.preferredPosition}</div>
+                <div class="match-rating">${player.matchRating.toFixed(1)}</div>
+            `;
+            ratingsContainer.appendChild(ratingCard);
+        });
     }
 
     // Calculates team strength based on adjusted player ratings
@@ -2009,38 +2153,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Calculates a simple team chemistry score
     function calculateTeamChemistry(teamPlayers) {
-      // This is a very basic placeholder.
-      // In a real game, this would involve factors like:
-      // - Players from the same club/nationality
-      // - Players with complementary play styles
-      // - Player morale/form
-      // - Manager's preferred tactics
-      let chemistry = 50; // Base chemistry
+        let chemistry = 50; // Base chemistry
+        const positionCounts = { GK: 0, DEF: 0, MID: 0, FWD: 0 };
+        teamPlayers.forEach(p => {
+            const group = getPositionGroup(p.position);
+            if(positionCounts[group] !== undefined) positionCounts[group]++;
+        });
 
-      // Example: Boost for having a balanced team (simplified)
-      const gkCount = teamPlayers.filter(
-        (p) => getGeneralPositionType(p.position) === "Goalkeeper"
-      ).length;
-      const defCount = teamPlayers.filter(
-        (p) => getGeneralPositionType(p.position) === "Defender"
-      ).length;
-      const midCount = teamPlayers.filter(
-        (p) => getGeneralPositionType(p.position) === "Midfielder"
-      ).length;
-      const fwdCount = teamPlayers.filter(
-        (p) => getGeneralPositionType(p.position) === "Forward"
-      ).length;
+        // Bonus for balanced formation
+        if (positionCounts.GK === 1 && positionCounts.DEF >= 3 && positionCounts.MID >= 3 && positionCounts.FWD >= 1) {
+            chemistry += 20;
+        }
 
-      if (gkCount === 1 && defCount >= 3 && midCount >= 3 && fwdCount >= 2) {
-        chemistry += 20; // Bonus for a somewhat balanced team
-      }
+        // Bonus for players in preferred positions
+        const preferredPositionBonus = teamPlayers.reduce((bonus, p) => {
+            return bonus + (p.position === p.preferredPosition ? 2 : (p.secondaryPositions.includes(p.position) ? 1 : 0));
+        }, 0);
+        chemistry += preferredPositionBonus;
 
-      // Example: Penalty for too many players of same type (e.g., 5 forwards)
-      if (fwdCount > 4 || defCount > 5) {
-        chemistry -= 10;
-      }
-
-      return Math.max(0, Math.min(100, chemistry)); // Keep between 0 and 100
+        return Math.max(0, Math.min(100, chemistry)); // Keep between 0 and 100
     }
 
     // Clears the user's selected team and lineup
@@ -2075,12 +2206,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if(simulateMatchBtn) simulateMatchBtn.disabled = true;
       if(confirmOpponentTeamBtn) confirmOpponentTeamBtn.disabled = true;
 
-      if(matchResultsSection) matchResultsSection.classList.add("hidden");
+      if(document.getElementById('post-match-section')) document.getElementById('post-match-section').classList.add("hidden");
       if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
       if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
       if(opponentSelectionSection) opponentSelectionSection.classList.add("hidden");
       if(playerSourceSelection) playerSourceSelection.classList.add("hidden"); // Hide player source selection initially
-      if(gameResultsPage) gameResultsPage.classList.add("hidden"); // Hide game results page
       if(tournamentCompleteSection) tournamentCompleteSection.classList.add("hidden");
       if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
       if(tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
@@ -2092,16 +2222,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Advances to the next game of the tournament
     function nextGameOfTournament() {
-      if(gameResultsPage) gameResultsPage.classList.add("hidden"); // Hide results page
-      if(matchResultsSection) matchResultsSection.classList.add("hidden"); // Hide detailed results
+      const postMatchSection = document.getElementById('post-match-section');
+      if(postMatchSection) postMatchSection.classList.add("hidden");
 
       // Check if tournament is complete
       if (
         tournament.userWins >= Math.ceil(tournament.maxRounds / 2) ||
         tournament.aiWins >= Math.ceil(tournament.maxRounds / 2)
       ) {
-        // Tournament already won by someone, this button shouldn't be active
-        // This case should ideally be handled by disabling the button or showing tournament complete section earlier
         return;
       }
 
@@ -2115,12 +2243,9 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
       }
 
-      // For AI opponents, generate a new AI opponent and immediately simulate the match
       const newAiTeam = generateAITeam(selectedPlayers).players;
-      tournament.opponents.push(newAiTeam); // Add new AI opponent to the list
-      saveTournament(); // Save updated tournament state before simulating
-
-      // Immediately simulate the match with the existing user team and new AI opponent
+      tournament.opponents.push(newAiTeam);
+      saveTournament();
       simulateMatch();
     }
 
@@ -2369,38 +2494,19 @@ document.addEventListener("DOMContentLoaded", () => {
         isSimulationSkipped = true;
     });
 
-    if (viewDetailedResultsBtn) {
-      viewDetailedResultsBtn.addEventListener("click", () => {
-        if(gameResultsPage) gameResultsPage.classList.add("hidden");
-        if(matchResultsSection) matchResultsSection.classList.remove("hidden");
-        // Add a class to trigger the animation for stat bars
-        if(analysisContent) analysisContent.parentElement.classList.add('analysis-visible');
-      });
-    }
+    const postMatchReSimBtn = document.getElementById('re-sim-match-btn');
+    if(postMatchReSimBtn) postMatchReSimBtn.addEventListener('click', simulateMatch);
 
-    if (reSimMatchBtn) {
-      reSimMatchBtn.addEventListener("click", simulateMatch);
-    }
-
-    if (nextGameTournamentBtn) {
-      nextGameTournamentBtn.addEventListener("click", nextGameOfTournament);
-    }
+    const postMatchNextGameBtn = document.getElementById('next-game-tournament-btn');
+    if(postMatchNextGameBtn) postMatchNextGameBtn.addEventListener('click', nextGameOfTournament);
+    
+    const mainMenuBtn = document.getElementById('main-menu-btn');
+    if(mainMenuBtn) mainMenuBtn.addEventListener('click', resetGame);
 
     if (resetTournamentBtn) {
       resetTournamentBtn.addEventListener("click", resetGame);
     }
     
-    if (keepTeamBtn) {
-      keepTeamBtn.addEventListener("click", nextGameOfTournament);
-    }
-
-    if (changePlayersBtn) {
-      changePlayersBtn.addEventListener("click", () => {
-        if(matchResultsSection) matchResultsSection.classList.add("hidden");
-        if(playerSelectionSection) playerSelectionSection.classList.remove("hidden");
-      });
-    }
-
     // Tournament type selection
     if(tournamentTypeSelect) tournamentTypeSelect.addEventListener("change", (event) => {
       tournament.maxRounds = parseInt(event.target.value);
@@ -2456,47 +2562,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Go Back button functionality
     if(goBackButtons) goBackButtons.forEach((button) => {
       button.addEventListener("click", (event) => {
-        const currentSection = event.target.closest(".card").id;
+        const currentSection = event.target.closest(".card");
         const targetSectionId = event.target.dataset.targetSection;
         const targetSection = document.getElementById(targetSectionId);
 
         // Hide current section
-        if(currentSection) document.getElementById(currentSection).classList.add("hidden");
+        if(currentSection) currentSection.classList.add("hidden");
 
         // Show target section
         if(targetSection) targetSection.classList.remove("hidden");
-
-        // Specific logic for going back
-        if (targetSectionId === "player-source-selection") {
-          // If going back to player source, ensure available players are rendered
-          renderPlayers(allPlayersData, availablePlayersDiv, true);
-        } else if (targetSectionId === "formation-selection-section") {
-          // If going back to formation, clear selected players and re-render available
-          selectedPlayers = [];
-          updateSelectedPlayerCount();
-          renderPlayers(allPlayersData, availablePlayersDiv, true);
-          renderLineup(); // Ensure lineup is cleared/reset visually
-        } else if (targetSectionId === "opponent-selection-section") {
-          // If going back to opponent selection, re-render opponent available players
-          renderPlayers(allPlayersData, opponentAvailablePlayersDiv, true, true);
-        } else if (targetSectionId === "player-selection-section") {
-          // When going back from game results page, clear selected players and reset formation
-          selectedPlayers = [];
-          currentFormation = null;
-          updateSelectedPlayerCount();
-          renderPlayers(allPlayersData, availablePlayersDiv, true);
-          renderLineup(); // Ensure lineup is cleared/reset visually
-        } else if (targetSectionId === "tournament-section") {
-          // If going back to tournament setup, ensure all other sections are hidden
-          if(playerSourceSelection) playerSourceSelection.classList.add("hidden");
-          if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
-          if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
-          if(matchResultsSection) matchResultsSection.classList.add("hidden");
-          if(opponentSelectionSection) opponentSelectionSection.classList.add("hidden");
-          if(gameResultsPage) gameResultsPage.classList.add("hidden");
-          if(tournamentCompleteSection) tournamentCompleteSection.classList.add("hidden");
-          // No need to clear tournament data, as it should persist
-        }
       });
     });
 
@@ -2514,9 +2588,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if(playerSourceSelection) playerSourceSelection.classList.add("hidden");
     if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
     if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
-    if(matchResultsSection) matchResultsSection.classList.add("hidden");
+    if(document.getElementById('post-match-section')) document.getElementById('post-match-section').classList.add("hidden");
     if(opponentSelectionSection) opponentSelectionSection.classList.add("hidden");
-    if(gameResultsPage) gameResultsPage.classList.add("hidden"); // Hide game results page
     if(tournamentCompleteSection) tournamentCompleteSection.classList.add("hidden");
     if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
     if(tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
