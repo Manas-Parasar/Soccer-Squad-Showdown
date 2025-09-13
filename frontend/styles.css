@@ -756,6 +756,97 @@ footer {
 }
 
 /* Responsive Adjustments */
+
+/* Custom Formation Builder */
+#custom-formation-builder .modal-xl {
+    max-width: 900px;
+}
+
+.soccer-field-custom-builder {
+    position: relative;
+    width: 100%;
+    padding-bottom: 65%; /* Maintain aspect ratio */
+    background-image: url('images/pitch.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid var(--card-border);
+}
+
+.player-placeholder {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #333;
+    cursor: grab;
+    user-select: none;
+    z-index: 100;
+}
+
+.player-placeholder.dragging {
+    cursor: grabbing;
+    opacity: 0.5;
+}
+
+.drop-zone {
+    position: absolute;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    z-index: 1;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.drop-zone.drag-over {
+    background-color: rgba(0, 212, 255, 0.2);
+}
+
+.gk-zone { top: 85%; left: 0; width: 100%; height: 15%; }
+.def-zone { top: 60%; left: 0; width: 100%; height: 25%; }
+.mid-zone { top: 25%; left: 0; width: 100%; height: 35%; }
+.fwd-zone { top: 0; left: 0; width: 100%; height: 25%; }
+
+.custom-formation-btn-container {
+    position: relative;
+    display: inline-block;
+}
+
+.delete-formation-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 24px;
+    height: 24px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    line-height: 1;
+    padding-bottom: 2px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 1;
+}
+
+.delete-formation-btn:hover {
+    background-color: #c82333;
+}
 @media (max-width: 768px) {
   .player-grid-container {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));

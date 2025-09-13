@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   try {
     window.updateOpponentSelectedPlayerCount = function () {
@@ -195,6 +196,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const liveAiScore = document.getElementById("live-ai-score");
     const skipSimulationBtn = document.getElementById("skip-simulation-btn");
 
+    // Custom Formation Elements
+    const createCustomFormationBtn = document.getElementById("create-custom-formation-btn");
+    const customFormationBuilder = document.getElementById("custom-formation-builder");
+    const customFormationModal = new bootstrap.Modal(customFormationBuilder);
+    const customPitch = document.getElementById("custom-pitch");
+    const playerPlaceholdersContainer = document.getElementById("player-placeholders-container");
+    const saveCustomFormationBtn = document.getElementById("save-custom-formation-btn");
+    const customFormationNameInput = document.getElementById("custom-formation-name");
+    const customFormationOptionsDiv = document.getElementById("custom-formation-options");
+
 
     // --- State Variables ---
     const MAX_PLAYERS = 11;
@@ -206,6 +217,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let tournament = {};
     let draggedSlotId = null; // Changed from draggedPlayerIndex to draggedSlotId
     let isSimulationSkipped = false;
+    let customFormations = [];
+    let draggedElement = null;
+
 
     // --- Predefined Player Data ---
     const predefinedPlayers = {
@@ -799,7 +813,7 @@ document.addEventListener("DOMContentLoaded", () => {
       GK: ["GK"],
       DEF: ["LB", "CB", "RB", "LWB", "RWB", "LCB", "RCB", "CCB"],
       MID: ["CDM", "CM", "CAM", "LM", "RM", "LCM", "RCM", "CDM1", "CDM2"],
-      FWD: ["LW", "ST", "RW", "ST1", "ST2"],
+      FWD: ["LW", "ST", "RW", "ST1", "ST2", "CF"],
     };
 
     // Suitability factors for rating calculation based on position difference
@@ -840,6 +854,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to get the general position type from a specific slot ID
     function getGeneralPositionTypeFromSlotId(slotId) {
+        const customFormation = customFormations.find(f => f.name === currentFormation);
+        if (customFormation) {
+            const slot = customFormation.lineup.find(s => s.slotId === slotId);
+            if (slot) {
+                return getPositionGroup(slot.positionType);
+            }
+        }
+
       switch (slotId) {
         case "LCB":
         case "RCB":
@@ -1086,25 +1108,25 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
                           <div class="modal-header">
-                              <h5 class="modal-title" id="player-details-modal-label">${
+                              <h5 class="modal-title" id="player-details-modal-label">${ 
                                 player.name
                               }</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
                               <div class="text-center">
-                                  <img src="${player.imageUrl}" alt="${
+                                  <img src="${player.imageUrl}" alt="${ 
         player.name
       }" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
                               </div>
                               <ul class="list-group">
                                   <li class="list-group-item d-flex justify-content-between align-items-center">
                                       Preferred Position
-                                      <span class="badge bg-primary rounded-pill">${
+                                      <span class="badge bg-primary rounded-pill">${ 
                                         player.preferredPosition
                                       }</span>
                                   </li>
-                                  ${
+                                  ${ 
                                     player.secondaryPositions &&
                                     player.secondaryPositions.length > 0
                                       ? `
@@ -1121,37 +1143,37 @@ document.addEventListener("DOMContentLoaded", () => {
                                       Overall Rating
                                       <span class="badge bg-success rounded-pill">${displayedRating}</span>
                                   </li>
-                                  ${
+                                  ${ 
                                     player.pace
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Pace<span class="badge bg-secondary rounded-pill">${player.pace}</span></li>`
                                       : ""
                                   }
-                                  ${
+                                  ${ 
                                     player.dribbling
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Dribbling<span class="badge bg-secondary rounded-pill">${player.dribbling}</span></li>`
                                       : ""
                                   }
-                                  ${
+                                  ${ 
                                     player.passing
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Passing<span class="badge bg-secondary rounded-pill">${player.passing}</span></li>`
                                       : ""
                                   }
-                                  ${
+                                  ${ 
                                     player.shooting
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Shooting<span class="badge bg-secondary rounded-pill">${player.shooting}</span></li>`
                                       : ""
                                   }
-                                  ${
+                                  ${ 
                                     player.defending
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Defending<span class="badge bg-secondary rounded-pill">${player.defending}</span></li>`
                                       : ""
                                   }
-                                  ${
+                                  ${ 
                                     player.physical
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Physical<span class="badge bg-secondary rounded-pill">${player.physical}</span></li>`
                                       : ""
                                   }
-                                  ${
+                                  ${ 
                                     player.goalkeeping
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Goalkeeping<span class="badge bg-secondary rounded-pill">${player.goalkeeping}</span></li>`
                                       : ""
@@ -1463,206 +1485,82 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    function getPositionInfo(positionType) {
-      const formation = currentFormation;
-      if (!formation) return { x: 0, y: 0 };
+    function getPositionInfo(slotId) {
+        const formation = currentFormation;
+        if (!formation) return { x: 0, y: 0 };
 
-      // Define base positions for each specific role within a formation
-      // Coordinates are percentages (x from left, y from top)
-      const positions = {
-          "4-3-3": {
-              GK: { x: 50, y: 90 },
-              LB: { x: 20, y: 75 },
-              LCB: { x: 40, y: 80 },
-              RCB: { x: 60, y: 80 },
-              RB: { x: 80, y: 75 },
-              LCM: { x: 35, y: 55 },
-              RCM: { x: 65, y: 55 },
-              CAM: { x: 50, y: 40 },
-              LW: { x: 25, y: 25 },
-              ST: { x: 50, y: 15 },
-              RW: { x: 75, y: 25 },
-          },
-          "4-4-2": {
-              GK: { x: 50, y: 90 },
-              LB: { x: 15, y: 70 },
-              LCB: { x: 35, y: 75 },
-              RCB: { x: 65, y: 75 },
-              RB: { x: 85, y: 70 },
-              LM: { x: 20, y: 45 },
-              LCM: { x: 40, y: 50 },
-              RCM: { x: 60, y: 50 },
-              RM: { x: 80, y: 45 },
-              ST1: { x: 40, y: 20 },
-              ST2: { x: 60, y: 20 },
-          },
-          "3-5-2": {
-              GK: { x: 50, y: 90 },
-              LCB: { x: 30, y: 75 },
-              CCB: { x: 50, y: 80 },
-              RCB: { x: 70, y: 75 },
-              LWB: { x: 15, y: 50 },
-              RWB: { x: 85, y: 50 },
-              CDM1: { x: 40, y: 60 },
-              CDM2: { x: 60, y: 60 },
-              CAM: { x: 50, y: 40 },
-              ST1: { x: 40, y: 20 },
-              ST2: { x: 60, y: 20 },
-          },
-          "4-2-3-1": {
-              GK: { x: 50, y: 90 },
-              LB: { x: 15, y: 70 },
-              LCB: { x: 35, y: 75 },
-              RCB: { x: 65, y: 75 },
-              RB: { x: 85, y: 70 },
-              CDM1: { x: 40, y: 60 },
-              CDM2: { x: 60, y: 60 },
-              CAM: { x: 50, y: 40 },
-              LW: { x: 20, y: 25 },
-              RW: { x: 80, y: 25 },
-              ST: { x: 50, y: 15 },
-          },
-      };
+        const customFormation = customFormations.find(f => f.name === formation);
+        if (customFormation) {
+            const slot = customFormation.lineup.find(s => s.slotId === slotId);
+            return slot ? slot.coords : { x: 50, y: 50 };
+        }
 
-      return positions[formation][positionType] || { x: 0, y: 0 };
+        const positions = {
+            "4-3-3": { GK: { x: 50, y: 90 }, LB: { x: 20, y: 75 }, LCB: { x: 40, y: 80 }, RCB: { x: 60, y: 80 }, RB: { x: 80, y: 75 }, LCM: { x: 35, y: 55 }, RCM: { x: 65, y: 55 }, CAM: { x: 50, y: 40 }, LW: { x: 25, y: 25 }, ST: { x: 50, y: 15 }, RW: { x: 75, y: 25 } },
+            "4-4-2": { GK: { x: 50, y: 90 }, LB: { x: 15, y: 70 }, LCB: { x: 35, y: 75 }, RCB: { x: 65, y: 75 }, RB: { x: 85, y: 70 }, LM: { x: 20, y: 45 }, LCM: { x: 40, y: 50 }, RCM: { x: 60, y: 50 }, RM: { x: 80, y: 45 }, ST1: { x: 40, y: 20 }, ST2: { x: 60, y: 20 } },
+            "3-5-2": { GK: { x: 50, y: 90 }, LCB: { x: 30, y: 75 }, CCB: { x: 50, y: 80 }, RCB: { x: 70, y: 75 }, LWB: { x: 15, y: 50 }, RWB: { x: 85, y: 50 }, CDM1: { x: 40, y: 60 }, CDM2: { x: 60, y: 60 }, CAM: { x: 50, y: 40 }, ST1: { x: 40, y: 20 }, ST2: { x: 60, y: 20 } },
+            "4-2-3-1": { GK: { x: 50, y: 90 }, LB: { x: 15, y: 70 }, LCB: { x: 35, y: 75 }, RCB: { x: 65, y: 75 }, RB: { x: 85, y: 70 }, CDM1: { x: 40, y: 60 }, CDM2: { x: 60, y: 60 }, CAM: { x: 50, y: 40 }, LW: { x: 20, y: 25 }, RW: { x: 80, y: 25 }, ST: { x: 50, y: 15 } },
+        };
+
+        return positions[formation][slotId] || { x: 0, y: 0 };
     }
 
     // Renders the visual lineup on the soccer field
     function renderLineup() {
-      console.log("renderLineup called. currentFormation:", currentFormation);
+        if (!lineupDisplay) return;
+        lineupDisplay.innerHTML = ''; // Clear the display first
 
-      // Reset all position circles first
-      document.querySelectorAll('.position-circle').forEach(circle => {
-          circle.classList.remove('active');
-          const playerImage = circle.querySelector('.player-image');
-          const positionLabel = circle.querySelector('.position-label');
-          const playerOvr = circle.querySelector('.player-ovr');
+        if (!currentFormation || !lineup) {
+            console.log("No currentFormation or lineup. Exiting renderLineup.");
+            return;
+        }
 
-          playerImage.src = "";
-          playerImage.alt = "";
-          circle.classList.remove('has-player');
-          circle.removeAttribute('draggable'); // Remove draggable when empty
-          if (positionLabel) {
-              positionLabel.style.opacity = '1'; // Make label visible
-          }
-          if (playerOvr) {
-              playerOvr.textContent = '';
-              playerOvr.style.opacity = '0';
-          }
-          // Reset position styles
-          circle.style.left = '';
-          circle.style.top = '';
-          circle.style.transform = '';
-
-          // Remove existing event listeners to prevent duplicates
-          circle.removeEventListener('dragstart', handleDragStart);
-          circle.removeEventListener('dragover', handleDragOver);
-          circle.removeEventListener('dragleave', handleDragLeave);
-          circle.removeEventListener('drop', handleDrop);
-          circle.removeEventListener('dragend', handleDragEnd);
-      });
-
-      if (!currentFormation) {
-        console.log("No currentFormation. Exiting renderLineup.");
-        return;
-      }
-
-      const lineupPositions = formationLineups[currentFormation];
-      lineupPositions.forEach(position => {
-          const positionCircle = document.getElementById(`pos-${position.toLowerCase()}`);
-          if(positionCircle) {
-              positionCircle.classList.add('active');
-          }
-      });
-
-      lineup.forEach((slot, index) => {
-        console.log(`Processing slot ${index}: slotId=${slot.slotId}, positionType=${slot.positionType}, player=${slot.player ? slot.player.name : 'null'}`);
-
-        // Find the corresponding position circle using its ID
-        const positionCircle = document.getElementById(`pos-${slot.slotId.toLowerCase()}`);
-        console.log(`Attempting to find element with ID: pos-${slot.slotId.toLowerCase()}`);
-
-        if (positionCircle) {
-            console.log(`Found positionCircle for ${slot.slotId}`);
-            const playerImage = positionCircle.querySelector('.player-image');
-            const positionLabel = positionCircle.querySelector('.position-label');
-            let playerOvr = positionCircle.querySelector('.player-ovr');
-            let playerNameElement = positionCircle.querySelector('.player-name');
-
-            // Create player-ovr if it doesn't exist
-            if (!playerOvr) {
-                playerOvr = document.createElement('span');
-                playerOvr.classList.add('player-ovr');
-                positionCircle.appendChild(playerOvr);
-            }
-            // Create player-name if it doesn't exist
-            if (!playerNameElement) {
-                playerNameElement = document.createElement('span');
-                playerNameElement.classList.add('player-name');
-                positionCircle.appendChild(playerNameElement);
-            }
-
-            const posType = slot.positionType;
-            const positionCoords = getPositionInfo(posType);
-
-            console.log(`Position Coords for ${posType}: x=${positionCoords.x}%, y=${positionCoords.y}%`);
-
-            // Apply positioning
-            positionCircle.style.left = `${positionCoords.x}%`;
-            positionCircle.style.top = `${positionCoords.y}%`;
-            positionCircle.style.transform = `translate(-50%, -50%)`; // Center the circle
-
-            // Set data-slot-id for drag and drop
+        lineup.forEach(slot => {
+            const positionCircle = document.createElement('div');
+            positionCircle.id = `pos-${slot.slotId.toLowerCase()}`;
+            positionCircle.className = 'position-circle active';
             positionCircle.dataset.slotId = slot.slotId;
 
-            // Add drag and drop event listeners
+            const positionCoords = getPositionInfo(slot.slotId);
+            positionCircle.style.left = `${positionCoords.x}%`;
+            positionCircle.style.top = `${positionCoords.y}%`;
+            positionCircle.style.transform = `translate(-50%, -50%)`;
+
+            positionCircle.innerHTML = `
+                <span class="position-label">${slot.positionType}</span>
+                <img src="" alt="Player" class="player-image">
+                <span class="player-ovr"></span>
+                <span class="player-name"></span>
+            `;
+
+            const playerImage = positionCircle.querySelector('.player-image');
+            const playerOvr = positionCircle.querySelector('.player-ovr');
+            const playerNameEl = positionCircle.querySelector('.player-name');
+
+            if (slot.player) {
+                positionCircle.classList.add('has-player');
+                positionCircle.setAttribute('draggable', 'true');
+                playerImage.src = slot.player.imageUrl;
+                playerImage.alt = slot.player.name;
+                playerNameEl.textContent = slot.player.name;
+                
+                const calculatedRating = calculatePlayerRating(slot.player, slot.positionType);
+                playerOvr.textContent = calculatedRating;
+                playerOvr.style.opacity = '1';
+                playerNameEl.style.opacity = '1';
+            } else {
+                playerOvr.style.opacity = '0';
+                playerNameEl.style.opacity = '0';
+            }
+
             positionCircle.addEventListener('dragstart', handleDragStart);
             positionCircle.addEventListener('dragover', handleDragOver);
             positionCircle.addEventListener('dragleave', handleDragLeave);
             positionCircle.addEventListener('drop', handleDrop);
             positionCircle.addEventListener('dragend', handleDragEnd);
 
-
-            if (slot.player) {
-                console.log(`Assigning player ${slot.player.name} to ${slot.slotId}`);
-                playerImage.src = slot.player.imageUrl;
-                playerImage.alt = slot.player.name;
-                positionCircle.classList.add('has-player');
-                positionCircle.setAttribute('draggable', 'true'); // Make draggable when it has a player
-                if (positionLabel) {
-                    positionLabel.style.opacity = '1'; // Keep label visible
-                }
-                if (playerOvr) {
-                    const calculatedRating = calculatePlayerRating(slot.player, slot.positionType);
-                    playerOvr.textContent = calculatedRating;
-                    playerOvr.style.opacity = '1';
-                }
-                if (playerNameElement) {
-                    playerNameElement.textContent = slot.player.name;
-                    playerNameElement.style.opacity = '1';
-                }
-            } else {
-                console.log(`Slot ${slot.slotId} is empty.`);
-                playerImage.src = "";
-                playerImage.alt = "";
-                positionCircle.classList.remove('has-player');
-                positionCircle.removeAttribute('draggable'); // Remove draggable when empty
-                if (positionLabel) {
-                    positionLabel.style.opacity = '1'; // Show label
-                }
-                if (playerOvr) {
-                    playerOvr.textContent = '';
-                    playerOvr.style.opacity = '0';
-                }
-                if (playerNameElement) {
-                    playerNameElement.textContent = '';
-                    playerNameElement.style.opacity = '0';
-                }
-            }
-        } else {
-            console.warn(`Position circle not found for ID: pos-${slot.slotId.toLowerCase()}`);
-        }
-      });
+            lineupDisplay.appendChild(positionCircle);
+        });
     }
 
     draggedSlotId = null; // Global variable to store the ID of the dragged slot
@@ -1675,18 +1573,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function handleDragOver(event) {
         event.preventDefault(); // Allow drop
-        event.target.classList.add('drag-over'); // Add visual feedback for drag-over
+        const element = event.target.closest('.position-circle');
+        if (element) {
+            element.classList.add('drag-over'); // Add visual feedback for drag-over
+        }
     }
 
     function handleDragLeave(event) {
-        event.target.classList.remove('drag-over'); // Remove visual feedback
+        const element = event.target.closest('.position-circle');
+        if (element) {
+            element.classList.remove('drag-over'); // Remove visual feedback
+        }
     }
 
     function handleDrop(event) {
         event.preventDefault();
-        event.target.classList.remove('drag-over');
+        const targetElement = event.target.closest('.position-circle');
+        if (!targetElement) return;
 
-        const targetSlotId = event.target.dataset.slotId;
+        targetElement.classList.remove('drag-over');
+
+        const targetSlotId = targetElement.dataset.slotId;
 
         if (draggedSlotId === targetSlotId) {
             return; // Dropped on the same slot
@@ -1721,39 +1628,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Handles formation selection
-    function handleFormationSelection(formation) {
-      currentFormation = formation;
-      lineup = []; // Initialize as empty array
+    function handleFormationSelection(formation, isCustom = false) {
+        currentFormation = formation;
+        lineup = []; // Initialize as empty array
 
-      const lineupPositions = formationLineups[currentFormation];
-
-      lineupPositions.forEach(position => {
-          lineup.push({
-              slotId: position,
-              positionType: position,
-              player: null,
-          });
-      });
-
-      selectedPlayers = [];
-      // Visually indicate active formation
-      document.querySelectorAll(".formation-btn").forEach((btn) => {
-        if (btn.dataset.formation === formation) {
-          btn.classList.add("active");
+        if (isCustom) {
+            const customFormation = customFormations.find(f => f.name === formation);
+            if (customFormation) {
+                lineup = customFormation.lineup.map(slot => ({ ...slot, player: null }));
+                formationRequirements[formation] = customFormation.requirements;
+            }
         } else {
-          btn.classList.remove("active");
+            const lineupPositions = formationLineups[currentFormation];
+            lineupPositions.forEach(position => {
+                lineup.push({
+                    slotId: position,
+                    positionType: position,
+                    player: null,
+                });
+            });
         }
-      });
-      // After selecting formation, show player selection section
-      if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
-      if(playerSelectionSection) playerSelectionSection.classList.remove("hidden");
 
-      
+        selectedPlayers = [];
+        // Visually indicate active formation
+        document.querySelectorAll(".formation-btn, .custom-formation-btn").forEach((btn) => {
+            if (btn.dataset.formation === formation) {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
+            }
+        });
+        // After selecting formation, show player selection section
+        if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
+        if(playerSelectionSection) playerSelectionSection.classList.remove("hidden");
 
-      // Clear selected players and re-render available players for new formation
-      updateSelectedPlayerCount();
-      renderPlayers(allPlayersData, availablePlayersDiv, true); // Render available players for user
-      renderLineup(); // Render initial empty lineup based on formation
+        // Clear selected players and re-render available players for new formation
+        updateSelectedPlayerCount();
+        renderPlayers(allPlayersData, availablePlayersDiv, true); // Render available players for user
+        renderLineup(); // Render initial empty lineup based on formation
     }
 
     // Simulates the match (client-side logic)
@@ -1837,8 +1749,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 liveCommentaryContainer.scrollTop = liveCommentaryContainer.scrollHeight;
             }, 10);
           }
-          playByPlay += `${minute}' - ${text}
-`;
+          playByPlay += `${minute}' - ${text}\n`;
       };
 
       const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -1926,7 +1837,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Normalize possession to percentages
       const totalPossession = userPossession + aiPossession;
-      userPossession =
+      userPossession = 
         totalPossession > 0
           ? Math.round((userPossession / totalPossession) * 100)
           : 50;
@@ -2060,7 +1971,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Helper to get general position type from specific position
     function getGeneralPositionType(specificPosition) {
-      if (["ST", "LW", "RW"].includes(specificPosition)) return "Forward";
+      if (["ST", "LW", "RW", "CF"].includes(specificPosition)) return "Forward";
       if (
         ["CM", "CAM", "CDM", "LM", "RM", "LWB", "RWB"].includes(specificPosition)
       )
@@ -2144,11 +2055,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Resets the game to initial state
     function resetGame() {
       localStorage.removeItem("tournament");
+      localStorage.removeItem("customFormations");
       selectedPlayers = [];
       lineup = new Array(MAX_PLAYERS).fill(null);
       selectedOpponentPlayers = [];
       currentFormation = null;
       tournament = {};
+      customFormations = [];
       loadTournament();
 
       updateSelectedPlayerCount();
@@ -2157,7 +2070,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if(availablePlayersDiv) availablePlayersDiv.innerHTML = ""; // Clear available players
       if(opponentAvailablePlayersDiv) opponentAvailablePlayersDiv.innerHTML = ""; // Clear opponent available players
       document
-        .querySelectorAll(".formation-btn")
+        .querySelectorAll(".formation-btn, .custom-formation-btn")
         .forEach((btn) => btn.classList.remove("active"));
       if(simulateMatchBtn) simulateMatchBtn.disabled = true;
       if(confirmOpponentTeamBtn) confirmOpponentTeamBtn.disabled = true;
@@ -2174,6 +2087,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if(lineupDisplay) lineupDisplay.innerHTML = ""; // Clear lineup display
       if(aiGeneratedOpponentRadio) aiGeneratedOpponentRadio.checked = true; // Reset opponent type to AI Generated
+      renderCustomFormationButtons();
     }
 
     // Advances to the next game of the tournament
@@ -2209,6 +2123,196 @@ document.addEventListener("DOMContentLoaded", () => {
       // Immediately simulate the match with the existing user team and new AI opponent
       simulateMatch();
     }
+
+    // --- Custom Formation Functions ---
+    function loadCustomFormations() {
+        const savedFormations = localStorage.getItem('customFormations');
+        if (savedFormations) {
+            customFormations = JSON.parse(savedFormations);
+            renderCustomFormationButtons();
+        }
+    }
+
+    function renderCustomFormationButtons() {
+        customFormationOptionsDiv.innerHTML = '';
+        customFormations.forEach(formation => {
+            const container = document.createElement('div');
+            container.className = 'custom-formation-btn-container';
+
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-outline-primary custom-formation-btn';
+            btn.dataset.formation = formation.name;
+            btn.textContent = formation.name;
+            btn.addEventListener('click', () => handleFormationSelection(formation.name, true));
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-formation-btn';
+            deleteBtn.innerHTML = '&times;';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteCustomFormation(formation.name);
+            });
+
+            container.appendChild(btn);
+            container.appendChild(deleteBtn);
+            customFormationOptionsDiv.appendChild(container);
+        });
+    }
+
+    function initializeFormationBuilder() {
+        playerPlaceholdersContainer.innerHTML = '';
+        for (let i = 1; i <= 11; i++) {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'player-placeholder';
+            placeholder.textContent = i;
+            placeholder.draggable = true;
+            placeholder.id = `placeholder-${i}`;
+            placeholder.style.left = `${10 + (i-1)*8}%`;
+            placeholder.style.top = '45%';
+            playerPlaceholdersContainer.appendChild(placeholder);
+
+            placeholder.addEventListener('dragstart', (e) => {
+                draggedElement = e.target;
+                setTimeout(() => {
+                    e.target.classList.add('dragging');
+                }, 0);
+            });
+
+            placeholder.addEventListener('dragend', (e) => {
+                draggedElement.classList.remove('dragging');
+                draggedElement = null;
+            });
+        }
+    }
+
+    function saveCustomFormation() {
+        const name = customFormationNameInput.value.trim();
+        if (!name) {
+            alert('Please enter a name for the formation.');
+            return;
+        }
+        if (customFormations.some(f => f.name === name) || formationLineups[name]) {
+            alert('A formation with this name already exists.');
+            return;
+        }
+
+        const formation = {
+            name: name,
+            isCustom: true,
+            lineup: [],
+            requirements: { GK: 0, DEF: 0, MID: 0, FWD: 0 }
+        };
+
+        const placeholders = playerPlaceholdersContainer.querySelectorAll('.player-placeholder');
+        let allPositionsSet = true;
+        placeholders.forEach((p, index) => {
+            const position = p.dataset.position;
+            if (!position) {
+                allPositionsSet = false;
+            }
+
+            const rect = customPitch.getBoundingClientRect();
+            const placeholderRect = p.getBoundingClientRect();
+            const x = ((placeholderRect.left - rect.left + placeholderRect.width / 2) / rect.width) * 100;
+            const y = ((placeholderRect.top - rect.top + placeholderRect.height / 2) / rect.height) * 100;
+
+            formation.lineup.push({
+                slotId: `custom${index}`,
+                positionType: position,
+                coords: { x, y }
+            });
+            const group = getPositionGroup(position);
+            if(formation.requirements[group] !== undefined) {
+                formation.requirements[group]++;
+            }
+        });
+
+        if (!allPositionsSet) {
+            alert('Please set a position for all players on the pitch.');
+            return;
+        }
+
+        if (formation.requirements.GK !== 1) {
+            alert('You must have exactly one Goalkeeper.');
+            return;
+        }
+
+        customFormations.push(formation);
+        localStorage.setItem('customFormations', JSON.stringify(customFormations));
+        renderCustomFormationButtons();
+        customFormationModal.hide();
+    }
+
+    function deleteCustomFormation(name) {
+        if (confirm(`Are you sure you want to delete the formation "${name}"?`)) {
+            customFormations = customFormations.filter(f => f.name !== name);
+            localStorage.setItem('customFormations', JSON.stringify(customFormations));
+            renderCustomFormationButtons();
+        }
+    }
+
+    function showCustomPositionMenu(element, yPercent, xPercent) {
+        let zone = 'FWD';
+        if (yPercent > 85) zone = 'GK';
+        else if (yPercent > 60) zone = 'DEF';
+        else if (yPercent > 25) zone = 'MID';
+
+        let possiblePositions = [];
+        if (zone === 'GK') {
+            possiblePositions = ['GK'];
+        } else if (zone === 'DEF') {
+            if (xPercent < 33) possiblePositions = ['LB', 'LWB', 'CB'];
+            else if (xPercent > 66) possiblePositions = ['RB', 'RWB', 'CB'];
+            else possiblePositions = ['CB'];
+        } else if (zone === 'MID') {
+            if (xPercent < 33) possiblePositions = ['LM', 'CM', 'CAM', 'CDM'];
+            else if (xPercent > 66) possiblePositions = ['RM', 'CM', 'CAM', 'CDM'];
+            else possiblePositions = ['CM', 'CAM', 'CDM'];
+        } else { // FWD
+            if (xPercent < 33) possiblePositions = ['LW', 'ST', 'CF'];
+            else if (xPercent > 66) possiblePositions = ['RW', 'ST', 'CF'];
+            else possiblePositions = ['ST', 'CF'];
+        }
+
+        const modalBody = document.getElementById('custom-position-modal-body');
+        modalBody.innerHTML = '';
+        possiblePositions.forEach(pos => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-outline-primary m-1';
+            btn.textContent = pos;
+            btn.onclick = () => {
+                element.dataset.position = pos;
+                element.textContent = pos;
+                bootstrap.Modal.getInstance(document.getElementById('custom-position-modal')).hide();
+            };
+            modalBody.appendChild(btn);
+        });
+
+        const posModal = new bootstrap.Modal(document.getElementById('custom-position-modal'));
+        posModal.show();
+    }
+
+    customPitch.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    customPitch.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (draggedElement) {
+            const rect = customPitch.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const xPercent = (x / rect.width) * 100;
+            const yPercent = (y / rect.height) * 100;
+            
+            draggedElement.style.left = `${x - (draggedElement.offsetWidth / 2)}px`;
+            draggedElement.style.top = `${y - (draggedElement.offsetHeight / 2)}px`;
+
+            showCustomPositionMenu(draggedElement, yPercent, xPercent);
+        }
+    });
+
 
     // --- Event Listeners ---
     if(predefinedPlayersBtn) predefinedPlayersBtn.addEventListener("click", () => {
@@ -2396,6 +2500,15 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    // Custom Formation Listeners
+    if(createCustomFormationBtn) createCustomFormationBtn.addEventListener('click', () => {
+        initializeFormationBuilder();
+        customFormationModal.show();
+    });
+
+    if(saveCustomFormationBtn) saveCustomFormationBtn.addEventListener('click', saveCustomFormation);
+
+
     // Initial setup
     // Ensure all sections are hidden except tournament section on initial load
     if(playerSourceSelection) playerSourceSelection.classList.add("hidden");
@@ -2433,6 +2546,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loadTournament();
+    loadCustomFormations();
     updateSelectedPlayerCount(); // Call once to set initial state of confirmTeamBtn
     if (typeof window.updateOpponentSelectedPlayerCount === "function") {
       window.updateOpponentSelectedPlayerCount(); // Call once to set initial state of confirmOpponentTeamBtn
