@@ -1,3 +1,4 @@
+'use strict';
 
 document.addEventListener("DOMContentLoaded", () => {
   try {
@@ -205,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const saveCustomFormationBtn = document.getElementById("save-custom-formation-btn");
     const customFormationNameInput = document.getElementById("custom-formation-name");
     const customFormationOptionsDiv = document.getElementById("custom-formation-options");
+    const randomizeCustomFormationBtn = document.getElementById("randomize-custom-formation-btn");
 
 
     // --- State Variables ---
@@ -256,28 +258,28 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Casillas",
           preferredPosition: "GK",
           secondaryPositions: [],
-          baseRating: 89,
-          pace: 62,
-          dribbling: 63,
-          passing: 69,
-          shooting: 49,
-          defending: 54,
-          physical: 79,
-          goalkeeping: 89,
+          baseRating: 8.9,
+          pace: 6.2,
+          dribbling: 6.3,
+          passing: 6.9,
+          shooting: 4.9,
+          defending: 5.4,
+          physical: 7.9,
+          goalkeeping: 8.9,
           imageUrl: "images/casillas.jpg",
         },
         {
           name: "Ter Stegen",
           preferredPosition: "GK",
           secondaryPositions: [],
-          baseRating: 91,
-          pace: 61,
-          dribbling: 66,
-          passing: 72,
-          shooting: 51,
-          defending: 56,
-          physical: 81,
-          goalkeeping: 91,
+          baseRating: 9.1,
+          pace: 6.1,
+          dribbling: 6.6,
+          passing: 7.2,
+          shooting: 5.1,
+          defending: 5.6,
+          physical: 8.1,
+          goalkeeping: 9.1,
           imageUrl: "images/terstegen.jpg",
         },
       ],
@@ -286,13 +288,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Alba",
           preferredPosition: "LB",
           secondaryPositions: ["LWB"],
-          baseRating: 86,
-          pace: 88,
-          dribbling: 80,
-          passing: 82,
-          shooting: 65,
-          defending: 84,
-          physical: 75,
+          baseRating: 8.6,
+          pace: 8.8,
+          dribbling: 8.0,
+          passing: 8.2,
+          shooting: 6.5,
+          defending: 8.4,
+          physical: 7.5,
           goalkeeping: 0,
           imageUrl: "images/alba.jpg",
         },
@@ -300,13 +302,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Maldini",
           preferredPosition: "LB",
           secondaryPositions: ["CB"],
-          baseRating: 94,
-          pace: 80,
-          dribbling: 75,
-          passing: 78,
-          shooting: 60,
-          defending: 95,
-          physical: 90,
+          baseRating: 9.4,
+          pace: 8.0,
+          dribbling: 7.5,
+          passing: 7.8,
+          shooting: 6.0,
+          defending: 9.5,
+          physical: 9.0,
           goalkeeping: 0,
           imageUrl: "images/maldini.jpg",
         },
@@ -314,13 +316,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Marcelo",
           preferredPosition: "LB",
           secondaryPositions: ["LWB", "LM"],
-          baseRating: 85,
-          pace: 85,
-          dribbling: 88,
-          passing: 87,
-          shooting: 70,
-          defending: 78,
-          physical: 70,
+          baseRating: 8.5,
+          pace: 8.5,
+          dribbling: 8.8,
+          passing: 8.7,
+          shooting: 7.0,
+          defending: 7.8,
+          physical: 7.0,
           goalkeeping: 0,
           imageUrl: "images/marcelo.jpg",
         },
@@ -328,13 +330,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Cancelo",
           preferredPosition: "LB",
           secondaryPositions: ["RB", "CM"],
-          baseRating: 87,
-          pace: 86,
-          dribbling: 89,
-          passing: 88,
-          shooting: 72,
-          defending: 80,
-          physical: 78,
+          baseRating: 8.7,
+          pace: 8.6,
+          dribbling: 8.9,
+          passing: 8.8,
+          shooting: 7.2,
+          defending: 8.0,
+          physical: 7.8,
           goalkeeping: 0,
           imageUrl: "images/cancelo.jpg",
         },
@@ -342,13 +344,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Araujo",
           preferredPosition: "CB",
           secondaryPositions: ["RB"],
-          baseRating: 87,
-          pace: 82,
-          dribbling: 70,
-          passing: 70,
-          shooting: 55,
-          defending: 88,
-          physical: 90,
+          baseRating: 8.7,
+          pace: 8.2,
+          dribbling: 7.0,
+          passing: 7.0,
+          shooting: 5.5,
+          defending: 8.8,
+          physical: 9.0,
           goalkeeping: 0,
           imageUrl: "images/araujo.jpg",
         },
@@ -356,13 +358,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Van Dijk",
           preferredPosition: "CB",
           secondaryPositions: [],
-          baseRating: 91,
-          pace: 78,
-          dribbling: 70,
-          passing: 75,
-          shooting: 60,
-          defending: 92,
-          physical: 93,
+          baseRating: 9.1,
+          pace: 7.8,
+          dribbling: 7.0,
+          passing: 7.5,
+          shooting: 6.0,
+          defending: 9.2,
+          physical: 9.3,
           goalkeeping: 0,
           imageUrl: "images/vandijk.jpg",
         },
@@ -370,13 +372,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Ramos",
           preferredPosition: "CB",
           secondaryPositions: ["RB"],
-          baseRating: 90,
-          pace: 75,
-          dribbling: 70,
-          passing: 72,
-          shooting: 68,
-          defending: 91,
-          physical: 92,
+          baseRating: 9.0,
+          pace: 7.5,
+          dribbling: 7.0,
+          passing: 7.2,
+          shooting: 6.8,
+          defending: 9.1,
+          physical: 9.2,
           goalkeeping: 0,
           imageUrl: "images/ramos.jpg",
         },
@@ -384,13 +386,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Pique",
           preferredPosition: "CB",
           secondaryPositions: [],
-          baseRating: 88,
-          pace: 70,
-          dribbling: 68,
-          passing: 70,
-          shooting: 58,
-          defending: 89,
-          physical: 88,
+          baseRating: 8.8,
+          pace: 7.0,
+          dribbling: 6.8,
+          passing: 7.0,
+          shooting: 5.8,
+          defending: 8.9,
+          physical: 8.8,
           goalkeeping: 0,
           imageUrl: "images/pique.jpg",
         },
@@ -398,13 +400,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Kounde",
           preferredPosition: "RB",
           secondaryPositions: ["CB"],
-          baseRating: 86,
-          pace: 85,
-          dribbling: 80,
-          passing: 78,
-          shooting: 60,
-          defending: 85,
-          physical: 82,
+          baseRating: 8.6,
+          pace: 8.5,
+          dribbling: 8.0,
+          passing: 7.8,
+          shooting: 6.0,
+          defending: 8.5,
+          physical: 8.2,
           goalkeeping: 0,
           imageUrl: "images/kounde.jpg",
         },
@@ -412,13 +414,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Alves",
           preferredPosition: "RB",
           secondaryPositions: [],
-          baseRating: 84,
-          pace: 83,
-          dribbling: 85,
-          passing: 86,
-          shooting: 68,
-          defending: 78,
-          physical: 75,
+          baseRating: 8.4,
+          pace: 8.3,
+          dribbling: 8.5,
+          passing: 8.6,
+          shooting: 6.8,
+          defending: 7.8,
+          physical: 7.5,
           goalkeeping: 0,
           imageUrl: "images/alves.jpg",
         },
@@ -426,13 +428,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Carvajal",
           preferredPosition: "RB",
           secondaryPositions: [],
-          baseRating: 83,
-          pace: 80,
-          dribbling: 78,
-          passing: 79,
-          shooting: 65,
-          defending: 82,
-          physical: 78,
+          baseRating: 8.3,
+          pace: 8.0,
+          dribbling: 7.8,
+          passing: 7.9,
+          shooting: 6.5,
+          defending: 8.2,
+          physical: 7.8,
           goalkeeping: 0,
           imageUrl: "images/carvajal.jpg",
         },
@@ -440,13 +442,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Trent",
           preferredPosition: "RB",
           secondaryPositions: ["CM", "RW"],
-          baseRating: 87,
-          pace: 80,
-          dribbling: 85,
-          passing: 90,
-          shooting: 75,
-          defending: 78,
-          physical: 78,
+          baseRating: 8.7,
+          pace: 8.0,
+          dribbling: 8.5,
+          passing: 9.0,
+          shooting: 7.5,
+          defending: 7.8,
+          physical: 7.8,
           goalkeeping: 0,
           imageUrl: "images/trent.jpg",
         },
@@ -456,13 +458,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Zidane",
           preferredPosition: "CAM",
           secondaryPositions: ["CM"],
-          baseRating: 94,
-          pace: 75,
-          dribbling: 95,
-          passing: 92,
-          shooting: 85,
-          defending: 60,
-          physical: 80,
+          baseRating: 9.4,
+          pace: 7.5,
+          dribbling: 9.5,
+          passing: 9.2,
+          shooting: 8.5,
+          defending: 6.0,
+          physical: 8.0,
           goalkeeping: 0,
           imageUrl: "images/zidane.jpg",
         },
@@ -470,13 +472,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Maradona",
           preferredPosition: "CAM",
           secondaryPositions: ["LW", "RW"],
-          baseRating: 95,
-          pace: 80,
-          dribbling: 98,
-          passing: 90,
-          shooting: 88,
-          defending: 55,
-          physical: 70,
+          baseRating: 9.5,
+          pace: 8.0,
+          dribbling: 9.8,
+          passing: 9.0,
+          shooting: 8.8,
+          defending: 5.5,
+          physical: 7.0,
           goalkeeping: 0,
           imageUrl: "images/maradona.jpg",
         },
@@ -484,13 +486,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "De Bruyne",
           preferredPosition: "CAM",
           secondaryPositions: ["CM"],
-          baseRating: 93,
-          pace: 78,
-          dribbling: 88,
-          passing: 94,
-          shooting: 90,
-          defending: 65,
-          physical: 80,
+          baseRating: 9.3,
+          pace: 7.8,
+          dribbling: 8.8,
+          passing: 9.4,
+          shooting: 9.0,
+          defending: 6.5,
+          physical: 8.0,
           goalkeeping: 0,
           imageUrl: "images/debruyne.jpg",
         },
@@ -498,13 +500,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Bellingham",
           preferredPosition: "CAM",
           secondaryPositions: ["CM"],
-          baseRating: 89,
-          pace: 82,
-          dribbling: 85,
-          passing: 87,
-          shooting: 80,
-          defending: 75,
-          physical: 88,
+          baseRating: 8.9,
+          pace: 8.2,
+          dribbling: 8.5,
+          passing: 8.7,
+          shooting: 8.0,
+          defending: 7.5,
+          physical: 8.8,
           goalkeeping: 0,
           imageUrl: "images/bellingham.jpg",
         },
@@ -512,13 +514,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Iniesta",
           preferredPosition: "CM",
           secondaryPositions: ["CAM"],
-          baseRating: 92,
-          pace: 70,
-          dribbling: 92,
-          passing: 95,
-          shooting: 70,
-          defending: 65,
-          physical: 68,
+          baseRating: 9.2,
+          pace: 7.0,
+          dribbling: 9.2,
+          passing: 9.5,
+          shooting: 7.0,
+          defending: 6.5,
+          physical: 6.8,
           goalkeeping: 0,
           imageUrl: "images/iniesta.jpg",
         },
@@ -526,13 +528,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Xavi",
           preferredPosition: "CM",
           secondaryPositions: ["CDM"],
-          baseRating: 91,
-          pace: 65,
-          dribbling: 88,
-          passing: 96,
-          shooting: 60,
-          defending: 70,
-          physical: 65,
+          baseRating: 9.1,
+          pace: 6.5,
+          dribbling: 8.8,
+          passing: 9.6,
+          shooting: 6.0,
+          defending: 7.0,
+          physical: 6.5,
           goalkeeping: 0,
           imageUrl: "images/xavi.jpg",
         },
@@ -540,13 +542,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Modric",
           preferredPosition: "CM",
           secondaryPositions: ["CAM"],
-          baseRating: 90,
-          pace: 70,
-          dribbling: 90,
-          passing: 93,
-          shooting: 75,
-          defending: 70,
-          physical: 70,
+          baseRating: 9.0,
+          pace: 7.0,
+          dribbling: 9.0,
+          passing: 9.3,
+          shooting: 7.5,
+          defending: 7.0,
+          physical: 7.0,
           goalkeeping: 0,
           imageUrl: "images/modric.jpg",
         },
@@ -554,13 +556,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Kroos",
           preferredPosition: "CM",
           secondaryPositions: ["CDM"],
-          baseRating: 89,
-          pace: 60,
-          dribbling: 85,
-          passing: 94,
-          shooting: 80,
-          defending: 72,
-          physical: 75,
+          baseRating: 8.9,
+          pace: 6.0,
+          dribbling: 8.5,
+          passing: 9.4,
+          shooting: 8.0,
+          defending: 7.2,
+          physical: 7.5,
           goalkeeping: 0,
           imageUrl: "images/kroos.jpg",
         },
@@ -568,13 +570,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Pedri",
           preferredPosition: "CM",
           secondaryPositions: ["CAM"],
-          baseRating: 88,
-          pace: 75,
-          dribbling: 90,
-          passing: 92,
-          shooting: 70,
-          defending: 70,
-          physical: 70,
+          baseRating: 8.8,
+          pace: 7.5,
+          dribbling: 9.0,
+          passing: 9.2,
+          shooting: 7.0,
+          defending: 7.0,
+          physical: 7.0,
           goalkeeping: 0,
           imageUrl: "images/pedri.jpg",
         },
@@ -582,13 +584,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Valverde",
           preferredPosition: "CDM",
           secondaryPositions: ["CM"],
-          baseRating: 87,
-          pace: 85,
-          dribbling: 80,
-          passing: 82,
-          shooting: 80,
-          defending: 85,
-          physical: 88,
+          baseRating: 8.7,
+          pace: 8.5,
+          dribbling: 8.0,
+          passing: 8.2,
+          shooting: 8.0,
+          defending: 8.5,
+          physical: 8.8,
           goalkeeping: 0,
           imageUrl: "images/valverde.jpg",
         },
@@ -596,13 +598,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Rodri",
           preferredPosition: "CDM",
           secondaryPositions: ["CB"],
-          baseRating: 89,
-          pace: 65,
-          dribbling: 75,
-          passing: 88,
-          shooting: 70,
-          defending: 90,
-          physical: 90,
+          baseRating: 8.9,
+          pace: 6.5,
+          dribbling: 7.5,
+          passing: 8.8,
+          shooting: 7.0,
+          defending: 9.0,
+          physical: 9.0,
           goalkeeping: 0,
           imageUrl: "images/rodri.jpg",
         },
@@ -610,13 +612,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Busquets",
           preferredPosition: "CDM",
           secondaryPositions: ["CM"],
-          baseRating: 88,
-          pace: 55,
-          dribbling: 80,
-          passing: 90,
-          shooting: 60,
-          defending: 88,
-          physical: 80,
+          baseRating: 8.8,
+          pace: 5.5,
+          dribbling: 8.0,
+          passing: 9.0,
+          shooting: 6.0,
+          defending: 8.8,
+          physical: 8.0,
           goalkeeping: 0,
           imageUrl: "images/busquets.jpg",
         },
@@ -626,13 +628,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Messi",
           preferredPosition: "RW",
           secondaryPositions: ["CAM"],
-          baseRating: 96,
-          pace: 85,
-          dribbling: 98,
-          passing: 90,
-          shooting: 95,
-          defending: 35,
-          physical: 65,
+          baseRating: 9.6,
+          pace: 8.5,
+          dribbling: 9.8,
+          passing: 9.0,
+          shooting: 9.5,
+          defending: 3.5,
+          physical: 6.5,
           goalkeeping: 0,
           imageUrl: "images/messi.jpg",
         },
@@ -640,13 +642,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Salah",
           preferredPosition: "RW",
           secondaryPositions: ["LW"],
-          baseRating: 90,
-          pace: 90,
-          dribbling: 88,
-          passing: 80,
-          shooting: 90,
-          defending: 40,
-          physical: 75,
+          baseRating: 9.0,
+          pace: 9.0,
+          dribbling: 8.8,
+          passing: 8.0,
+          shooting: 9.0,
+          defending: 4.0,
+          physical: 7.5,
           goalkeeping: 0,
           imageUrl: "images/salah.jpg",
         },
@@ -654,13 +656,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Bale",
           preferredPosition: "RW",
           secondaryPositions: ["ST"],
-          baseRating: 87,
-          pace: 92,
-          dribbling: 85,
-          passing: 78,
-          shooting: 88,
-          defending: 30,
-          physical: 80,
+          baseRating: 8.7,
+          pace: 9.2,
+          dribbling: 8.5,
+          passing: 7.8,
+          shooting: 8.8,
+          defending: 3.0,
+          physical: 8.0,
           goalkeeping: 0,
           imageUrl: "images/bale.jpg",
         },
@@ -668,13 +670,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Yamal",
           preferredPosition: "RW",
           secondaryPositions: [],
-          baseRating: 84,
-          pace: 88,
-          dribbling: 90,
-          passing: 80,
-          shooting: 80,
-          defending: 30,
-          physical: 68,
+          baseRating: 8.4,
+          pace: 8.8,
+          dribbling: 9.0,
+          passing: 8.0,
+          shooting: 8.0,
+          defending: 3.0,
+          physical: 6.8,
           goalkeeping: 0,
           imageUrl: "images/yamal.jpg",
         },
@@ -682,13 +684,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Haaland",
           preferredPosition: "ST",
           secondaryPositions: ["LW"],
-          baseRating: 91,
-          pace: 90,
-          dribbling: 75,
-          passing: 70,
-          shooting: 95,
-          defending: 30,
-          physical: 90,
+          baseRating: 9.1,
+          pace: 9.0,
+          dribbling: 7.5,
+          passing: 7.0,
+          shooting: 9.5,
+          defending: 3.0,
+          physical: 9.0,
           goalkeeping: 0,
           imageUrl: "images/haaland.jpg",
         },
@@ -696,13 +698,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Lewandowski",
           preferredPosition: "ST",
           secondaryPositions: [],
-          baseRating: 90,
-          pace: 80,
-          dribbling: 80,
-          passing: 75,
-          shooting: 93,
-          defending: 30,
-          physical: 85,
+          baseRating: 9.0,
+          pace: 8.0,
+          dribbling: 8.0,
+          passing: 7.5,
+          shooting: 9.3,
+          defending: 3.0,
+          physical: 8.5,
           goalkeeping: 0,
           imageUrl: "images/lewandowski.jpg",
         },
@@ -710,13 +712,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Benzema",
           preferredPosition: "ST",
           secondaryPositions: ["CAM"],
-          baseRating: 89,
-          pace: 78,
-          dribbling: 85,
-          passing: 82,
-          shooting: 90,
-          defending: 35,
-          physical: 80,
+          baseRating: 8.9,
+          pace: 7.8,
+          dribbling: 8.5,
+          passing: 8.2,
+          shooting: 9.0,
+          defending: 3.5,
+          physical: 8.0,
           goalkeeping: 0,
           imageUrl: "images/benzema.jpg",
         },
@@ -724,13 +726,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Suarez",
           preferredPosition: "ST",
           secondaryPositions: [],
-          baseRating: 88,
-          pace: 75,
-          dribbling: 85,
-          passing: 78,
-          shooting: 90,
-          defending: 40,
-          physical: 82,
+          baseRating: 8.8,
+          pace: 7.5,
+          dribbling: 8.5,
+          passing: 7.8,
+          shooting: 9.0,
+          defending: 4.0,
+          physical: 8.2,
           goalkeeping: 0,
           imageUrl: "images/suarez.jpg",
         },
@@ -738,13 +740,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Ronaldo",
           preferredPosition: "LW",
           secondaryPositions: ["ST", "RW"],
-          baseRating: 92,
-          pace: 88,
-          dribbling: 85,
-          passing: 78,
-          shooting: 95,
-          defending: 30,
-          physical: 88,
+          baseRating: 9.2,
+          pace: 8.8,
+          dribbling: 8.5,
+          passing: 7.8,
+          shooting: 9.5,
+          defending: 3.0,
+          physical: 8.8,
           goalkeeping: 0,
           imageUrl: "images/ronaldo.jpg",
         },
@@ -752,13 +754,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Neymar",
           preferredPosition: "LW",
           secondaryPositions: ["CAM"],
-          baseRating: 91,
-          pace: 88,
-          dribbling: 95,
-          passing: 88,
-          shooting: 85,
-          defending: 30,
-          physical: 70,
+          baseRating: 9.1,
+          pace: 8.8,
+          dribbling: 9.5,
+          passing: 8.8,
+          shooting: 8.5,
+          defending: 3.0,
+          physical: 7.0,
           goalkeeping: 0,
           imageUrl: "images/neymar.jpg",
         },
@@ -766,13 +768,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Ronaldinho",
           preferredPosition: "LW",
           secondaryPositions: ["CAM"],
-          baseRating: 93,
-          pace: 80,
-          dribbling: 96,
-          passing: 90,
-          shooting: 85,
-          defending: 40,
-          physical: 75,
+          baseRating: 9.3,
+          pace: 8.0,
+          dribbling: 9.6,
+          passing: 9.0,
+          shooting: 8.5,
+          defending: 4.0,
+          physical: 7.5,
           goalkeeping: 0,
           imageUrl: "images/ronaldinho.jpg",
         },
@@ -780,13 +782,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Mbappe",
           preferredPosition: "LW",
           secondaryPositions: ["ST", "RW"],
-          baseRating: 94,
-          pace: 96,
-          dribbling: 90,
-          passing: 82,
-          shooting: 92,
-          defending: 30,
-          physical: 78,
+          baseRating: 9.4,
+          pace: 9.6,
+          dribbling: 9.0,
+          passing: 8.2,
+          shooting: 9.2,
+          defending: 3.0,
+          physical: 7.8,
           goalkeeping: 0,
           imageUrl: "images/mbappe.jpg",
         },
@@ -811,9 +813,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Positional groups for rating calculation
     const positionGroups = {
       GK: ["GK"],
-      DEF: ["LB", "CB", "RB", "LWB", "RWB", "LCB", "RCB", "CCB"],
-      MID: ["CDM", "CM", "CAM", "LM", "RM", "LCM", "RCM", "CDM1", "CDM2"],
-      FWD: ["LW", "ST", "RW", "ST1", "ST2", "CF"],
+      DEF: ["LB", "CB", "RB", "LWB", "RWB"],
+      MID: ["CDM", "CM", "CAM", "LM", "RM"],
+      FWD: ["LW", "ST", "RW", "CF"],
     };
 
     // Suitability factors for rating calculation based on position difference
@@ -852,52 +854,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return position; // Return as is if no normalization needed
     }
 
-    // Function to get the general position type from a specific slot ID
-    function getGeneralPositionTypeFromSlotId(slotId) {
-        const customFormation = customFormations.find(f => f.name === currentFormation);
-        if (customFormation) {
-            const slot = customFormation.lineup.find(s => s.slotId === slotId);
-            if (slot) {
-                return getPositionGroup(slot.positionType);
-            }
-        }
-
-      switch (slotId) {
-        case "LCB":
-        case "RCB":
-        case "CCB":
-          return "CB";
-        case "ST1":
-        case "ST2":
-          return "ST";
-        case "LCM":
-        case "RCM":
-          return "CM";
-        case "CDM1":
-        case "CDM2":
-          return "CDM";
-        case "LWB":
-        case "RWB":
-          return slotId; // LWB and RWB are already general enough
-        case "LM":
-        case "RM":
-          return slotId; // LM and RM are already general enough
-        case "CAM":
-          return "CAM";
-        case "GK":
-          return "GK";
-        case "LB":
-          return "LB";
-        case "RB":
-          return "RB";
-        case "LW":
-          return "LW";
-        case "RW":
-          return "RW";
-        default:
-          return slotId; // Fallback for any other direct matches
-      }
-    }
+    
 
     // Calculates a player's rating based on their assigned position
     function calculatePlayerRating(player, assignedPosition) {
@@ -910,29 +867,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Check for preferred position (normalized)
       if (normalizedPreferred === normalizedAssigned) {
-        adjustedRating = Math.round(rating * positionSuitability.preferred);
+        adjustedRating = rating * positionSuitability.preferred;
       }
       // Check for secondary positions (normalized)
       else if (player.secondaryPositions.map(normalizePosition).includes(normalizedAssigned)) {
-        adjustedRating = Math.round(rating * positionSuitability.secondary);
+        adjustedRating = rating * positionSuitability.secondary;
       } else {
         const preferredGroup = getPositionGroup(normalizedPreferred);
         const assignedGroup = getPositionGroup(normalizedAssigned);
 
         // Check if in the same general group (e.g., FWD to FWD, but not preferred/secondary)
         if (preferredGroup === assignedGroup) {
-          adjustedRating = Math.round(rating * positionSuitability.sameGroup);
+          adjustedRating = rating * positionSuitability.sameGroup;
         }
         // Check for adjacent groups
         else if (
           positionGroupAdjacency[preferredGroup] &&
           positionGroupAdjacency[preferredGroup].includes(assignedGroup)
         ) {
-          adjustedRating = Math.round(rating * positionSuitability.adjacentGroup);
+          adjustedRating = rating * positionSuitability.adjacentGroup;
         }
         // If not in the same group, secondary, or adjacent, it's a far group
         else {
-          adjustedRating = Math.round(rating * positionSuitability.farGroup);
+          adjustedRating = rating * positionSuitability.farGroup;
         }
       }
 
@@ -943,11 +900,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (playerGeneralGroup === assignedGeneralGroup) { // If player is in their general area
         let maxDrop = 0;
         if (playerGeneralGroup === "FWD") {
-          maxDrop = 4;
+          maxDrop = 0.4;
         } else if (playerGeneralGroup === "MID") {
-          maxDrop = 5;
+          maxDrop = 0.5;
         } else if (playerGeneralGroup === "DEF") {
-          maxDrop = 4;
+          maxDrop = 0.4;
         }
 
         if (maxDrop > 0) {
@@ -1061,7 +1018,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="player-details">
                       <strong>${player.name}</strong>
                       <small>(${player.preferredPosition})</small>
-                      <span class="player-ovr">${player.baseRating}</span>
+                      <span class="player-ovr">${(player.baseRating).toFixed(1)}</span>
                   </div>
                   <div class="player-card-buttons">
                       <button class="btn btn-sm btn-primary add-player-btn">Add</button>
@@ -1141,41 +1098,41 @@ document.addEventListener("DOMContentLoaded", () => {
                                   }
                                   <li class="list-group-item d-flex justify-content-between align-items-center">
                                       Overall Rating
-                                      <span class="badge bg-success rounded-pill">${displayedRating}</span>
+                                      <span class="badge bg-success rounded-pill">${(displayedRating).toFixed(1)}</span>
                                   </li>
                                   ${ 
                                     player.pace
-                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Pace<span class="badge bg-secondary rounded-pill">${player.pace}</span></li>`
+                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Pace<span class="badge bg-secondary rounded-pill">${(player.pace).toFixed(1)}</span></li>`
                                       : ""
                                   }
                                   ${ 
                                     player.dribbling
-                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Dribbling<span class="badge bg-secondary rounded-pill">${player.dribbling}</span></li>`
+                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Dribbling<span class="badge bg-secondary rounded-pill">${(player.dribbling).toFixed(1)}</span></li>`
                                       : ""
                                   }
                                   ${ 
                                     player.passing
-                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Passing<span class="badge bg-secondary rounded-pill">${player.passing}</span></li>`
+                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Passing<span class="badge bg-secondary rounded-pill">${(player.passing).toFixed(1)}</span></li>`
                                       : ""
                                   }
                                   ${ 
                                     player.shooting
-                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Shooting<span class="badge bg-secondary rounded-pill">${player.shooting}</span></li>`
+                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Shooting<span class="badge bg-secondary rounded-pill">${(player.shooting).toFixed(1)}</span></li>`
                                       : ""
                                   }
                                   ${ 
                                     player.defending
-                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Defending<span class="badge bg-secondary rounded-pill">${player.defending}</span></li>`
+                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Defending<span class="badge bg-secondary rounded-pill">${(player.defending).toFixed(1)}</span></li>`
                                       : ""
                                   }
                                   ${ 
                                     player.physical
-                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Physical<span class="badge bg-secondary rounded-pill">${player.physical}</span></li>`
+                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Physical<span class="badge bg-secondary rounded-pill">${(player.physical).toFixed(1)}</span></li>`
                                       : ""
                                   }
                                   ${ 
                                     player.goalkeeping
-                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Goalkeeping<span class="badge bg-secondary rounded-pill">${player.goalkeeping}</span></li>`
+                                      ? `<li class="list-group-item d-flex justify-content-between align-items-center">Goalkeeping<span class="badge bg-secondary rounded-pill">${(player.goalkeeping).toFixed(1)}</span></li>`
                                       : ""
                                   }
                               </ul>
@@ -1341,13 +1298,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // Count players in the lineup by their specific positionType
       lineup.forEach((slot) => {
         if (slot.player) { // Check if slot has a player
-          const generalPositionType = getGeneralPositionTypeFromSlotId(slot.slotId);
-          if (currentCounts.hasOwnProperty(generalPositionType)) {
-            currentCounts[generalPositionType]++;
+          if (currentCounts.hasOwnProperty(slot.positionType)) {
+            currentCounts[slot.positionType]++;
           }
         }
       });
       console.log("Current Counts by Position:", currentCounts);
+      console.log("Formation Config for comparison:", formationConfig);
 
       // Check if current counts match required counts for each position
       for (const posType in formationConfig) {
@@ -1545,7 +1502,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 playerNameEl.textContent = slot.player.name;
                 
                 const calculatedRating = calculatePlayerRating(slot.player, slot.positionType);
-                playerOvr.textContent = calculatedRating;
+                playerOvr.textContent = (calculatedRating).toFixed(1);
                 playerOvr.style.opacity = '1';
                 playerNameEl.style.opacity = '1';
             } else {
@@ -1666,6 +1623,76 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSelectedPlayerCount();
         renderPlayers(allPlayersData, availablePlayersDiv, true); // Render available players for user
         renderLineup(); // Render initial empty lineup based on formation
+    }
+
+    function randomizeCustomFormationPlayers() {
+        if (!currentFormation) {
+            alert("Please select a formation first.");
+            return;
+        }
+
+        const customFormation = customFormations.find(f => f.name === currentFormation);
+        if (!customFormation) {
+            alert("No custom formation selected or found.");
+            return;
+        }
+
+        // Clear current lineup and selected players
+        lineup = customFormation.lineup.map(slot => ({ ...slot, player: null }));
+        selectedPlayers = [];
+
+        let availablePlayersPool = [...allPlayersData]; // Copy all players to draw from
+
+        // Shuffle the available players pool
+        availablePlayersPool.sort(() => 0.5 - Math.random());
+
+        // Assign players to slots
+        for (let i = 0; i < MAX_PLAYERS; i++) {
+            if (i >= lineup.length) break; // Ensure we don't go out of bounds for custom formations with fewer than 11 slots
+
+            const slot = lineup[i];
+            const slotPositionType = slot.positionType;
+            const slotGeneralGroup = getPositionGroup(slotPositionType);
+
+            let assignedPlayer = null;
+
+            // Prioritize players who prefer this exact position
+            let candidates = availablePlayersPool.filter(p => p.preferredPosition === slotPositionType);
+            if (candidates.length > 0) {
+                assignedPlayer = candidates[0];
+            }
+
+            // If no exact preferred match, try secondary positions
+            if (!assignedPlayer) {
+                candidates = availablePlayersPool.filter(p => p.secondaryPositions.includes(slotPositionType));
+                if (candidates.length > 0) {
+                    assignedPlayer = candidates[0];
+                }
+            }
+
+            // If still no match, try players whose preferred position is in the same general group
+            if (!assignedPlayer) {
+                candidates = availablePlayersPool.filter(p => getPositionGroup(p.preferredPosition) === slotGeneralGroup);
+                if (candidates.length > 0) {
+                    assignedPlayer = candidates[0];
+                }
+            }
+
+            // Fallback: assign any available player if no suitable one is found
+            if (!assignedPlayer && availablePlayersPool.length > 0) {
+                assignedPlayer = availablePlayersPool[0];
+            }
+
+            if (assignedPlayer) {
+                slot.player = assignedPlayer;
+                selectedPlayers.push(assignedPlayer);
+                availablePlayersPool = availablePlayersPool.filter(p => p.name !== assignedPlayer.name);
+            }
+        }
+
+        updateSelectedPlayerCount();
+        renderLineup();
+        customFormationModal.hide(); // Close the modal after randomizing
     }
 
     // Simulates the match (client-side logic)
@@ -1842,8 +1869,38 @@ document.addEventListener("DOMContentLoaded", () => {
                     defendingPlayer.matchRating += 0.5;
                     if (!isSimulationSkipped) await delay(800);
                 }
-            } else { // Shot off target
+            }
+            else { // Shot off target
                 addTimelineEvent({ minute, team: 'ai', type: 'shot', text: `Close! ${attackingPlayer.name}'s effort is just off target.`, icon: '🥅' });
+                if (!isSimulationSkipped) await delay(800);
+            }
+        }
+
+        // Add other random events
+        const randomEvent = Math.random();
+        if (randomEvent < 0.2) { // Foul
+            const foulPlayer = getRandomPlayer(userTeam);
+            const cardType = Math.random() < 0.3 ? 'red' : 'yellow';
+            addTimelineEvent({ minute, team: 'neutral', type: 'card', text: `${foulPlayer.name} receives a ${cardType} card!`, icon: cardType === 'yellow' ? '🟨' : '🟥' });
+            if(cardType === 'yellow') foulPlayer.matchRating -= 0.3;
+            else foulPlayer.matchRating -= 0.8;
+            if (!isSimulationSkipped) await delay(800);
+            if (Math.random() < 0.5) userFouls++; else aiFouls++;
+        } else if (randomEvent < 0.3) { // Corner
+            const cornerTaker = getRandomPlayer(userTeam, 'MID');
+            addTimelineEvent({ minute, team: 'neutral', type: 'corner', text: `${cornerTaker.name} takes a corner.`, icon: '🚩' });
+            if (!isSimulationSkipped) await delay(800);
+            if (Math.random() < 0.5) userCorners++; else aiCorners++;
+        } else if (randomEvent < 0.4) { // Offside
+            const offsidePlayer = getRandomPlayer(userTeam, 'FWD');
+            addTimelineEvent({ minute, team: 'neutral', type: 'offside', text: `${offsidePlayer.name} is caught offside.`, icon: '📏' });
+            if (!isSimulationSkipped) await delay(800);
+            if (Math.random() < 0.5) userOffsides++; else aiOffsides++;
+        } else if (randomEvent < 0.45) { // Substitution
+            const subInPlayer = getRandomPlayer(userTeam);
+            const subOutPlayer = getRandomPlayer(userTeam);
+            if (subInPlayer.name !== subOutPlayer.name) {
+                addTimelineEvent({ minute, team: 'neutral', type: 'sub', text: `Substitution: ${subInPlayer.name} comes on for ${subOutPlayer.name}.`, icon: '🔄' });
                 if (!isSimulationSkipped) await delay(800);
             }
         }
@@ -2084,10 +2141,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 <img src="${player.imageUrl}" alt="${player.name}" class="player-img">
                 <div class="player-name">${player.name}</div>
                 <div class="player-position">${player.position}</div>
-                <div class="match-rating">${player.matchRating.toFixed(1)}</div>
+                <div class="match-rating">${(player.matchRating).toFixed(1)}</div>
             `;
             ratingsContainer.appendChild(ratingCard);
         });
+        ratingsContainer.innerHTML += '<hr>';
         ratingsContainer.innerHTML += '<h3 class="mt-4">Opponent Team</h3>';
         aiPlayers.forEach(player => {
             const ratingCard = document.createElement('div');
@@ -2096,7 +2154,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <img src="${player.imageUrl}" alt="${player.name}" class="player-img">
                 <div class="player-name">${player.name}</div>
                 <div class="player-position">${player.preferredPosition}</div>
-                <div class="match-rating">${player.matchRating.toFixed(1)}</div>
+                <div class="match-rating">${(player.matchRating).toFixed(1)}</div>
             `;
             ratingsContainer.appendChild(ratingCard);
         });
@@ -2183,9 +2241,117 @@ document.addEventListener("DOMContentLoaded", () => {
       renderLineup(); // Clear visual lineup on the field
     }
 
+    function randomizeTeam() {
+        if (!currentFormation) {
+            alert("Please select a formation first.");
+            return;
+        }
+
+        clearTeam();
+
+        let formationSlots;
+        if (formationLineups[currentFormation]) {
+            formationSlots = formationLineups[currentFormation];
+        } else {
+            const customFormation = customFormations.find(f => f.name === currentFormation);
+            if (customFormation) {
+                formationSlots = customFormation.lineup.map(slot => slot.slotId);
+            } else {
+                alert("Could not find the selected formation.");
+                return;
+            }
+        }
+
+        let availablePlayers = [...allPlayersData];
+        let tempLineup = lineup.map(slot => ({ ...slot, player: null })); // Create a temporary lineup to fill
+
+        // Helper to find and assign a player
+        const assignPlayer = (slotId, player) => {
+            const targetSlot = tempLineup.find(s => s.slotId === slotId);
+            if (targetSlot) {
+                targetSlot.player = player;
+                availablePlayers = availablePlayers.filter(p => p.name !== player.name);
+                return true;
+            }
+            return false;
+        };
+
+        // Step 1: Assign Goalkeeper
+        const gkSlot = formationSlots.find(slotId => normalizePosition(slotId) === 'GK');
+        if (gkSlot) {
+            const gkPlayer = availablePlayers.find(p => p.preferredPosition === 'GK');
+            if (gkPlayer) {
+                assignPlayer(gkSlot, gkPlayer);
+            } else {
+                // Fallback if no preferred GK, assign any available player to GK slot
+                const anyPlayer = availablePlayers[0];
+                if (anyPlayer) assignPlayer(gkSlot, anyPlayer);
+            }
+        }
+
+        // Step 2: Assign players to specific positions based on formation requirements
+        const formationConfig = formationRequirements[currentFormation];
+        for (const posType in formationConfig) {
+            if (posType === 'GK') continue; // Already handled
+
+            const requiredCount = formationConfig[posType];
+            let assignedCount = 0;
+
+            const slotsForPosType = formationSlots.filter(slotId => normalizePosition(slotId) === posType && !tempLineup.find(s => s.slotId === slotId).player);
+
+            for (let i = 0; i < requiredCount && assignedCount < slotsForPosType.length; i++) {
+                const currentSlotId = slotsForPosType[assignedCount];
+                let playerForSlot = null;
+
+                // Try preferred position
+                let candidates = availablePlayers.filter(p => p.preferredPosition === posType);
+                if (candidates.length > 0) {
+                    playerForSlot = candidates[0];
+                }
+
+                // Try secondary position
+                if (!playerForSlot) {
+                    candidates = availablePlayers.filter(p => p.secondaryPositions.includes(posType));
+                    if (candidates.length > 0) {
+                        playerForSlot = candidates[0];
+                    }
+                }
+
+                // Try same general group
+                if (!playerForSlot) {
+                    const generalSlotGroup = getPositionGroup(posType);
+                    candidates = availablePlayers.filter(p => getPositionGroup(p.preferredPosition) === generalSlotGroup);
+                    if (candidates.length > 0) {
+                        playerForSlot = candidates[0];
+                    }
+                }
+
+                if (playerForSlot) {
+                    if (assignPlayer(currentSlotId, playerForSlot)) {
+                        assignedCount++;
+                    }
+                }
+            }
+        }
+
+        // Step 3: Fill any remaining empty slots with any available players
+        tempLineup.forEach(slot => {
+            if (!slot.player && availablePlayers.length > 0) {
+                const playerToAssign = availablePlayers[0];
+                assignPlayer(slot.slotId, playerToAssign);
+            }
+        });
+
+        lineup = tempLineup; // Update the global lineup
+        selectedPlayers = lineup.filter(slot => slot.player).map(slot => slot.player);
+        updateSelectedPlayerCount();
+        renderLineup();
+    }
+
     // Resets the game to initial state
     function resetGame() {
       localStorage.removeItem("tournament");
+      localStorage.removeItem("customFormations");
       localStorage.removeItem("customFormations");
       selectedPlayers = [];
       lineup = new Array(MAX_PLAYERS).fill(null);
@@ -2325,7 +2491,7 @@ document.addEventListener("DOMContentLoaded", () => {
             name: name,
             isCustom: true,
             lineup: [],
-            requirements: { GK: 0, DEF: 0, MID: 0, FWD: 0 }
+            requirements: {} // Initialize as empty object
         };
 
         const placeholders = playerPlaceholdersContainer.querySelectorAll('.player-placeholder');
@@ -2341,15 +2507,16 @@ document.addEventListener("DOMContentLoaded", () => {
             const x = ((placeholderRect.left - rect.left + placeholderRect.width / 2) / rect.width) * 100;
             const y = ((placeholderRect.top - rect.top + placeholderRect.height / 2) / rect.height) * 100;
 
+            const slotPositionType = normalizePosition(position); // Normalize position for requirements
+
             formation.lineup.push({
                 slotId: `custom${index}`,
-                positionType: position,
+                positionType: position, // Keep original for display
                 coords: { x, y }
             });
-            const group = getPositionGroup(position);
-            if(formation.requirements[group] !== undefined) {
-                formation.requirements[group]++;
-            }
+
+            // Increment count for the specific normalized position
+            formation.requirements[slotPositionType] = (formation.requirements[slotPositionType] || 0) + 1;
         });
 
         if (!allPositionsSet) {
@@ -2475,6 +2642,11 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTeamBtn.addEventListener("click", clearTeam);
     }
 
+    const randomizeTeamBtn = document.getElementById("randomize-team-btn");
+    if (randomizeTeamBtn) {
+        randomizeTeamBtn.addEventListener("click", randomizeTeam);
+    }
+
     if (confirmOpponentTeamBtn) {
       confirmOpponentTeamBtn.addEventListener("click", () => {
         if (isValidOpponentTeam()) {
@@ -2502,6 +2674,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const mainMenuBtn = document.getElementById('main-menu-btn');
     if(mainMenuBtn) mainMenuBtn.addEventListener('click', resetGame);
+
+    const mainMenuBtn2 = document.getElementById('main-menu-btn-2');
+    if(mainMenuBtn2) mainMenuBtn2.addEventListener('click', resetGame);
 
     if (resetTournamentBtn) {
       resetTournamentBtn.addEventListener("click", resetGame);
@@ -2538,7 +2713,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tournament.maxRounds = parseInt(tournamentTypeSelect.value);
       tournament.opponentSelectionMode = document.querySelector(
         'input[name="opponentType"]:checked'
-      ).value;
+      ,).value;
 
       saveTournament();
       updateTournamentUI();
@@ -2567,10 +2742,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const targetSection = document.getElementById(targetSectionId);
 
         // Hide current section
-        if(currentSection) currentSection.classList.add("hidden");
+        if(currentSection) {
+          currentSection.classList.add("hidden");
+        }
 
         // Show target section
-        if(targetSection) targetSection.classList.remove("hidden");
+        if(targetSection) {
+          targetSection.classList.remove("hidden");
+        }
       });
     });
 
@@ -2581,6 +2760,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if(saveCustomFormationBtn) saveCustomFormationBtn.addEventListener('click', saveCustomFormation);
+
+    if(randomizeCustomFormationBtn) randomizeCustomFormationBtn.addEventListener('click', randomizeCustomFormationPlayers);
 
 
     // Initial setup
