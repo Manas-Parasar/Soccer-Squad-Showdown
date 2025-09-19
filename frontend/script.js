@@ -797,7 +797,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formationRequirements = {
       "4-3-3": { GK: 1, LB: 1, CB: 2, RB: 1, CM: 2, CAM: 1, LW: 1, ST: 1, RW: 1 },
       "4-4-2": { GK: 1, LB: 1, CB: 2, RB: 1, LM: 1, CM: 2, RM: 1, ST: 2 },
-      "3-5-2": { GK: 1, CB: 3, LWB: 1, RWB: 1, CM: 2, CAM: 1, ST: 2 },
+      "3-5-2": { GK: 1, CB: 3, LWB: 1, RWB: 1, CDM: 2, CAM: 1, ST: 2 },
       "4-2-3-1": { GK: 1, LB: 1, CB: 2, RB: 1, CDM: 2, CAM: 1, LW: 1, RW: 1, ST: 1 },
     };
 
@@ -852,52 +852,20 @@ document.addEventListener("DOMContentLoaded", () => {
       return position; // Return as is if no normalization needed
     }
 
-    // Function to get the general position type from a specific slot ID
-    function getGeneralPositionTypeFromSlotId(slotId) {
-        const customFormation = customFormations.find(f => f.name === currentFormation);
-        if (customFormation) {
-            const slot = customFormation.lineup.find(s => s.slotId === slotId);
-            if (slot) {
-                return getPositionGroup(slot.positionType);
-            }
-        }
+    
 
-      switch (slotId) {
-        case "LCB":
-        case "RCB":
-        case "CCB":
-          return "CB";
-        case "ST1":
-        case "ST2":
-          return "ST";
-        case "LCM":
-        case "RCM":
-          return "CM";
-        case "CDM1":
-        case "CDM2":
-          return "CDM";
-        case "LWB":
-        case "RWB":
-          return slotId; // LWB and RWB are already general enough
-        case "LM":
-        case "RM":
-          return slotId; // LM and RM are already general enough
-        case "CAM":
-          return "CAM";
-        case "GK":
-          return "GK";
-        case "LB":
-          return "LB";
-        case "RB":
-          return "RB";
-        case "LW":
-          return "LW";
-        case "RW":
-          return "RW";
-        default:
-          return slotId; // Fallback for any other direct matches
+    // Helper function to get general position type from specific position
+    // This function is used for player suitability and chemistry, not for formation validation counts.
+    function getGeneralPositionType(specificPosition) {
+      for (const group in positionGroups) {
+        if (positionGroups[group].includes(specificPosition)) {
+          return group;
+        }
       }
+      return "UNKNOWN";
     }
+
+    
 
     // Calculates a player's rating based on their assigned position
     function calculatePlayerRating(player, assignedPosition) {
@@ -972,13 +940,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const savedTournament = localStorage.getItem("tournament");
       if (savedTournament) {
         tournament = JSON.parse(savedTournament);
-        // Reconstruct lineup to ensure it has the slot structure
+        // Ensure lineup is an array of objects with a 'player' property
+        if (!Array.isArray(tournament.lineup)) {
+            tournament.lineup = []; // Reset if not an array
+        }
+        // Map to ensure all elements are proper slot objects, even if old data was malformed
+        tournament.lineup = tournament.lineup.map(slot => {
+            if (typeof slot === 'object' && slot !== null && 'player' in slot) {
+                return slot;
+            }
+            return { slotId: null, positionType: null, player: null }; // Default empty slot
+        });
+
+        // Reconstruct lineup to ensure it has the slot structure (old format handling)
         if (
-          tournament.lineup &&
           tournament.lineup.length > 0 &&
-          !tournament.lineup[0].slotId
+          !tournament.lineup[0].slotId // Check for old format
         ) {
-          // Old format detected, reconstruct
           const newLinearLineup = [];
           const formationConfig = formationRequirements[tournament.formation];
           for (const posType in formationConfig) {
@@ -992,7 +970,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 player: existingPlayer || null,
               });
               if (existingPlayer) {
-                // Mark as processed to avoid duplicates if multiple slots for same position type
                 tournament.lineup = tournament.lineup.filter(
                   (p) => p !== existingPlayer
                 );
@@ -1001,13 +978,12 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           lineup = newLinearLineup;
         } else {
-          // New format or empty, use directly
-          lineup = tournament.lineup;
+          lineup = tournament.lineup; // Use directly if new format or empty
         }
 
         selectedPlayers = lineup
-          .filter((slot) => slot.player !== null)
-          .map((slot) => slot.player); // Re-populate selectedPlayers from new lineup structure
+          .filter((slot) => slot && slot.player !== null)
+          .map((slot) => slot.player);
         currentFormation = tournament.formation;
         updateTournamentUI();
       } else {
@@ -1015,14 +991,20 @@ document.addEventListener("DOMContentLoaded", () => {
           round: 0,
           maxRounds: parseInt(tournamentTypeSelect.value),
           userTeam: [],
-          lineup: [],
           opponents: [],
           results: [],
           userWins: 0,
           aiWins: 0,
           draws: 0,
           opponentSelectionMode: "aiGenerated",
+          // Initialize lineup with proper slot objects from the start
+          lineup: new Array(MAX_PLAYERS).fill(null).map((_, i) => ({
+              slotId: `slot${i}`, // Generic slot ID for initial empty state
+              positionType: null,
+              player: null,
+          })),
         };
+        lineup = tournament.lineup; // Assign to global lineup
       }
     }
 
@@ -1293,8 +1275,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Updates the count of selected players and button state
     function updateSelectedPlayerCount() {
-      if(selectedPlayerCountSpan) selectedPlayerCountSpan.textContent = lineup.filter(slot => slot.player !== null).length;
-      if(confirmTeamBtn) confirmTeamBtn.disabled = !isValidTeam(); // Check if team is valid based on formation
+      const currentSelectedCount = lineup.filter(slot => slot.player !== null).length;
+      if(selectedPlayerCountSpan) selectedPlayerCountSpan.textContent = currentSelectedCount;
+      const isValid = isValidTeam();
+      if(confirmTeamBtn) confirmTeamBtn.disabled = !isValid;
+      console.log("updateSelectedPlayerCount: Current selected count:", currentSelectedCount, "isValidTeam:", isValid, "confirmTeamBtn.disabled:", !isValid);
 
       // Update 'selected' class for players in available list
       allPlayersData.forEach((player) => {
@@ -1315,50 +1300,64 @@ document.addEventListener("DOMContentLoaded", () => {
     // Checks if the selected team is valid based on current formation requirements
     function isValidTeam() {
       console.log("--- Checking isValidTeam ---");
-      // Count actual players in the lineup (slots that are not null)
       const actualPlayersInLineup = lineup.filter(
         (slot) => slot && slot.player !== null
       ).length;
-      console.log("Actual players in lineup:", actualPlayersInLineup);
-      console.log("MAX_PLAYERS:", MAX_PLAYERS);
+      console.log("isValidTeam: Actual players in lineup:", actualPlayersInLineup);
+      console.log("isValidTeam: MAX_PLAYERS:", MAX_PLAYERS);
 
       if (actualPlayersInLineup !== MAX_PLAYERS) {
-        console.log("Reason for invalid: Player count mismatch.");
+        console.log("isValidTeam: Reason for invalid: Player count mismatch.");
         return false;
       }
 
-      const formationConfig = formationRequirements[currentFormation];
-      console.log("Current Formation:", currentFormation);
-      console.log("Formation Config:", formationConfig);
+      const isCustomFormation = customFormations.some(f => f.name === currentFormation);
+      let requiredConfig;
+      let countByFunction;
+
+      if (isCustomFormation) {
+        requiredConfig = formationRequirements[currentFormation]; // This will be like {GK: 1, DEF: 1, MID: 8, FWD: 1}
+        countByFunction = getPositionGroup; // Use getPositionGroup for custom formations
+      } else {
+        requiredConfig = formationRequirements[currentFormation]; // This will be like {GK: 1, LB: 1, CB: 2, ...}
+        countByFunction = normalizePosition; // Use normalizePosition for predefined formations
+      }
+
+      console.log("isValidTeam: Current Formation:", currentFormation);
+      console.log("isValidTeam: Required Config:", requiredConfig);
 
       const currentCounts = {};
 
-      // Initialize counts for all positions in the current formation
-      for (const posType in formationConfig) {
-        currentCounts[posType] = 0;
+      // Initialize counts based on the keys in the requiredConfig
+      for (const key in requiredConfig) {
+        currentCounts[key] = 0;
       }
 
-      // Count players in the lineup by their specific positionType
+      // Count players in the lineup based on the appropriate function
       lineup.forEach((slot) => {
         if (slot.player) { // Check if slot has a player
-          const generalPositionType = getGeneralPositionTypeFromSlotId(slot.slotId);
-          if (currentCounts.hasOwnProperty(generalPositionType)) {
-            currentCounts[generalPositionType]++;
+          const countedPosition = countByFunction(slot.positionType);
+          console.log(`isValidTeam: Slot ${slot.slotId} (${slot.positionType}) assigned to player ${slot.player.name}. Counted position: ${countedPosition}`);
+          
+          if (currentCounts.hasOwnProperty(countedPosition)) {
+            currentCounts[countedPosition]++;
+          } else {
+            console.warn(`isValidTeam: Unexpected position type: ${countedPosition} for slot ${slot.slotId}. This position might not be defined in the required config for this formation.`);
           }
         }
       });
-      console.log("Current Counts by Position:", currentCounts);
+      console.log("isValidTeam: Current Counts by Position:", currentCounts);
 
       // Check if current counts match required counts for each position
-      for (const posType in formationConfig) {
-        if (currentCounts[posType] !== formationConfig[posType]) {
+      for (const key in requiredConfig) {
+        if (currentCounts[key] !== requiredConfig[key]) {
           console.log(
-            `Reason for invalid: Position ${posType} count mismatch. Expected: ${formationConfig[posType]}, Actual: ${currentCounts[posType]}`
+            `isValidTeam: Reason for invalid: Position ${key} count mismatch. Expected: ${requiredConfig[key]}, Actual: ${currentCounts[key]}`
           );
           return false;
         }
       }
-      console.log("Team is valid.");
+      console.log("isValidTeam: Team is valid.");
       return true;
     }
 
@@ -1393,6 +1392,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handlePlayerSelection(playerData) {
+      console.log("handlePlayerSelection: Player data:", playerData);
       if (!currentFormation) {
         alert("Please select a formation first.");
         return;
@@ -1402,12 +1402,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const existingPlayerSlot = lineup.find(
         (slot) => slot.player && slot.player.name === playerData.name
       );
+      console.log("handlePlayerSelection: Existing player slot:", existingPlayerSlot);
 
       if (existingPlayerSlot) {
         // Player is already in lineup, so remove them
         existingPlayerSlot.player = null;
         // Rebuild selectedPlayers from lineup after removal
         selectedPlayers = lineup.filter(slot => slot.player !== null).map(slot => slot.player);
+        console.log("handlePlayerSelection: Player removed. New lineup:", lineup, "New selectedPlayers:", selectedPlayers);
         updateSelectedPlayerCount();
         renderLineup();
       } else {
@@ -1418,6 +1420,7 @@ document.addEventListener("DOMContentLoaded", () => {
           );
           return;
         }
+        console.log("handlePlayerSelection: Showing position selection modal for:", playerData.name);
         showPositionSelectionModal(playerData);
       }
     }
@@ -1661,6 +1664,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // After selecting formation, show player selection section
         if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
         if(playerSelectionSection) playerSelectionSection.classList.remove("hidden");
+        const randomizeTeamBtn = document.getElementById("randomize-team-btn");
+        if (randomizeTeamBtn) {
+            randomizeTeamBtn.disabled = false; // Enable randomize button once a formation is selected
+        }
 
         // Clear selected players and re-render available players for new formation
         updateSelectedPlayerCount();
@@ -2183,6 +2190,89 @@ document.addEventListener("DOMContentLoaded", () => {
       renderLineup(); // Clear visual lineup on the field
     }
 
+    // Function to randomize the team
+    function randomizeTeam() {
+        console.log("randomizeTeam: Starting randomization.");
+        if (!currentFormation) {
+            alert("Please select a formation first.");
+            console.log("randomizeTeam: No formation selected. Aborting.");
+            return;
+        }
+
+        clearTeam(); // Clear any existing players
+        console.log("randomizeTeam: Team cleared.");
+
+        const availablePlayersCopy = [...allPlayersData]; // Work with a copy
+        const shuffledPlayers = availablePlayersCopy.sort(() => 0.5 - Math.random());
+        console.log("randomizeTeam: Shuffled players:", shuffledPlayers);
+
+        const formationConfig = formationRequirements[currentFormation];
+        const newSelectedPlayers = [];
+        const newLineup = lineup.map(slot => ({ ...slot, player: null })); // Create a fresh lineup based on current formation slots
+        console.log("randomizeTeam: Initial new lineup:", newLineup);
+
+        // Helper to find and assign a player
+        const assignPlayer = (slot, playerPool, positionCheckFn) => {
+            const playerIndex = playerPool.findIndex(player => positionCheckFn(player, slot.positionType));
+            if (playerIndex !== -1) {
+                const player = playerPool.splice(playerIndex, 1)[0];
+                slot.player = player;
+                newSelectedPlayers.push(player);
+                console.log(`randomizeTeam: Assigned ${player.name} to ${slot.slotId}`);
+                return true;
+            }
+            return false;
+        };
+
+        // 1. Assign Goalkeeper
+        const gkSlot = newLineup.find(slot => getPositionGroup(slot.positionType) === 'GK');
+        if (gkSlot) {
+            assignPlayer(gkSlot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'GK');
+        }
+
+        // 2. Assign Defenders
+        const defSlots = newLineup.filter(slot => getPositionGroup(slot.positionType) === 'DEF' && !slot.player);
+        defSlots.forEach(slot => {
+            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'DEF' && (player.preferredPosition === posType || player.secondaryPositions.includes(posType)));
+        });
+        // Fill remaining defender slots with any available defender
+        defSlots.filter(slot => !slot.player).forEach(slot => {
+            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'DEF');
+        });
+
+        // 3. Assign Midfielders
+        const midSlots = newLineup.filter(slot => getPositionGroup(slot.positionType) === 'MID' && !slot.player);
+        midSlots.forEach(slot => {
+            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'MID' && (player.preferredPosition === posType || player.secondaryPositions.includes(posType)));
+        });
+        // Fill remaining midfielder slots with any available midfielder
+        midSlots.filter(slot => !slot.player).forEach(slot => {
+            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'MID');
+        });
+
+        // 4. Assign Forwards
+        const fwdSlots = newLineup.filter(slot => getPositionGroup(slot.positionType) === 'FWD' && !slot.player);
+        fwdSlots.forEach(slot => {
+            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'FWD' && (player.preferredPosition === posType || player.secondaryPositions.includes(posType)));
+        });
+        // Fill remaining forward slots with any available forward
+        fwdSlots.filter(slot => !slot.player).forEach(slot => {
+            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'FWD');
+        });
+
+        // 5. Fill any remaining empty slots with any available player (less ideal, but ensures 11 players)
+        newLineup.filter(slot => !slot.player).forEach(slot => {
+            assignPlayer(slot, shuffledPlayers, (player, posType) => true); // Any player will do
+        });
+
+        lineup = newLineup;
+        selectedPlayers = newSelectedPlayers;
+        console.log("randomizeTeam: Final lineup:", lineup, "Final selectedPlayers:", selectedPlayers);
+
+        updateSelectedPlayerCount();
+        renderLineup();
+    }
+
     // Resets the game to initial state
     function resetGame() {
       localStorage.removeItem("tournament");
@@ -2216,7 +2306,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if(tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
 
       if(lineupDisplay) lineupDisplay.innerHTML = ""; // Clear lineup display
-      if(aiGeneratedOpponentRadio) aiGeneratedOpponentRadio.checked = true; // Reset opponent type to AI Generated
+      
       renderCustomFormationButtons();
     }
 
@@ -2244,7 +2334,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const newAiTeam = generateAITeam(selectedPlayers).players;
-      tournament.opponents.push(newAiTeam);
+      tournament.opponents.push(newAiTeam.players);
       saveTournament();
       simulateMatch();
     }
@@ -2473,6 +2563,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const clearTeamBtn = document.getElementById("clear-team-btn");
     if (clearTeamBtn) {
       clearTeamBtn.addEventListener("click", clearTeam);
+    }
+
+    const randomizeTeamBtn = document.getElementById("randomize-team-btn");
+    if (randomizeTeamBtn) {
+        randomizeTeamBtn.addEventListener("click", randomizeTeam);
     }
 
     if (confirmOpponentTeamBtn) {
