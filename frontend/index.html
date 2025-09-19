@@ -115,6 +115,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="randomize-custom-formation-btn" class="btn btn-info">Randomize Players</button>
                         <button type="button" id="save-custom-formation-btn" class="btn btn-primary">Save Formation</button>
                     </div>
                 </div>
@@ -144,6 +145,7 @@
                 <button id="confirm-team-btn" class="btn btn-success btn-lg" disabled>Confirm Team</button>
                 <button id="randomize-team-btn" class="btn btn-info btn-lg">Randomize Team</button>
                 <button id="clear-team-btn" class="btn btn-danger btn-lg">Clear Team</button>
+                <button id="randomize-team-btn" class="btn btn-warning btn-lg">Randomize</button>
             </div>
             <div class="d-flex justify-content-center mt-3">
                 <button class="btn btn-secondary go-back-btn" data-target-section="formation-selection-section">Go Back to Formation Selection</button>
@@ -335,6 +337,7 @@
                     <img src="images/default.jpg" alt="User Team Logo" class="team-logo">
                     <span class="team-name">Your Team</span>
                     <div class="team-chemistry" data-bs-toggle="tooltip" title="Chemistry Breakdown">
+                        <div class="chemistry-bar-label">Team Chemistry</div>
                         <div class="chemistry-bar">
                             <div class="chemistry-fill"></div>
                         </div>
@@ -343,12 +346,14 @@
                 </div>
                 <div class="score-container">
                     <span class="final-score">3 - 1</span>
+                    <br>
                     <span class="match-winner">You Won!</span>
                 </div>
                 <div class="team-info ai-team">
                     <img src="images/default.jpg" alt="AI Team Logo" class="team-logo">
                     <span class="team-name">Opponent</span>
                     <div class="team-chemistry" data-bs-toggle="tooltip" title="Chemistry Breakdown">
+                        <div class="chemistry-bar-label">Team Chemistry</div>
                         <div class="chemistry-bar">
                             <div class="chemistry-fill"></div>
                         </div>
@@ -415,7 +420,7 @@
                 <button id="reset-tournament-btn" class="btn btn-primary btn-lg">Play New Tournament</button>
             </div>
             <div class="d-flex justify-content-center mt-3">
-                <button class="btn btn-secondary go-back-btn" data-target-section="tournament-section">Go Back to Tournament Setup</button>
+                <button id="main-menu-btn-2" class="btn btn-secondary">Main Menu</button>
             </div>
         </div>
 
