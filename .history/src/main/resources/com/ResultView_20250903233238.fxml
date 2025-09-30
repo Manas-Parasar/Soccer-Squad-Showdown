@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<VBox xmlns:fx="http://javafx.com/fxml" spacing="20" alignment="CENTER" fx:controller="com.sss.controller.ResultController">
-    <Label text="Match Finished!"/>
-    <Button fx:id="btnBackToMenu" text="Back to Main Menu" onAction="#handleBackToMenu"/>
-</VBox>
