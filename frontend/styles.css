@@ -988,6 +988,13 @@ span#final-tournament-score {
   border-radius: 15px 15px 0 0;
 }
 
+/* Ensure the post-match card clips inner content to its rounded corners so inner
+   team sections and highlighted cards don't visually overlap the outer border. */
+#post-match-section {
+  overflow: hidden;
+  position: relative; /* ensure positioned context if needed */
+}
+
 .team-info {
   display: flex;
   flex-direction: column;
@@ -1115,16 +1122,59 @@ span#final-tournament-score {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--text-accent);
+  background: var(--text-accent); /* blue circle */
   border: 4px solid var(--card-bg);
 }
 
 .timeline-event .event-icon {
   position: absolute;
-  left: 14px;
-  top: 9px;
-  font-size: 16px;
+  /* Align the icon exactly over the circular marker (matches ::before coordinates) */
+  left: 10px;
+  top: 5px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   color: var(--card-bg);
+  z-index: 2; /* sit above the ::before circle */
+}
+
+/* Gold glow and pulse for goals/assists */
+.timeline-event.goal::before,
+.timeline-event.assist::before {
+  background: linear-gradient(45deg, #ffd700, #ffda55);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.25);
+}
+
+.timeline-event.goal .event-icon,
+.timeline-event.assist .event-icon {
+  color: #362400; /* dark to contrast gold */
+  animation: goalPulse 1.4s infinite ease-in-out;
+}
+
+@keyframes goalPulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0));
+  }
+  50% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0));
+  }
+}
+
+/* Start and end special markers */
+.timeline-event.start::before {
+  background: linear-gradient(45deg, #00d4ff, #00aaff);
+}
+.timeline-event.end::before {
+  background: linear-gradient(45deg, #ffffff, #d3d3d3);
 }
 
 .timeline-event .event-details {
@@ -1238,6 +1288,134 @@ span#final-tournament-score {
   font-size: 1.5rem;
   font-weight: 900;
   color: var(--text-accent);
+}
+
+/* Man of the Match special card */
+.motm-card {
+  grid-column: 1 / -1; /* span full width by default */
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.08),
+    rgba(255, 215, 0, 0.02)
+  ); /* subtle gold highlight */
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  box-shadow: 0 12px 35px rgba(255, 215, 0, 0.06), 0 8px 20px var(--shadow-dark);
+}
+
+.motm-card .motm-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffd700;
+}
+
+.motm-details {
+  flex: 1;
+}
+
+.motm-details .motm-name {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #ffd700;
+}
+
+.motm-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.motm-stat {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+/* Team section styling for separated ratings */
+.team-ratings {
+  background: linear-gradient(
+    180deg,
+    rgba(13, 26, 38, 0.6),
+    rgba(10, 20, 30, 0.6)
+  );
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px; /* separate teams from nearby elements */
+  box-sizing: border-box;
+  overflow: hidden; /* prevent inner content/pseudo elements from leaking */
+}
+
+.team-rating-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding-bottom: 10px;
+}
+
+.team-title {
+  color: var(--text-accent);
+  font-weight: 900;
+}
+
+.team-rating-value .team-rating-num {
+  color: var(--results-text-color);
+  font-weight: 900;
+}
+
+/* Smaller grid inside each team to keep layout consistent */
+.team-player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.team-user {
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.04);
+}
+
+.team-opponent {
+  box-shadow: 0 8px 25px rgba(220, 53, 69, 0.04);
+}
+
+/* When team blocks are direct children of the main ratings grid, force them
+   to span the grid columns so they appear as full-width sections and do not
+   get placed inside the smaller card columns which can cause visual overlap. */
+.player-ratings-grid > .team-ratings {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* Ensure MOTM also spans fully when inside the root grid */
+.player-ratings-grid > .motm-card {
+  grid-column: 1 / -1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Details button in rating cards */
+.rating-details-btn {
+  margin-top: 10px;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .player-ratings-grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* desktop layout */
+  }
+  .motm-card {
+    grid-column: 1 / -1; /* span all columns */
+    max-height: 160px;
+  }
 }
 
 @keyframes fadeIn {

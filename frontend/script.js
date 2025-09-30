@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   try {
     window.updateOpponentSelectedPlayerCount = function () {
@@ -87,7 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const playerSourceSelection = document.getElementById(
       "player-source-selection"
     );
-    if(playerSourceSelection) playerSourceSelection.classList.add('fade-in-section');
+    if (playerSourceSelection)
+      playerSourceSelection.classList.add("fade-in-section");
     const predefinedPlayersBtn = document.getElementById(
       "predefined-players-btn"
     );
@@ -96,11 +96,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const playerSelectionSection = document.getElementById(
       "player-selection-section"
     );
-    if(playerSelectionSection) playerSelectionSection.classList.add('fade-in-section');
+    if (playerSelectionSection)
+      playerSelectionSection.classList.add("fade-in-section");
     const availablePlayersDiv = document.getElementById("available-players");
-    if(availablePlayersDiv) availablePlayersDiv.classList.add("player-grid-container");
+    if (availablePlayersDiv)
+      availablePlayersDiv.classList.add("player-grid-container");
     const selectedPlayersDiv = document.getElementById("selected-players");
-    if(selectedPlayersDiv) selectedPlayersDiv.classList.add("player-grid-container");
+    if (selectedPlayersDiv)
+      selectedPlayersDiv.classList.add("player-grid-container");
     const selectedPlayerCountSpan = document.getElementById(
       "selected-player-count"
     );
@@ -110,35 +113,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const formationSelectionSection = document.getElementById(
       "formation-selection-section"
     );
-    if(formationSelectionSection) formationSelectionSection.classList.add('fade-in-section');
+    if (formationSelectionSection)
+      formationSelectionSection.classList.add("fade-in-section");
     const formationOptionsDiv = document.getElementById("formation-options");
     const simulateMatchBtn = document.getElementById("simulate-match-btn");
 
-    const matchResultsSection = document.getElementById("match-results-section");
-    if(matchResultsSection) matchResultsSection.classList.add('fade-in-section');
+    const matchResultsSection = document.getElementById(
+      "match-results-section"
+    );
+    if (matchResultsSection)
+      matchResultsSection.classList.add("fade-in-section");
     const playByPlayContent = document.getElementById("play-by-play-content");
     const chemistryContent = document.getElementById("chemistry-content");
     const analysisContent = document.getElementById("analysis-content");
     const keepTeamBtn = document.getElementById("keep-team-btn");
     const changePlayersBtn = document.getElementById("change-players-btn");
 
-    const tournamentSection = document.getElementById(
-      "tournament-section"
-    );
-    if(tournamentSection) tournamentSection.classList.add('fade-in-section');
+    const tournamentSection = document.getElementById("tournament-section");
+    if (tournamentSection) tournamentSection.classList.add("fade-in-section");
     const tournamentTypeSelect = document.getElementById(
       "tournament-type-select"
     );
     const userTournamentScoreSpan = document.getElementById(
       "user-tournament-score"
     );
-    const aiTournamentScoreSpan = document.getElementById("ai-tournament-score");
+    const aiTournamentScoreSpan = document.getElementById(
+      "ai-tournament-score"
+    );
     const startTournamentBtn = document.getElementById("start-tournament-btn");
 
     const opponentSelectionSection = document.getElementById(
       "opponent-selection-section"
     );
-    if(opponentSelectionSection) opponentSelectionSection.classList.add('fade-in-section');
+    if (opponentSelectionSection)
+      opponentSelectionSection.classList.add("fade-in-section");
     const opponentAvailablePlayersDiv = document.getElementById(
       "opponent-available-players"
     );
@@ -161,15 +169,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // New Results Page Elements
     const gameResultsPage = document.getElementById("game-results-page");
-    if(gameResultsPage) gameResultsPage.classList.add('fade-in-section');
+    if (gameResultsPage) gameResultsPage.classList.add("fade-in-section");
     const finalScoreSpan = document.getElementById("final-score");
     const matchWinnerParagraph = document.getElementById("match-winner");
     const viewDetailedResultsBtn = document.getElementById(
       "view-detailed-results-btn"
     );
-    const reSimMatchBtn = document.getElementById(
-      "re-sim-match-btn"
-    );
+    const reSimMatchBtn = document.getElementById("re-sim-match-btn");
     const nextGameTournamentBtn = document.getElementById(
       "next-game-tournament-btn"
     );
@@ -179,39 +185,124 @@ document.addEventListener("DOMContentLoaded", () => {
     const tournamentCompleteSection = document.getElementById(
       "tournament-complete-section"
     );
-    if(tournamentCompleteSection) tournamentCompleteSection.classList.add('fade-in-section');
-    const tournamentWinnerSpan = document.getElementById(
-      "tournament-winner"
-    );
+    if (tournamentCompleteSection)
+      tournamentCompleteSection.classList.add("fade-in-section");
+    const tournamentWinnerSpan = document.getElementById("tournament-winner");
     const finalTournamentScoreSpan = document.getElementById(
       "final-tournament-score"
     );
     const resetTournamentBtn = document.getElementById("reset-tournament-btn");
-    
+
     // Live Simulation Elements
-    const liveSimulationSection = document.getElementById("live-simulation-section");
-    const liveCommentaryContainer = document.querySelector(".live-commentary-container");
+    const liveSimulationSection = document.getElementById(
+      "live-simulation-section"
+    );
+    const liveCommentaryContainer = document.querySelector(
+      ".live-commentary-container"
+    );
     const liveCommentaryFeed = document.getElementById("live-commentary-feed");
     const liveUserScore = document.getElementById("live-user-score");
     const liveAiScore = document.getElementById("live-ai-score");
     const skipSimulationBtn = document.getElementById("skip-simulation-btn");
 
     // Custom Formation Elements
-    const createCustomFormationBtn = document.getElementById("create-custom-formation-btn");
-    const customFormationBuilder = document.getElementById("custom-formation-builder");
+    const createCustomFormationBtn = document.getElementById(
+      "create-custom-formation-btn"
+    );
+    const customFormationBuilder = document.getElementById(
+      "custom-formation-builder"
+    );
     const customFormationModal = new bootstrap.Modal(customFormationBuilder);
     const customPitch = document.getElementById("custom-pitch");
-    const playerPlaceholdersContainer = document.getElementById("player-placeholders-container");
-    const saveCustomFormationBtn = document.getElementById("save-custom-formation-btn");
-    const customFormationNameInput = document.getElementById("custom-formation-name");
-    const customFormationOptionsDiv = document.getElementById("custom-formation-options");
-
+    const playerPlaceholdersContainer = document.getElementById(
+      "player-placeholders-container"
+    );
+    const saveCustomFormationBtn = document.getElementById(
+      "save-custom-formation-btn"
+    );
+    const customFormationNameInput = document.getElementById(
+      "custom-formation-name"
+    );
+    const customFormationOptionsDiv = document.getElementById(
+      "custom-formation-options"
+    );
 
     // --- State Variables ---
     const MAX_PLAYERS = 11;
+    // Playstyles and their effects
+    const playstyles = {
+      Balanced: {
+        chemistryModifier: 0,
+        strengthModifier: 0,
+        teamBehavior: { attacking: 1, possession: 1, pressing: 1 },
+      },
+      Attacking: {
+        chemistryModifier: -3,
+        strengthModifier: +3,
+        teamBehavior: { attacking: 1.3, possession: 0.9, pressing: 1 },
+      },
+      Defensive: {
+        chemistryModifier: -2,
+        strengthModifier: +1,
+        teamBehavior: { attacking: 0.7, possession: 0.95, pressing: 0.9 },
+      },
+      Possession: {
+        chemistryModifier: +2,
+        strengthModifier: +1,
+        teamBehavior: { attacking: 0.9, possession: 1.3, pressing: 0.95 },
+      },
+      "Counter-Attack": {
+        chemistryModifier: -1,
+        strengthModifier: +2,
+        teamBehavior: { attacking: 1.2, possession: 0.8, pressing: 1.1 },
+      },
+      "High-Press": {
+        chemistryModifier: -4,
+        strengthModifier: +2,
+        teamBehavior: { attacking: 1.05, possession: 0.9, pressing: 1.4 },
+      },
+    };
+    // Choose an AI playstyle based on team composition heuristics
+    function chooseAIPlaystyle(players) {
+      if (!Array.isArray(players) || players.length === 0) return "Balanced";
+      const counts = { GK: 0, DEF: 0, MID: 0, FWD: 0 };
+      let totalPace = 0;
+      let totalPassing = 0;
+      let totalDefending = 0;
+      let totalShooting = 0;
+      players.forEach((p) => {
+        const grp = getPositionGroup(
+          normalizePosition(p.preferredPosition || "")
+        );
+        if (counts[grp] !== undefined) counts[grp]++;
+        totalPace += p.pace || 0;
+        totalPassing += p.passing || 0;
+        totalDefending += p.defending || 0;
+        totalShooting += p.shooting || 0;
+      });
+      const avgPace = totalPace / players.length;
+      const avgPassing = totalPassing / players.length;
+      const avgDefending = totalDefending / players.length;
+      const avgShooting = totalShooting / players.length;
+
+      // Heuristics
+      // If many defenders -> Defensive
+      if (counts.DEF >= 5 && avgDefending > avgShooting) return "Defensive";
+      // If many midfielders and passing is strong -> Possession
+      if (counts.MID >= 5 && avgPassing > 75) return "Possession";
+      // If many forwards -> Attacking
+      if (counts.FWD >= 3 && avgShooting > 70) return "Attacking";
+      // If team is very quick -> Counter-Attack or High-Press
+      if (avgPace >= 85 && counts.FWD >= 2) return "Counter-Attack";
+      if (avgPace >= 82 && counts.MID >= 3) return "High-Press";
+      // Fallback to Balanced
+      return "Balanced";
+    }
     let allPlayersData = []; // Will be populated from predefinedPlayers object
     let selectedPlayers = []; // Stores user's player objects
     let lineup = new Array(MAX_PLAYERS).fill(null);
+    const playstyleSelect = document.getElementById("playstyle-select");
+    const aiPlaystyleDisplay = document.getElementById("ai-playstyle-display");
     let selectedOpponentPlayers = []; // Stores opponent's player objects
     let currentFormation = null;
     let tournament = {};
@@ -219,7 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let isSimulationSkipped = false;
     let customFormations = [];
     let draggedElement = null;
-
 
     // --- Predefined Player Data ---
     const predefinedPlayers = {
@@ -795,17 +885,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Formation requirements: [GK, DEF, MID, FWD]
     const formationRequirements = {
-      "4-3-3": { GK: 1, LB: 1, CB: 2, RB: 1, CM: 2, CAM: 1, LW: 1, ST: 1, RW: 1 },
+      "4-3-3": {
+        GK: 1,
+        LB: 1,
+        CB: 2,
+        RB: 1,
+        CM: 2,
+        CAM: 1,
+        LW: 1,
+        ST: 1,
+        RW: 1,
+      },
       "4-4-2": { GK: 1, LB: 1, CB: 2, RB: 1, LM: 1, CM: 2, RM: 1, ST: 2 },
       "3-5-2": { GK: 1, CB: 3, LWB: 1, RWB: 1, CDM: 2, CAM: 1, ST: 2 },
-      "4-2-3-1": { GK: 1, LB: 1, CB: 2, RB: 1, CDM: 2, CAM: 1, LW: 1, RW: 1, ST: 1 },
+      "4-2-3-1": {
+        GK: 1,
+        LB: 1,
+        CB: 2,
+        RB: 1,
+        CDM: 2,
+        CAM: 1,
+        LW: 1,
+        RW: 1,
+        ST: 1,
+      },
     };
 
     const formationLineups = {
-      "4-3-3": ["GK", "LB", "LCB", "RCB", "RB", "LCM", "RCM", "CAM", "LW", "ST", "RW"],
-      "4-4-2": ["GK", "LB", "LCB", "RCB", "RB", "LM", "LCM", "RCM", "RM", "ST1", "ST2"],
-      "3-5-2": ["GK", "LCB", "CCB", "RCB", "LWB", "RWB", "CDM1", "CDM2", "CAM", "ST1", "ST2"],
-      "4-2-3-1": ["GK", "LB", "LCB", "RCB", "RB", "CDM1", "CDM2", "CAM", "LW", "RW", "ST"],
+      "4-3-3": [
+        "GK",
+        "LB",
+        "LCB",
+        "RCB",
+        "RB",
+        "LCM",
+        "RCM",
+        "CAM",
+        "LW",
+        "ST",
+        "RW",
+      ],
+      "4-4-2": [
+        "GK",
+        "LB",
+        "LCB",
+        "RCB",
+        "RB",
+        "LM",
+        "LCM",
+        "RCM",
+        "RM",
+        "ST1",
+        "ST2",
+      ],
+      "3-5-2": [
+        "GK",
+        "LCB",
+        "CCB",
+        "RCB",
+        "LWB",
+        "RWB",
+        "CDM1",
+        "CDM2",
+        "CAM",
+        "ST1",
+        "ST2",
+      ],
+      "4-2-3-1": [
+        "GK",
+        "LB",
+        "LCB",
+        "RCB",
+        "RB",
+        "CDM1",
+        "CDM2",
+        "CAM",
+        "LW",
+        "RW",
+        "ST",
+      ],
     };
 
     // Positional groups for rating calculation
@@ -852,8 +1010,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return position; // Return as is if no normalization needed
     }
 
-    
-
     // Helper function to get general position type from specific position
     // This function is used for player suitability and chemistry, not for formation validation counts.
     function getGeneralPositionType(specificPosition) {
@@ -865,11 +1021,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return "UNKNOWN";
     }
 
-    
-
     // Calculates a player's rating based on their assigned position
+    // Uses dynamic matchRating when available (updated during the match),
+    // falling back to baseRating otherwise.
     function calculatePlayerRating(player, assignedPosition) {
-      let rating = player.baseRating;
+      let rating =
+        typeof player.matchRating === "number"
+          ? player.matchRating
+          : player.baseRating;
 
       const normalizedPreferred = normalizePosition(player.preferredPosition);
       const normalizedAssigned = normalizePosition(assignedPosition);
@@ -881,7 +1040,11 @@ document.addEventListener("DOMContentLoaded", () => {
         adjustedRating = Math.round(rating * positionSuitability.preferred);
       }
       // Check for secondary positions (normalized)
-      else if (player.secondaryPositions.map(normalizePosition).includes(normalizedAssigned)) {
+      else if (
+        player.secondaryPositions
+          .map(normalizePosition)
+          .includes(normalizedAssigned)
+      ) {
         adjustedRating = Math.round(rating * positionSuitability.secondary);
       } else {
         const preferredGroup = getPositionGroup(normalizedPreferred);
@@ -896,7 +1059,9 @@ document.addEventListener("DOMContentLoaded", () => {
           positionGroupAdjacency[preferredGroup] &&
           positionGroupAdjacency[preferredGroup].includes(assignedGroup)
         ) {
-          adjustedRating = Math.round(rating * positionSuitability.adjacentGroup);
+          adjustedRating = Math.round(
+            rating * positionSuitability.adjacentGroup
+          );
         }
         // If not in the same group, secondary, or adjacent, it's a far group
         else {
@@ -908,7 +1073,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const playerGeneralGroup = getPositionGroup(player.preferredPosition); // Get original general group
       const assignedGeneralGroup = getPositionGroup(assignedPosition); // Get assigned general group
 
-      if (playerGeneralGroup === assignedGeneralGroup) { // If player is in their general area
+      if (playerGeneralGroup === assignedGeneralGroup) {
+        // If player is in their general area
         let maxDrop = 0;
         if (playerGeneralGroup === "FWD") {
           maxDrop = 4;
@@ -927,6 +1093,78 @@ document.addEventListener("DOMContentLoaded", () => {
       return adjustedRating;
     }
 
+    // Adjust a player's match rating during the match.
+    // delta: positive or negative float to add to matchRating
+    // reason: optional string used for debugging/logging
+    function adjustMatchRating(player, delta, reason) {
+      if (!player) return;
+      if (typeof player.matchRating !== "number") {
+        // initialize if missing (use baseRating fallback)
+        player.matchRating =
+          typeof player.baseRating === "number" ? player.baseRating : 6.5;
+      }
+      player.matchRating = Math.max(
+        1.0,
+        Math.min(10.0, +(player.matchRating + delta).toFixed(2))
+      );
+
+      // Ensure stats object exists
+      player.stats = player.stats || {
+        goals: 0,
+        assists: 0,
+        tackles: 0,
+        saves: 0,
+        shots: 0,
+        passes: 0,
+        passesCompleted: 0,
+        passAccuracy: 0,
+        fouls: 0,
+        cards: 0,
+        dribbles: 0,
+        interceptions: 0,
+        clearances: 0,
+        keyPasses: 0,
+      };
+
+      // Live UI refresh: update lineup and ratings panels if visible
+      try {
+        // Update small parts to avoid heavy re-renders where possible
+        // Re-render lineup OVRs
+        if (lineupDisplay && typeof renderLineup === "function") renderLineup();
+        // Re-render player ratings panel if present
+        const ratingsRoot = document.querySelector(".player-ratings-grid");
+        if (ratingsRoot && typeof renderPlayerRatings === "function") {
+          // try to locate current match players arrays from last match scope (if stored) else rebuild
+          // For simplicity re-render from tournament.results last entry if available
+          const lastResult =
+            tournament.results && tournament.results.length
+              ? tournament.results[tournament.results.length - 1]
+              : null;
+          if (lastResult) {
+            renderPlayerRatings(
+              lastResult.userTeam.players || [],
+              lastResult.aiTeam.players || []
+            );
+          } else {
+            // fallback: try to update ratings grid by forcing a repaint
+            ratingsRoot
+              .querySelectorAll(".player-rating-card")
+              .forEach((card) => {
+                const name = card.querySelector(".player-name")?.textContent;
+                if (name === player.name) {
+                  const ratingEl = card.querySelector(".match-rating");
+                  if (ratingEl)
+                    ratingEl.textContent = (player.matchRating || 0).toFixed(1);
+                }
+              });
+          }
+        }
+      } catch (e) {
+        // silently ignore UI update errors
+        console.error("adjustMatchRating UI update error", e, reason);
+      }
+    }
+
     // --- Functions ---
 
     function saveTournament() {
@@ -942,14 +1180,14 @@ document.addEventListener("DOMContentLoaded", () => {
         tournament = JSON.parse(savedTournament);
         // Ensure lineup is an array of objects with a 'player' property
         if (!Array.isArray(tournament.lineup)) {
-            tournament.lineup = []; // Reset if not an array
+          tournament.lineup = []; // Reset if not an array
         }
         // Map to ensure all elements are proper slot objects, even if old data was malformed
-        tournament.lineup = tournament.lineup.map(slot => {
-            if (typeof slot === 'object' && slot !== null && 'player' in slot) {
-                return slot;
-            }
-            return { slotId: null, positionType: null, player: null }; // Default empty slot
+        tournament.lineup = tournament.lineup.map((slot) => {
+          if (typeof slot === "object" && slot !== null && "player" in slot) {
+            return slot;
+          }
+          return { slotId: null, positionType: null, player: null }; // Default empty slot
         });
 
         // Reconstruct lineup to ensure it has the slot structure (old format handling)
@@ -999,9 +1237,9 @@ document.addEventListener("DOMContentLoaded", () => {
           opponentSelectionMode: "aiGenerated",
           // Initialize lineup with proper slot objects from the start
           lineup: new Array(MAX_PLAYERS).fill(null).map((_, i) => ({
-              slotId: `slot${i}`, // Generic slot ID for initial empty state
-              positionType: null,
-              player: null,
+            slotId: `slot${i}`, // Generic slot ID for initial empty state
+            positionType: null,
+            player: null,
           })),
         };
         lineup = tournament.lineup; // Assign to global lineup
@@ -1009,9 +1247,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateTournamentUI() {
-      if(userTournamentScoreSpan) userTournamentScoreSpan.textContent = tournament.userWins;
-      if(aiTournamentScoreSpan) aiTournamentScoreSpan.textContent = tournament.aiWins;
-      if(tournamentTypeSelect) tournamentTypeSelect.value = tournament.maxRounds;
+      if (userTournamentScoreSpan)
+        userTournamentScoreSpan.textContent = tournament.userWins;
+      if (aiTournamentScoreSpan)
+        aiTournamentScoreSpan.textContent = tournament.aiWins;
+      if (tournamentTypeSelect)
+        tournamentTypeSelect.value = tournament.maxRounds;
     }
 
     // Loads predefined players from the hardcoded data
@@ -1022,14 +1263,20 @@ document.addEventListener("DOMContentLoaded", () => {
         ...predefinedPlayers.defenders,
         ...predefinedPlayers.goalkeepers,
       ];
-      if(playerSourceSelection) playerSourceSelection.classList.add("hidden");
-      if(formationSelectionSection) formationSelectionSection.classList.remove("hidden"); // Show formation selection first
+      if (playerSourceSelection) playerSourceSelection.classList.add("hidden");
+      if (formationSelectionSection)
+        formationSelectionSection.classList.remove("hidden"); // Show formation selection first
       renderPlayers(allPlayersData, availablePlayersDiv, true); // CRITICAL: Render available players here
     }
 
     // Renders players into a given container
-    function renderPlayers(players, container, isSelectable, isOpponent = false) {
-      if(!container) return;
+    function renderPlayers(
+      players,
+      container,
+      isSelectable,
+      isOpponent = false
+    ) {
+      if (!container) return;
       container.innerHTML = "";
 
       players.forEach((player) => {
@@ -1038,7 +1285,7 @@ document.addEventListener("DOMContentLoaded", () => {
         playerItem.dataset.name = player.name;
         playerItem.dataset.preferredPosition = player.preferredPosition;
 
-              playerItem.innerHTML = `
+        playerItem.innerHTML = `
                   <img src="${player.imageUrl}" alt="${player.name}" class="player-img">
                   <div class="player-details">
                       <strong>${player.name}</strong>
@@ -1055,19 +1302,21 @@ document.addEventListener("DOMContentLoaded", () => {
           const addButton = playerItem.querySelector(".add-player-btn");
           const detailsButton = playerItem.querySelector(".details-player-btn");
 
-          if(addButton) addButton.addEventListener("click", (e) => {
-            e.stopPropagation();
-            if (isOpponent) {
-              handleOpponentPlayerSelection(player);
-            } else {
-              handlePlayerSelection(player);
-            }
-          });
+          if (addButton)
+            addButton.addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (isOpponent) {
+                handleOpponentPlayerSelection(player);
+              } else {
+                handlePlayerSelection(player);
+              }
+            });
 
-          if(detailsButton) detailsButton.addEventListener("click", (e) => {
-            e.stopPropagation();
-            showPlayerDetails(player);
-          });
+          if (detailsButton)
+            detailsButton.addEventListener("click", (e) => {
+              e.stopPropagation();
+              showPlayerDetails(player);
+            });
         }
         container.appendChild(playerItem);
       });
@@ -1090,25 +1339,25 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
                           <div class="modal-header">
-                              <h5 class="modal-title" id="player-details-modal-label">${ 
+                              <h5 class="modal-title" id="player-details-modal-label">${
                                 player.name
                               }</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
                               <div class="text-center">
-                                  <img src="${player.imageUrl}" alt="${ 
+                                  <img src="${player.imageUrl}" alt="${
         player.name
       }" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
                               </div>
                               <ul class="list-group">
                                   <li class="list-group-item d-flex justify-content-between align-items-center">
                                       Preferred Position
-                                      <span class="badge bg-primary rounded-pill">${ 
+                                      <span class="badge bg-primary rounded-pill">${
                                         player.preferredPosition
                                       }</span>
                                   </li>
-                                  ${ 
+                                  ${
                                     player.secondaryPositions &&
                                     player.secondaryPositions.length > 0
                                       ? `
@@ -1125,37 +1374,37 @@ document.addEventListener("DOMContentLoaded", () => {
                                       Overall Rating
                                       <span class="badge bg-success rounded-pill">${displayedRating}</span>
                                   </li>
-                                  ${ 
+                                  ${
                                     player.pace
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Pace<span class="badge bg-secondary rounded-pill">${player.pace}</span></li>`
                                       : ""
                                   }
-                                  ${ 
+                                  ${
                                     player.dribbling
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Dribbling<span class="badge bg-secondary rounded-pill">${player.dribbling}</span></li>`
                                       : ""
                                   }
-                                  ${ 
+                                  ${
                                     player.passing
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Passing<span class="badge bg-secondary rounded-pill">${player.passing}</span></li>`
                                       : ""
                                   }
-                                  ${ 
+                                  ${
                                     player.shooting
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Shooting<span class="badge bg-secondary rounded-pill">${player.shooting}</span></li>`
                                       : ""
                                   }
-                                  ${ 
+                                  ${
                                     player.defending
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Defending<span class="badge bg-secondary rounded-pill">${player.defending}</span></li>`
                                       : ""
                                   }
-                                  ${ 
+                                  ${
                                     player.physical
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Physical<span class="badge bg-secondary rounded-pill">${player.physical}</span></li>`
                                       : ""
                                   }
-                                  ${ 
+                                  ${
                                     player.goalkeeping
                                       ? `<li class="list-group-item d-flex justify-content-between align-items-center">Goalkeeping<span class="badge bg-secondary rounded-pill">${player.goalkeeping}</span></li>`
                                       : ""
@@ -1177,9 +1426,10 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.show();
 
       const modalInstance = document.getElementById("player-details-modal");
-      if(modalInstance) modalInstance.addEventListener("hidden.bs.modal", () => {
-        modalElement.remove();
-      });
+      if (modalInstance)
+        modalInstance.addEventListener("hidden.bs.modal", () => {
+          modalElement.remove();
+        });
     }
 
     function showPositionSelectionModal(playerData) {
@@ -1231,55 +1481,71 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       modal.show();
 
-      const availablePositionsContainer = document.getElementById("available-positions-container");
-      if(availablePositionsContainer) availablePositionsContainer.addEventListener("click", (event) => {
-        if (event.target.classList.contains("position-btn")) {
-          const selectedSlotId = event.target.dataset.slotId;
-          const targetSlot = lineup.find(
-            (slot) => slot.slotId === selectedSlotId
-          );
+      const availablePositionsContainer = document.getElementById(
+        "available-positions-container"
+      );
+      if (availablePositionsContainer)
+        availablePositionsContainer.addEventListener("click", (event) => {
+          if (event.target.classList.contains("position-btn")) {
+            const selectedSlotId = event.target.dataset.slotId;
+            const targetSlot = lineup.find(
+              (slot) => slot.slotId === selectedSlotId
+            );
 
-          if (targetSlot.player) {
-            if (
-              confirm(
-                `${targetSlot.positionType} is already occupied by ${targetSlot.player.name}. Do you want to replace them?`
-              )
-            ) {
-              // Remove existing player from selectedPlayers
-              selectedPlayers = selectedPlayers.filter(
-                (p) => p.name !== targetSlot.player.name
-              );
-              targetSlot.player = null; // Clear the slot
-            } else {
-              modal.hide();
-              return; // User cancelled replacement
+            if (targetSlot.player) {
+              if (
+                confirm(
+                  `${targetSlot.positionType} is already occupied by ${targetSlot.player.name}. Do you want to replace them?`
+                )
+              ) {
+                // Remove existing player from selectedPlayers
+                selectedPlayers = selectedPlayers.filter(
+                  (p) => p.name !== targetSlot.player.name
+                );
+                targetSlot.player = null; // Clear the slot
+              } else {
+                modal.hide();
+                return; // User cancelled replacement
+              }
             }
+
+            targetSlot.player = playerData; // Assign the player to the slot
+            selectedPlayers = lineup
+              .filter((slot) => slot.player !== null)
+              .map((slot) => slot.player); // Rebuild selectedPlayers from lineup after addition
+            updateSelectedPlayerCount();
+            renderLineup(); // Added renderLineup call here
+
+            modal.hide();
           }
-
-          targetSlot.player = playerData; // Assign the player to the slot
-          selectedPlayers = lineup.filter(slot => slot.player !== null).map(slot => slot.player); // Rebuild selectedPlayers from lineup after addition
-          updateSelectedPlayerCount();
-          renderLineup(); // Added renderLineup call here
-
-          modal.hide();
-        }
-      });
+        });
 
       const positionModalInstance = document.getElementById(
         "position-selection-modal"
       );
-      if(positionModalInstance) positionModalInstance.addEventListener("hidden.bs.modal", () => {
-        modalElement.remove();
-      });
+      if (positionModalInstance)
+        positionModalInstance.addEventListener("hidden.bs.modal", () => {
+          modalElement.remove();
+        });
     }
 
     // Updates the count of selected players and button state
     function updateSelectedPlayerCount() {
-      const currentSelectedCount = lineup.filter(slot => slot.player !== null).length;
-      if(selectedPlayerCountSpan) selectedPlayerCountSpan.textContent = currentSelectedCount;
+      const currentSelectedCount = lineup.filter(
+        (slot) => slot.player !== null
+      ).length;
+      if (selectedPlayerCountSpan)
+        selectedPlayerCountSpan.textContent = currentSelectedCount;
       const isValid = isValidTeam();
-      if(confirmTeamBtn) confirmTeamBtn.disabled = !isValid;
-      console.log("updateSelectedPlayerCount: Current selected count:", currentSelectedCount, "isValidTeam:", isValid, "confirmTeamBtn.disabled:", !isValid);
+      if (confirmTeamBtn) confirmTeamBtn.disabled = !isValid;
+      console.log(
+        "updateSelectedPlayerCount: Current selected count:",
+        currentSelectedCount,
+        "isValidTeam:",
+        isValid,
+        "confirmTeamBtn.disabled:",
+        !isValid
+      );
 
       // Update 'selected' class for players in available list
       allPlayersData.forEach((player) => {
@@ -1303,7 +1569,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const actualPlayersInLineup = lineup.filter(
         (slot) => slot && slot.player !== null
       ).length;
-      console.log("isValidTeam: Actual players in lineup:", actualPlayersInLineup);
+      console.log(
+        "isValidTeam: Actual players in lineup:",
+        actualPlayersInLineup
+      );
       console.log("isValidTeam: MAX_PLAYERS:", MAX_PLAYERS);
 
       if (actualPlayersInLineup !== MAX_PLAYERS) {
@@ -1311,7 +1580,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return false;
       }
 
-      const isCustomFormation = customFormations.some(f => f.name === currentFormation);
+      const isCustomFormation = customFormations.some(
+        (f) => f.name === currentFormation
+      );
       let requiredConfig;
       let countByFunction;
 
@@ -1335,14 +1606,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Count players in the lineup based on the appropriate function
       lineup.forEach((slot) => {
-        if (slot.player) { // Check if slot has a player
+        if (slot.player) {
+          // Check if slot has a player
           const countedPosition = countByFunction(slot.positionType);
-          console.log(`isValidTeam: Slot ${slot.slotId} (${slot.positionType}) assigned to player ${slot.player.name}. Counted position: ${countedPosition}`);
-          
+          console.log(
+            `isValidTeam: Slot ${slot.slotId} (${slot.positionType}) assigned to player ${slot.player.name}. Counted position: ${countedPosition}`
+          );
+
           if (currentCounts.hasOwnProperty(countedPosition)) {
             currentCounts[countedPosition]++;
           } else {
-            console.warn(`isValidTeam: Unexpected position type: ${countedPosition} for slot ${slot.slotId}. This position might not be defined in the required config for this formation.`);
+            console.warn(
+              `isValidTeam: Unexpected position type: ${countedPosition} for slot ${slot.slotId}. This position might not be defined in the required config for this formation.`
+            );
           }
         }
       });
@@ -1402,25 +1678,41 @@ document.addEventListener("DOMContentLoaded", () => {
       const existingPlayerSlot = lineup.find(
         (slot) => slot.player && slot.player.name === playerData.name
       );
-      console.log("handlePlayerSelection: Existing player slot:", existingPlayerSlot);
+      console.log(
+        "handlePlayerSelection: Existing player slot:",
+        existingPlayerSlot
+      );
 
       if (existingPlayerSlot) {
         // Player is already in lineup, so remove them
         existingPlayerSlot.player = null;
         // Rebuild selectedPlayers from lineup after removal
-        selectedPlayers = lineup.filter(slot => slot.player !== null).map(slot => slot.player);
-        console.log("handlePlayerSelection: Player removed. New lineup:", lineup, "New selectedPlayers:", selectedPlayers);
+        selectedPlayers = lineup
+          .filter((slot) => slot.player !== null)
+          .map((slot) => slot.player);
+        console.log(
+          "handlePlayerSelection: Player removed. New lineup:",
+          lineup,
+          "New selectedPlayers:",
+          selectedPlayers
+        );
         updateSelectedPlayerCount();
         renderLineup();
       } else {
         // Player is not in lineup, show position selection
-        if (lineup.filter(slot => slot.player !== null).length >= MAX_PLAYERS) { // Check lineup count instead of selectedPlayers
+        if (
+          lineup.filter((slot) => slot.player !== null).length >= MAX_PLAYERS
+        ) {
+          // Check lineup count instead of selectedPlayers
           alert(
             `Your team is already full (${MAX_PLAYERS} players). Please remove a player first.`
           );
           return;
         }
-        console.log("handlePlayerSelection: Showing position selection modal for:", playerData.name);
+        console.log(
+          "handlePlayerSelection: Showing position selection modal for:",
+          playerData.name
+        );
         showPositionSelectionModal(playerData);
       }
     }
@@ -1489,195 +1781,264 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function getPositionInfo(slotId) {
-        const formation = currentFormation;
-        if (!formation) return { x: 0, y: 0 };
+      const formation = currentFormation;
+      if (!formation) return { x: 0, y: 0 };
 
-        const customFormation = customFormations.find(f => f.name === formation);
-        if (customFormation) {
-            const slot = customFormation.lineup.find(s => s.slotId === slotId);
-            return slot ? slot.coords : { x: 50, y: 50 };
-        }
+      const customFormation = customFormations.find(
+        (f) => f.name === formation
+      );
+      if (customFormation) {
+        const slot = customFormation.lineup.find((s) => s.slotId === slotId);
+        return slot ? slot.coords : { x: 50, y: 50 };
+      }
 
-        const positions = {
-            "4-3-3": { GK: { x: 50, y: 90 }, LB: { x: 20, y: 75 }, LCB: { x: 40, y: 80 }, RCB: { x: 60, y: 80 }, RB: { x: 80, y: 75 }, LCM: { x: 35, y: 55 }, RCM: { x: 65, y: 55 }, CAM: { x: 50, y: 40 }, LW: { x: 25, y: 25 }, ST: { x: 50, y: 15 }, RW: { x: 75, y: 25 } },
-            "4-4-2": { GK: { x: 50, y: 90 }, LB: { x: 15, y: 70 }, LCB: { x: 35, y: 75 }, RCB: { x: 65, y: 75 }, RB: { x: 85, y: 70 }, LM: { x: 20, y: 45 }, LCM: { x: 40, y: 50 }, RCM: { x: 60, y: 50 }, RM: { x: 80, y: 45 }, ST1: { x: 40, y: 20 }, ST2: { x: 60, y: 20 } },
-            "3-5-2": { GK: { x: 50, y: 90 }, LCB: { x: 30, y: 75 }, CCB: { x: 50, y: 80 }, RCB: { x: 70, y: 75 }, LWB: { x: 15, y: 50 }, RWB: { x: 85, y: 50 }, CDM1: { x: 40, y: 60 }, CDM2: { x: 60, y: 60 }, CAM: { x: 50, y: 40 }, ST1: { x: 40, y: 20 }, ST2: { x: 60, y: 20 } },
-            "4-2-3-1": { GK: { x: 50, y: 90 }, LB: { x: 15, y: 70 }, LCB: { x: 35, y: 75 }, RCB: { x: 65, y: 75 }, RB: { x: 85, y: 70 }, CDM1: { x: 40, y: 60 }, CDM2: { x: 60, y: 60 }, CAM: { x: 50, y: 40 }, LW: { x: 20, y: 25 }, RW: { x: 80, y: 25 }, ST: { x: 50, y: 15 } },
-        };
+      const positions = {
+        "4-3-3": {
+          GK: { x: 50, y: 90 },
+          LB: { x: 20, y: 75 },
+          LCB: { x: 40, y: 80 },
+          RCB: { x: 60, y: 80 },
+          RB: { x: 80, y: 75 },
+          LCM: { x: 35, y: 55 },
+          RCM: { x: 65, y: 55 },
+          CAM: { x: 50, y: 40 },
+          LW: { x: 25, y: 25 },
+          ST: { x: 50, y: 15 },
+          RW: { x: 75, y: 25 },
+        },
+        "4-4-2": {
+          GK: { x: 50, y: 90 },
+          LB: { x: 15, y: 70 },
+          LCB: { x: 35, y: 75 },
+          RCB: { x: 65, y: 75 },
+          RB: { x: 85, y: 70 },
+          LM: { x: 20, y: 45 },
+          LCM: { x: 40, y: 50 },
+          RCM: { x: 60, y: 50 },
+          RM: { x: 80, y: 45 },
+          ST1: { x: 40, y: 20 },
+          ST2: { x: 60, y: 20 },
+        },
+        "3-5-2": {
+          GK: { x: 50, y: 90 },
+          LCB: { x: 30, y: 75 },
+          CCB: { x: 50, y: 80 },
+          RCB: { x: 70, y: 75 },
+          LWB: { x: 15, y: 50 },
+          RWB: { x: 85, y: 50 },
+          CDM1: { x: 40, y: 60 },
+          CDM2: { x: 60, y: 60 },
+          CAM: { x: 50, y: 40 },
+          ST1: { x: 40, y: 20 },
+          ST2: { x: 60, y: 20 },
+        },
+        "4-2-3-1": {
+          GK: { x: 50, y: 90 },
+          LB: { x: 15, y: 70 },
+          LCB: { x: 35, y: 75 },
+          RCB: { x: 65, y: 75 },
+          RB: { x: 85, y: 70 },
+          CDM1: { x: 40, y: 60 },
+          CDM2: { x: 60, y: 60 },
+          CAM: { x: 50, y: 40 },
+          LW: { x: 20, y: 25 },
+          RW: { x: 80, y: 25 },
+          ST: { x: 50, y: 15 },
+        },
+      };
 
-        return positions[formation][slotId] || { x: 0, y: 0 };
+      return positions[formation][slotId] || { x: 0, y: 0 };
     }
 
     // Renders the visual lineup on the soccer field
     function renderLineup() {
-        if (!lineupDisplay) return;
-        lineupDisplay.innerHTML = ''; // Clear the display first
+      if (!lineupDisplay) return;
+      lineupDisplay.innerHTML = ""; // Clear the display first
 
-        if (!currentFormation || !lineup) {
-            console.log("No currentFormation or lineup. Exiting renderLineup.");
-            return;
-        }
+      if (!currentFormation || !lineup) {
+        console.log("No currentFormation or lineup. Exiting renderLineup.");
+        return;
+      }
 
-        lineup.forEach(slot => {
-            const positionCircle = document.createElement('div');
-            positionCircle.id = `pos-${slot.slotId.toLowerCase()}`;
-            positionCircle.className = 'position-circle active';
-            positionCircle.dataset.slotId = slot.slotId;
+      lineup.forEach((slot) => {
+        const positionCircle = document.createElement("div");
+        positionCircle.id = `pos-${slot.slotId.toLowerCase()}`;
+        positionCircle.className = "position-circle active";
+        positionCircle.dataset.slotId = slot.slotId;
 
-            const positionCoords = getPositionInfo(slot.slotId);
-            positionCircle.style.left = `${positionCoords.x}%`;
-            positionCircle.style.top = `${positionCoords.y}%`;
-            positionCircle.style.transform = `translate(-50%, -50%)`;
+        const positionCoords = getPositionInfo(slot.slotId);
+        positionCircle.style.left = `${positionCoords.x}%`;
+        positionCircle.style.top = `${positionCoords.y}%`;
+        positionCircle.style.transform = `translate(-50%, -50%)`;
 
-            positionCircle.innerHTML = `
+        positionCircle.innerHTML = `
                 <span class="position-label">${slot.positionType}</span>
                 <img src="" alt="Player" class="player-image">
                 <span class="player-ovr"></span>
                 <span class="player-name"></span>
             `;
 
-            const playerImage = positionCircle.querySelector('.player-image');
-            const playerOvr = positionCircle.querySelector('.player-ovr');
-            const playerNameEl = positionCircle.querySelector('.player-name');
+        const playerImage = positionCircle.querySelector(".player-image");
+        const playerOvr = positionCircle.querySelector(".player-ovr");
+        const playerNameEl = positionCircle.querySelector(".player-name");
 
-            if (slot.player) {
-                positionCircle.classList.add('has-player');
-                positionCircle.setAttribute('draggable', 'true');
-                playerImage.src = slot.player.imageUrl;
-                playerImage.alt = slot.player.name;
-                playerNameEl.textContent = slot.player.name;
-                
-                const calculatedRating = calculatePlayerRating(slot.player, slot.positionType);
-                playerOvr.textContent = calculatedRating;
-                playerOvr.style.opacity = '1';
-                playerNameEl.style.opacity = '1';
-            } else {
-                playerOvr.style.opacity = '0';
-                playerNameEl.style.opacity = '0';
-            }
+        if (slot.player) {
+          positionCircle.classList.add("has-player");
+          positionCircle.setAttribute("draggable", "true");
+          playerImage.src = slot.player.imageUrl;
+          playerImage.alt = slot.player.name;
+          playerNameEl.textContent = slot.player.name;
 
-            positionCircle.addEventListener('dragstart', handleDragStart);
-            positionCircle.addEventListener('dragover', handleDragOver);
-            positionCircle.addEventListener('dragleave', handleDragLeave);
-            positionCircle.addEventListener('drop', handleDrop);
-            positionCircle.addEventListener('dragend', handleDragEnd);
+          const calculatedRating = calculatePlayerRating(
+            slot.player,
+            slot.positionType
+          );
+          playerOvr.textContent = calculatedRating;
+          playerOvr.style.opacity = "1";
+          playerNameEl.style.opacity = "1";
+        } else {
+          playerOvr.style.opacity = "0";
+          playerNameEl.style.opacity = "0";
+        }
 
-            lineupDisplay.appendChild(positionCircle);
-        });
+        positionCircle.addEventListener("dragstart", handleDragStart);
+        positionCircle.addEventListener("dragover", handleDragOver);
+        positionCircle.addEventListener("dragleave", handleDragLeave);
+        positionCircle.addEventListener("drop", handleDrop);
+        positionCircle.addEventListener("dragend", handleDragEnd);
+
+        lineupDisplay.appendChild(positionCircle);
+      });
     }
 
     draggedSlotId = null; // Global variable to store the ID of the dragged slot
 
     function handleDragStart(event) {
-        draggedSlotId = event.target.dataset.slotId;
-        event.dataTransfer.setData('text/plain', draggedSlotId); // Set data for drag operation
-        event.target.classList.add('dragging'); // Add a class for visual feedback
+      draggedSlotId = event.target.dataset.slotId;
+      event.dataTransfer.setData("text/plain", draggedSlotId); // Set data for drag operation
+      event.target.classList.add("dragging"); // Add a class for visual feedback
     }
 
     function handleDragOver(event) {
-        event.preventDefault(); // Allow drop
-        const element = event.target.closest('.position-circle');
-        if (element) {
-            element.classList.add('drag-over'); // Add visual feedback for drag-over
-        }
+      event.preventDefault(); // Allow drop
+      const element = event.target.closest(".position-circle");
+      if (element) {
+        element.classList.add("drag-over"); // Add visual feedback for drag-over
+      }
     }
 
     function handleDragLeave(event) {
-        const element = event.target.closest('.position-circle');
-        if (element) {
-            element.classList.remove('drag-over'); // Remove visual feedback
-        }
+      const element = event.target.closest(".position-circle");
+      if (element) {
+        element.classList.remove("drag-over"); // Remove visual feedback
+      }
     }
 
     function handleDrop(event) {
-        event.preventDefault();
-        const targetElement = event.target.closest('.position-circle');
-        if (!targetElement) return;
+      event.preventDefault();
+      const targetElement = event.target.closest(".position-circle");
+      if (!targetElement) return;
 
-        targetElement.classList.remove('drag-over');
+      targetElement.classList.remove("drag-over");
 
-        const targetSlotId = targetElement.dataset.slotId;
+      const targetSlotId = targetElement.dataset.slotId;
 
-        if (draggedSlotId === targetSlotId) {
-            return; // Dropped on the same slot
-        }
+      if (draggedSlotId === targetSlotId) {
+        return; // Dropped on the same slot
+      }
 
-        const draggedSlotIndex = lineup.findIndex(slot => slot.slotId === draggedSlotId);
-        const targetSlotIndex = lineup.findIndex(slot => slot.slotId === targetSlotId);
+      const draggedSlotIndex = lineup.findIndex(
+        (slot) => slot.slotId === draggedSlotId
+      );
+      const targetSlotIndex = lineup.findIndex(
+        (slot) => slot.slotId === targetSlotId
+      );
 
-        if (draggedSlotIndex === -1 || targetSlotIndex === -1) {
-            console.error("Dragged or target slot not found in lineup.");
-            return;
-        }
+      if (draggedSlotIndex === -1 || targetSlotIndex === -1) {
+        console.error("Dragged or target slot not found in lineup.");
+        return;
+      }
 
-        // Perform the swap in the lineup array
-        const draggedPlayer = lineup[draggedSlotIndex].player;
-        const targetPlayer = lineup[targetSlotIndex].player;
+      // Perform the swap in the lineup array
+      const draggedPlayer = lineup[draggedSlotIndex].player;
+      const targetPlayer = lineup[targetSlotIndex].player;
 
-        lineup[draggedSlotIndex].player = targetPlayer;
-        lineup[targetSlotIndex].player = draggedPlayer;
+      lineup[draggedSlotIndex].player = targetPlayer;
+      lineup[targetSlotIndex].player = draggedPlayer;
 
-        // Update selectedPlayers array (important for isValidTeam and count)
-        // Clear selectedPlayers and re-populate from the updated lineup
-        selectedPlayers = lineup.filter(slot => slot.player !== null).map(slot => slot.player);
+      // Update selectedPlayers array (important for isValidTeam and count)
+      // Clear selectedPlayers and re-populate from the updated lineup
+      selectedPlayers = lineup
+        .filter((slot) => slot.player !== null)
+        .map((slot) => slot.player);
 
-        updateSelectedPlayerCount(); // Re-evaluate team validity and count
-        renderLineup(); // Re-render the lineup to reflect the swap
+      updateSelectedPlayerCount(); // Re-evaluate team validity and count
+      renderLineup(); // Re-render the lineup to reflect the swap
     }
 
     function handleDragEnd(event) {
-        event.target.classList.remove('dragging'); // Remove dragging class
-        draggedSlotId = null; // Clear dragged ID
+      event.target.classList.remove("dragging"); // Remove dragging class
+      draggedSlotId = null; // Clear dragged ID
     }
 
     // Handles formation selection
     function handleFormationSelection(formation, isCustom = false) {
-        currentFormation = formation;
-        lineup = []; // Initialize as empty array
+      currentFormation = formation;
+      lineup = []; // Initialize as empty array
 
-        if (isCustom) {
-            const customFormation = customFormations.find(f => f.name === formation);
-            if (customFormation) {
-                lineup = customFormation.lineup.map(slot => ({ ...slot, player: null }));
-                formationRequirements[formation] = customFormation.requirements;
-            }
-        } else {
-            const lineupPositions = formationLineups[currentFormation];
-            lineupPositions.forEach(position => {
-                lineup.push({
-                    slotId: position,
-                    positionType: position,
-                    player: null,
-                });
-            });
+      if (isCustom) {
+        const customFormation = customFormations.find(
+          (f) => f.name === formation
+        );
+        if (customFormation) {
+          lineup = customFormation.lineup.map((slot) => ({
+            ...slot,
+            player: null,
+          }));
+          formationRequirements[formation] = customFormation.requirements;
         }
-
-        selectedPlayers = [];
-        // Visually indicate active formation
-        document.querySelectorAll(".formation-btn, .custom-formation-btn").forEach((btn) => {
-            if (btn.dataset.formation === formation) {
-                btn.classList.add("active");
-            } else {
-                btn.classList.remove("active");
-            }
+      } else {
+        const lineupPositions = formationLineups[currentFormation];
+        lineupPositions.forEach((position) => {
+          lineup.push({
+            slotId: position,
+            positionType: position,
+            player: null,
+          });
         });
-        // After selecting formation, show player selection section
-        if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
-        if(playerSelectionSection) playerSelectionSection.classList.remove("hidden");
-        const randomizeTeamBtn = document.getElementById("randomize-team-btn");
-        if (randomizeTeamBtn) {
-            randomizeTeamBtn.disabled = false; // Enable randomize button once a formation is selected
-        }
+      }
 
-        // Clear selected players and re-render available players for new formation
-        updateSelectedPlayerCount();
-        renderPlayers(allPlayersData, availablePlayersDiv, true); // Render available players for user
-        renderLineup(); // Render initial empty lineup based on formation
+      selectedPlayers = [];
+      // Visually indicate active formation
+      document
+        .querySelectorAll(".formation-btn, .custom-formation-btn")
+        .forEach((btn) => {
+          if (btn.dataset.formation === formation) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+      // After selecting formation, show player selection section
+      if (formationSelectionSection)
+        formationSelectionSection.classList.add("hidden");
+      if (playerSelectionSection)
+        playerSelectionSection.classList.remove("hidden");
+      const randomizeTeamBtn = document.getElementById("randomize-team-btn");
+      if (randomizeTeamBtn) {
+        randomizeTeamBtn.disabled = false; // Enable randomize button once a formation is selected
+      }
+
+      // Clear selected players and re-render available players for new formation
+      updateSelectedPlayerCount();
+      renderPlayers(allPlayersData, availablePlayersDiv, true); // Render available players for user
+      renderLineup(); // Render initial empty lineup based on formation
     }
 
     // Simulates the match (client-side logic)
     async function simulateMatch() {
-        isSimulationSkipped = false;
+      // New, more realistic match engine
+      isSimulationSkipped = false;
       if (!isValidTeam()) {
         alert(
           "Please select exactly 11 players and ensure all position requirements for the chosen formation are met."
@@ -1694,10 +2055,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (tournament.opponentSelectionMode === "aiGenerated") {
         aiTeamPlayers = generateAITeam(selectedPlayers).players;
       } else {
-        // userPicked
         if (!isValidOpponentTeam()) {
           alert(
-            "Please select exactly 11 players for the opponent team and ensure all position requirements for a 4-4-2 formation are met."
+            "Please select exactly 11 players for the opponent team and ensure all position requirements for the chosen formation are met."
           );
           return;
         }
@@ -1705,326 +2065,885 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       tournament.opponents.push(aiTeamPlayers);
 
-      // --- UI Updates for Live Sim ---
-      if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
-      if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
-      if(liveSimulationSection) liveSimulationSection.classList.remove("hidden");
-      if(liveCommentaryFeed) liveCommentaryFeed.innerHTML = '';
-      if(liveUserScore) liveUserScore.textContent = '0';
-      if(liveAiScore) liveAiScore.textContent = '0';
+      // UI setup
+      if (playerSelectionSection)
+        playerSelectionSection.classList.add("hidden");
+      if (formationSelectionSection)
+        formationSelectionSection.classList.add("hidden");
+      if (liveSimulationSection)
+        liveSimulationSection.classList.remove("hidden");
+      if (liveCommentaryFeed) liveCommentaryFeed.innerHTML = "";
+      if (liveUserScore) liveUserScore.textContent = "0";
+      if (liveAiScore) liveAiScore.textContent = "0";
 
+      const userPlaystyle = playstyleSelect
+        ? playstyleSelect.value
+        : "Balanced";
 
-      // --- Game Simulation Logic ---
       const userTeam = {
-        players: lineup.map(slot => {
-            return { ...slot.player, position: slot.positionType, matchRating: 6.5 }; // Add position and initial rating
+        players: lineup.map((slot) => {
+          const base = {
+            ...slot.player,
+            position: slot.positionType,
+            matchRating: 6.5,
+          };
+          base.stats = base.stats || {
+            goals: 0,
+            assists: 0,
+            tackles: 0,
+            saves: 0,
+            shots: 0,
+            passes: 0,
+            passAccuracy: null,
+          };
+          base.team = base.team || "Your Team";
+          return base;
         }),
         formation: currentFormation,
-        strength: calculateTeamStrength(lineup.map(slot => slot.player).filter(p => p)),
+        playstyle: userPlaystyle,
+        strength: calculateTeamStrength(
+          lineup.map((s) => s.player).filter(Boolean),
+          userPlaystyle
+        ),
       };
+
+      const aiPlaystyle = chooseAIPlaystyle(aiTeamPlayers);
+      if (aiPlaystyleDisplay) aiPlaystyleDisplay.textContent = aiPlaystyle;
 
       const aiTeam = {
-        players: aiTeamPlayers.map(player => {
-            return { ...player, matchRating: 6.5 }; // Add initial rating
-        }),
-        formation: "4-4-2", // AI always plays 4-4-2 for simplicity
-        strength: calculateTeamStrength(aiTeamPlayers),
+        players: aiTeamPlayers.map((p) => ({
+          ...p,
+          matchRating: 6.5,
+          stats: p.stats || {
+            goals: 0,
+            assists: 0,
+            tackles: 0,
+            saves: 0,
+            shots: 0,
+            passes: 0,
+            passAccuracy: null,
+          },
+          team: p.team || "AI Team",
+        })),
+        formation: "4-4-2",
+        playstyle: aiPlaystyle,
+        strength: calculateTeamStrength(aiTeamPlayers, aiPlaystyle),
       };
 
-      let timelineEvents = [];
-      let userScore = 0;
-      let aiScore = 0;
+      // Helpers
+      const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+      const randInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+      const randFloat = (a, b) => Math.random() * (b - a) + a;
+      const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+      const getPlayersByGroup = (team, group) =>
+        team.players.filter(
+          (p) => getPositionGroup(p.position || p.preferredPosition) === group
+        );
 
-      // New detailed stats
-      let userShots = 0, aiShots = 0;
-      let userShotsOnTarget = 0, aiShotsOnTarget = 0;
-      let userPossession = 0, aiPossession = 0;
-      let userPasses = 0, aiPasses = 0;
-      let userPassAccuracy = 0, aiPassAccuracy = 0;
-      let userTackles = 0, aiTackles = 0;
-      let userFouls = 0, aiFouls = 0;
-      let userCorners = 0, aiCorners = 0;
-      let userOffsides = 0, aiOffsides = 0;
+      // Decide overall match flavour: goals distribution
+      // Most matches 2-4 total goals, sometimes low or high scoring
+      let totalGoals;
+      const gRoll = Math.random();
+      if (gRoll < 0.75) totalGoals = randInt(2, 4);
+      else if (gRoll < 0.9) totalGoals = randInt(0, 1);
+      else totalGoals = randInt(5, 8);
 
+      // Slightly bias by combined team strength (stronger teams -> more goals sometimes)
+      const strengthBias = Math.round(
+        (userTeam.strength + aiTeam.strength) / 200 - 1
+      );
+      totalGoals = Math.max(0, totalGoals + strengthBias);
 
-      const addTimelineEvent = (event) => {
-          timelineEvents.push(event);
-          const { minute, team, type, text, icon } = event;
-          const eventElement = document.createElement('div');
-          eventElement.classList.add('commentary-event', team, type);
-          eventElement.innerHTML = `
-              <span class="icon">${icon}</span>
-              <div class="text">
-                  <span class="minute">${minute}'</span> - ${text}
-              </div>
-          `;
-          if(liveCommentaryFeed) {
-            liveCommentaryFeed.appendChild(eventElement);
-            // Use a timeout to ensure the DOM is updated before scrolling
-            setTimeout(() => {
-                liveCommentaryContainer.scrollTop = liveCommentaryContainer.scrollHeight;
-            }, 10);
-          }
-      };
+      // Possession: realistic split based on strength + randomness; avoid extreme 100-0
+      let basePossUser =
+        50 +
+        Math.round((userTeam.strength - aiTeam.strength) * 0.4) +
+        randInt(-8, 8);
+      basePossUser = Math.max(30, Math.min(70, basePossUser));
+      const userPossession = basePossUser;
+      const aiPossession = 100 - userPossession;
 
-      const delay = ms => new Promise(res => setTimeout(res, ms));
+      // Shots: teams average 8-20 shots
+      const userShots = Math.max(
+        6,
+        Math.min(
+          22,
+          Math.round(randFloat(8, 15) * (1 + (userTeam.strength - 75) / 200))
+        )
+      );
+      const aiShots = Math.max(
+        6,
+        Math.min(
+          22,
+          Math.round(randFloat(8, 15) * (1 + (aiTeam.strength - 75) / 200))
+        )
+      );
+      const userShotsOnTarget = Math.max(
+        1,
+        Math.round(userShots * randFloat(0.3, 0.5))
+      );
+      const aiShotsOnTarget = Math.max(
+        1,
+        Math.round(aiShots * randFloat(0.3, 0.5))
+      );
 
-      const getRandomPlayer = (team, positionGroup = null) => {
-          let eligiblePlayers = team.players;
-          if (positionGroup) {
-              eligiblePlayers = team.players.filter(p => getPositionGroup(p.preferredPosition) === positionGroup);
-          }
-          if (eligiblePlayers.length === 0) {
-            eligiblePlayers = team.players; // fallback to any player
-          }
-          return eligiblePlayers[Math.floor(Math.random() * eligiblePlayers.length)];
-      };
+      // Passes: each team 300-700 passes
+      const userPasses = Math.round(
+        randFloat(320, 680) * (1 + (userPossession - 50) / 200)
+      );
+      const aiPasses = Math.round(
+        randFloat(320, 680) * (1 + (aiPossession - 50) / 200)
+      );
 
-      addTimelineEvent({ minute: 0, team: 'neutral', type: 'start', text: `Match Start: User Team (${userTeam.strength}) vs AI Team (${aiTeam.strength})`, icon: '⏱️' });
-      if (!isSimulationSkipped) await delay(800);
+      // Estimate team pass accuracy early so we can attribute per-player pass completion
+      let userPassAccuracy =
+        userPasses > 0
+          ? Math.max(
+              50,
+              Math.min(
+                95,
+                Math.round(
+                  ((userPasses - Math.floor(randFloat(0, userPasses) / 6)) /
+                    userPasses) *
+                    100
+                )
+              )
+            )
+          : 0;
+      let aiPassAccuracy =
+        aiPasses > 0
+          ? Math.max(
+              50,
+              Math.min(
+                95,
+                Math.round(
+                  ((aiPasses - Math.floor(randFloat(0, aiPasses) / 6)) /
+                    aiPasses) *
+                    100
+                )
+              )
+            )
+          : 0;
 
-      // Main simulation loop
-      for (let i = 0; i < 10; i++) {
-        if (isSimulationSkipped) break;
-        const minute = i * 9 + Math.floor(Math.random() * 5) + 1;
-        const userAttackChance = userTeam.strength / (userTeam.strength + aiTeam.strength);
+      // Tackles: 10-30
+      const userTackles = randInt(10, 30);
+      const aiTackles = randInt(10, 30);
 
-        if (Math.random() < userAttackChance) {
-            userPossession += 10;
-            userPasses += Math.floor(Math.random() * 10) + 5;
-            const attackingPlayer = getRandomPlayer(userTeam, 'FWD');
-            const assistingPlayer = getRandomPlayer(userTeam, 'MID');
-            addTimelineEvent({ minute, team: 'user', type: 'attack', text: `${assistingPlayer.name} passes to ${attackingPlayer.name}!`, icon: '⚔️' });
-            if (!isSimulationSkipped) await delay(800);
+      // Dribbles, interceptions, clearances, key passes
+      const userDribbles = randInt(6, 24);
+      const aiDribbles = randInt(6, 24);
+      const userInterceptions = randInt(4, 18);
+      const aiInterceptions = randInt(4, 18);
+      const userClearances = randInt(10, 40);
+      const aiClearances = randInt(10, 40);
+      const userKeyPasses = randInt(2, 12);
+      const aiKeyPasses = randInt(2, 12);
 
-            userShots++;
-            if (Math.random() < 0.5) { // Shot on target
-                userShotsOnTarget++;
-                addTimelineEvent({ minute, team: 'user', type: 'shot', text: `${attackingPlayer.name} takes a shot!`, icon: '🥅' });
-                if (!isSimulationSkipped) await delay(800);
+      // Fouls 5-20, Corners 3-10, Offsides 0-6
+      const userFouls = randInt(5, 18);
+      const aiFouls = randInt(5, 18);
+      const userCorners = randInt(3, 10);
+      const aiCorners = randInt(3, 10);
+      const userOffsides = randInt(0, 6);
+      const aiOffsides = randInt(0, 6);
 
-                if (Math.random() < 0.4) { // GOAL
-                    userScore++;
-                    if(liveUserScore) liveUserScore.textContent = userScore;
-                    const goalEvent = { minute, team: 'user', type: 'goal', text: `GOAL! A brilliant finish from ${attackingPlayer.name}! (${userScore}-${aiScore})`, icon: '⚽', player: attackingPlayer, assist: assistingPlayer };
-                    addTimelineEvent(goalEvent);
-                    attackingPlayer.matchRating += 1.5;
-                    assistingPlayer.matchRating += 0.8;
-                    if (!isSimulationSkipped) await delay(800);
-                } else { // SAVE
-                    const defendingPlayer = getRandomPlayer(aiTeam, 'GK');
-                    addTimelineEvent({ minute, team: 'ai', type: 'defense', text: `What a save by ${defendingPlayer.name}!`, icon: '🛡️' });
-                    defendingPlayer.matchRating += 0.5;
-                    if (!isSimulationSkipped) await delay(800);
-                }
-            } else { // Shot off target
-                addTimelineEvent({ minute, team: 'user', type: 'shot', text: `${attackingPlayer.name}'s shot goes wide.`, icon: '🥅' });
-                if (!isSimulationSkipped) await delay(800);
-            }
+      // Goals distribution between teams by relative strength + randomness
+      const userGoalShare = userTeam.strength + randInt(-5, 5);
+      const aiGoalShare = aiTeam.strength + randInt(-5, 5);
+      let userGoals = Math.round(
+        (totalGoals * userGoalShare) / (userGoalShare + aiGoalShare || 1)
+      );
+      let aiGoals = Math.max(0, totalGoals - userGoals);
+
+      // Ensure occasional 0-0 or 1-0 defensive battles even if totalGoals was higher
+      if (Math.random() < 0.05) {
+        // a rare defensive shutout
+        if (Math.random() < 0.5) {
+          // 0-0
+          userGoals = 0;
+          aiGoals = 0;
         } else {
-            aiPossession += 10;
-            aiPasses += Math.floor(Math.random() * 10) + 5;
-            const attackingPlayer = getRandomPlayer(aiTeam, 'FWD');
-            const assistingPlayer = getRandomPlayer(aiTeam, 'MID');
-            addTimelineEvent({ minute, team: 'ai', type: 'attack', text: `${assistingPlayer.name} finds ${attackingPlayer.name} in space.`, icon: '⚔️' });
-            if (!isSimulationSkipped) await delay(800);
-
-            aiShots++;
-            if (Math.random() < 0.5) { // Shot on target
-                aiShotsOnTarget++;
-                addTimelineEvent({ minute, team: 'ai', type: 'shot', text: `${attackingPlayer.name} shoots!`, icon: '🥅' });
-                if (!isSimulationSkipped) await delay(800);
-
-                if (Math.random() < 0.4) { // GOAL
-                    aiScore++;
-                    if(liveAiScore) liveAiScore.textContent = aiScore;
-                    const goalEvent = { minute, team: 'ai', type: 'goal', text: `GOAL! ${attackingPlayer.name} puts it in the back of the net! (${userScore}-${aiScore})`, icon: '⚽', player: attackingPlayer, assist: assistingPlayer };
-                    addTimelineEvent(goalEvent);
-                    attackingPlayer.matchRating += 1.5;
-                    assistingPlayer.matchRating += 0.8;
-                    if (!isSimulationSkipped) await delay(800);
-                } else { // SAVE
-                    const defendingPlayer = getRandomPlayer(userTeam, 'GK');
-                    addTimelineEvent({ minute, team: 'user', type: 'defense', text: `Incredible save from ${defendingPlayer.name}!`, icon: '🛡️' });
-                    defendingPlayer.matchRating += 0.5;
-                    if (!isSimulationSkipped) await delay(800);
-                }
-            } else { // Shot off target
-                addTimelineEvent({ minute, team: 'ai', type: 'shot', text: `Close! ${attackingPlayer.name}'s effort is just off target.`, icon: '🥅' });
-                if (!isSimulationSkipped) await delay(800);
-            }
+          // 1-0 either way
+          if (Math.random() < 0.5) {
+            userGoals = 1;
+            aiGoals = 0;
+          } else {
+            userGoals = 0;
+            aiGoals = 1;
+          }
         }
       }
 
-      addTimelineEvent({ minute: 90, team: 'neutral', type: 'end', text: `Full Time! Final Score: User Team ${userScore} - ${aiScore} AI Team`, icon: '⏱️' });
-      if (!isSimulationSkipped) await delay(2000);
+      // Saves: roughly shotsOnTarget - goals (but bounded 2-10)
+      let userSaves = Math.max(2, Math.min(10, aiShotsOnTarget - aiGoals));
+      let aiSaves = Math.max(2, Math.min(10, userShotsOnTarget - userGoals));
 
-      // Finalize stats
-      const totalPossession = userPossession + aiPossession;
-      userPossession = totalPossession > 0 ? Math.round((userPossession / totalPossession) * 100) : 50;
-      aiPossession = 100 - userPossession;
-      userPassAccuracy = userPasses > 0 ? Math.round(((userPasses - Math.floor(Math.random() * userPasses / 5)) / userPasses) * 100) : 0;
-      aiPassAccuracy = aiPasses > 0 ? Math.round(((aiPasses - Math.floor(Math.random() * aiPasses / 5)) / aiPasses) * 100) : 0;
-      userTackles = Math.floor(Math.random() * 10) + 5;
-      aiTackles = Math.floor(Math.random() * 10) + 5;
-      userFouls = Math.floor(Math.random() * 5);
-      aiFouls = Math.floor(Math.random() * 5);
-      userCorners = Math.floor(Math.random() * 8);
-      aiCorners = Math.floor(Math.random() * 8);
-      userOffsides = Math.floor(Math.random() * 4);
-      aiOffsides = Math.floor(Math.random() * 4);
+      // Build major-event timeline: goals, big chances, saves, cards, penalties, decisive tackles
+      const timelineEvents = [];
+      const minutesUsed = new Set();
 
-      let matchWinnerText = "It's a draw!";
-      if (userScore > aiScore) {
-        tournament.userWins++;
-        matchWinnerText = `User Team wins!`;
-      } else if (aiScore > userScore) {
-        tournament.aiWins++;
-        matchWinnerText = `AI Team wins!`;
-      } else {
-        tournament.draws++;
-      }
-
-      const matchData = {
-          userScore,
-          aiScore,
-          matchWinnerText,
-          userTeam,
-          aiTeam,
-          timelineEvents,
-          stats: {
-              user: {
-                  shots: userShots,
-                  shotsOnTarget: userShotsOnTarget,
-                  possession: userPossession,
-                  passAccuracy: userPassAccuracy,
-                  tackles: userTackles,
-                  fouls: userFouls,
-                  corners: userCorners,
-                  offsides: userOffsides,
-              },
-              ai: {
-                  shots: aiShots,
-                  shotsOnTarget: aiShotsOnTarget,
-                  possession: aiPossession,
-                  passAccuracy: aiPassAccuracy,
-                  tackles: aiTackles,
-                  fouls: aiFouls,
-                  corners: aiCorners,
-                  offsides: aiOffsides,
-              }
-          }
+      const pushEventAt = (evt) => {
+        // ensure unique minute placement when desired; if collision, nudge
+        let m = evt.minute;
+        while (minutesUsed.has(m) && m < 90) m++;
+        minutesUsed.add(m);
+        evt.minute = m;
+        timelineEvents.push(evt);
       };
 
+      // Add kickoff/start
+      pushEventAt({
+        minute: 0,
+        team: "neutral",
+        type: "start",
+        text: `Match Start: User Team (${userTeam.strength}) vs AI Team (${aiTeam.strength})`,
+        icon: "⏱️",
+      });
+
+      // Create goal events for each team
+      function assignGoals(team, goalsCount) {
+        for (let g = 0; g < goalsCount; g++) {
+          const minute = randInt(5, 88);
+          // Scorer bias: forwards > mids > defenders
+          const fwd = getPlayersByGroup(team, "FWD");
+          const mid = getPlayersByGroup(team, "MID");
+          const def = getPlayersByGroup(team, "DEF");
+          const scorerPool = [];
+          scorerPool.push(...fwd, ...mid, ...def);
+          const scorer = pick(scorerPool) || pick(team.players);
+          // assist from midfield or forward
+          let assister = null;
+          if (Math.random() < 0.7) {
+            const assistPool = [...mid, ...fwd];
+            assister = pick(assistPool) || null;
+          }
+          // record stats
+          scorer.stats = scorer.stats || {};
+          scorer.stats.goals = (scorer.stats.goals || 0) + 1;
+          if (assister)
+            (assister.stats = assister.stats || {}),
+              (assister.stats.assists = (assister.stats.assists || 0) + 1);
+          adjustMatchRating(scorer, +1.2, "Goal scored");
+          if (assister) adjustMatchRating(assister, +0.6, "Assist provided");
+
+          pushEventAt({
+            minute,
+            team: team === userTeam ? "user" : "ai",
+            type: "goal",
+            text: `GOAL! ${scorer.name} scores!`,
+            icon: "⚽",
+            player: scorer,
+            assist: assister,
+          });
+        }
+      }
+
+      assignGoals(userTeam, userGoals);
+      assignGoals(aiTeam, aiGoals);
+
+      // Big chances (exciting moments that may or may not result in goal) - 0..4 per match
+      const bigChances = randInt(1, 4);
+      for (let i = 0; i < bigChances; i++) {
+        const forUser =
+          Math.random() <
+          userTeam.strength / (userTeam.strength + aiTeam.strength);
+        const minute = randInt(1, 89);
+        const team = forUser ? userTeam : aiTeam;
+        const attacker =
+          pick(
+            getPlayersByGroup(team, "FWD").concat(
+              getPlayersByGroup(team, "MID")
+            )
+          ) || pick(team.players);
+        // high quality chance -> often saved or narrowly missed
+        if (Math.random() < 0.45) {
+          // becomes a goal sometimes (but we already distributed goals) -> convert to a dramatic save if not matching existing goal minute
+          pushEventAt({
+            minute,
+            team: team === userTeam ? "user" : "ai",
+            type: "bigchance",
+            text: `${attacker.name} has a HUGE chance!`,
+            icon: "⚠️",
+            player: attacker,
+          });
+          // sometimes followed by a save
+          if (Math.random() < 0.6) {
+            const gk =
+              pick(getPlayersByGroup(forUser ? aiTeam : userTeam, "GK")) ||
+              pick((forUser ? aiTeam : userTeam).players);
+            pushEventAt({
+              minute: Math.min(89, minute + 0),
+              team: forUser ? "ai" : "user",
+              type: "save",
+              text: `Brilliant save by ${gk.name}!`,
+              icon: "🛡️",
+              player: gk,
+            });
+            adjustMatchRating(gk, +0.5, "Key save");
+            gk.stats = gk.stats || {};
+            gk.stats.saves = (gk.stats.saves || 0) + 1;
+          }
+        } else {
+          // narrow miss - don't clutter timeline, only occasionally show
+          if (Math.random() < 0.25) {
+            pushEventAt({
+              minute,
+              team: team === userTeam ? "user" : "ai",
+              type: "chance",
+              text: `${attacker.name} almost scores — just off target!`,
+              icon: "🥅",
+              player: attacker,
+            });
+            adjustMatchRating(attacker, -0.2, "Big miss");
+          }
+        }
+      }
+
+      // Saves from remaining shots on target that didn't become goals
+      function addSavesFor(teamShotsOnTarget, teamGoals, team, opposingTeam) {
+        const savesToAdd = Math.max(0, teamShotsOnTarget - teamGoals);
+        let added = 0;
+        for (let s = 0; s < savesToAdd; s++) {
+          if (Math.random() < 0.6) {
+            const minute = randInt(1, 89);
+            const gk =
+              pick(getPlayersByGroup(opposingTeam, "GK")) ||
+              pick(opposingTeam.players);
+            pushEventAt({
+              minute,
+              team: opposingTeam === userTeam ? "user" : "ai",
+              type: "save",
+              text: `Fantastic stop from ${gk.name}!`,
+              icon: "🛡️",
+              player: gk,
+            });
+            gk.stats = gk.stats || {};
+            gk.stats.saves = (gk.stats.saves || 0) + 1;
+            adjustMatchRating(gk, +0.35, "Save made");
+            added++;
+          }
+        }
+        return added;
+      }
+
+      addSavesFor(userShotsOnTarget, userGoals, userTeam, aiTeam);
+      addSavesFor(aiShotsOnTarget, aiGoals, aiTeam, userTeam);
+
+      // Cards: a few per match
+      const totalCards = randInt(0, 4);
+      for (let c = 0; c < totalCards; c++) {
+        const minute = randInt(1, 89);
+        const team = Math.random() < 0.5 ? userTeam : aiTeam;
+        const pickPlayer =
+          pick(
+            team.players.filter(
+              (p) =>
+                getPositionGroup(p.position || p.preferredPosition) !== "GK"
+            )
+          ) || pick(team.players);
+        // track a booking but do not apply heavy match-wide effects
+        pickPlayer.stats = pickPlayer.stats || {};
+        pickPlayer.stats.cards = (pickPlayer.stats.cards || 0) + 1;
+        // Small, non-game-changing rating tweak for a booking
+        adjustMatchRating(pickPlayer, -0.15, "Booking");
+        const isRed = false; // no sending-off
+        pushEventAt({
+          minute,
+          team: team === userTeam ? "user" : "ai",
+          type: "card",
+          text: `${pickPlayer.name} is shown a yellow card.`,
+          icon: "🟨",
+          player: pickPlayer,
+        });
+      }
+
+      // Decisive tackles: highlight a few
+      const decisiveTackles = randInt(2, 6);
+      for (let t = 0; t < decisiveTackles; t++) {
+        const minute = randInt(1, 89);
+        const team = Math.random() < 0.5 ? userTeam : aiTeam;
+        const tackler =
+          pick(
+            team.players.filter(
+              (p) =>
+                getPositionGroup(p.position || p.preferredPosition) !== "FWD"
+            )
+          ) || pick(team.players);
+        tackler.stats = tackler.stats || {};
+        tackler.stats.tackles = (tackler.stats.tackles || 0) + 1;
+        adjustMatchRating(tackler, +0.15, "Decisive tackle");
+        if (Math.random() < 0.25) {
+          pushEventAt({
+            minute,
+            team: team === userTeam ? "user" : "ai",
+            type: "tackle",
+            text: `${tackler.name} makes a decisive tackle to stop the attack.`,
+            icon: "🛡️",
+            player: tackler,
+          });
+        }
+      }
+
+      // Full time
+      pushEventAt({
+        minute: 90,
+        team: "neutral",
+        type: "end",
+        text: `Full Time! Final Score: User Team ${userGoals} - ${aiGoals} AI Team`,
+        icon: "⏱️",
+      });
+
+      // Sort timeline by minute and display (major events only)
+      timelineEvents.sort((a, b) => a.minute - b.minute);
+
+      // Renderer for live commentary events (major events only)
+      const addTimelineEvent = (event) => {
+        if (isSimulationSkipped) return;
+        const { minute, team, type, text, icon } = event;
+        const eventElement = document.createElement("div");
+        eventElement.classList.add("commentary-event", team, type);
+        eventElement.innerHTML = `
+          <span class="icon">${icon || ""}</span>
+          <div class="text">
+            <span class="minute">${minute}'</span> - ${text}
+          </div>
+        `;
+        if (liveCommentaryFeed) {
+          liveCommentaryFeed.appendChild(eventElement);
+          setTimeout(() => {
+            try {
+              liveCommentaryContainer.scrollTop =
+                liveCommentaryContainer.scrollHeight;
+            } catch (e) {}
+          }, 10);
+        }
+      };
+
+      // Apply scores to live UI while emitting events in order
+      for (const ev of timelineEvents) {
+        if (isSimulationSkipped) break;
+        // When a goal occurs update live score
+        if (ev.type === "goal") {
+          if (ev.team === "user") {
+            liveUserScore.textContent = (
+              parseInt(liveUserScore.textContent || "0") + 1
+            ).toString();
+          } else if (ev.team === "ai") {
+            liveAiScore.textContent = (
+              parseInt(liveAiScore.textContent || "0") + 1
+            ).toString();
+          }
+        }
+        addTimelineEvent(ev);
+        // small pacing between events
+        await delay(400 + randInt(0, 400));
+      }
+
+      // Finalize aggregate stats for display - use pass accuracy computed earlier if present
+      // (computed earlier to avoid duplicate declarations)
+      // ensure these variables exist
+      // userPassAccuracy and aiPassAccuracy were estimated earlier in the match flow
+      // If for any reason they're undefined, provide a safe fallback
+      if (typeof userPassAccuracy === "undefined") {
+        userPassAccuracy =
+          userPasses > 0
+            ? Math.round(
+                ((userPasses - Math.floor(randFloat(0, userPasses) / 6)) /
+                  userPasses) *
+                  100
+              )
+            : 0;
+      }
+      if (typeof aiPassAccuracy === "undefined") {
+        aiPassAccuracy =
+          aiPasses > 0
+            ? Math.round(
+                ((aiPasses - Math.floor(randFloat(0, aiPasses) / 6)) /
+                  aiPasses) *
+                  100
+              )
+            : 0;
+      }
+
+      // Distribute passes across players with position-aware weighting
+      function distributePassesToPlayers(team, totalPasses) {
+        const players = team.players.slice();
+        if (players.length === 0) return;
+        // group weight heuristics
+        const groupWeight = { MID: 0.55, DEF: 0.25, FWD: 0.17, GK: 0.03 };
+        const groups = {
+          MID: getPlayersByGroup(team, "MID"),
+          DEF: getPlayersByGroup(team, "DEF"),
+          FWD: getPlayersByGroup(team, "FWD"),
+          GK: getPlayersByGroup(team, "GK"),
+        };
+        // calculate group targets
+        const groupTargets = {};
+        Object.keys(groups).forEach((g) => {
+          const cnt = groups[g].length || 1;
+          groupTargets[g] = Math.round(totalPasses * groupWeight[g]);
+        });
+        // distribute within group
+        Object.keys(groups).forEach((g) => {
+          const list = groups[g];
+          if (!list.length) return;
+          // per-player min/max by position
+          const perMinMax = {
+            MID: [50, 120],
+            DEF: [30, 80],
+            FWD: [15, 40],
+            GK: [5, 40],
+          };
+          const [minP, maxP] = perMinMax[g];
+          // start with random allocation
+          let allocated = 0;
+          const temp = list.map((p) => {
+            const v = randInt(minP, maxP);
+            allocated += v;
+            return { p, v };
+          });
+          // scale to groupTarget
+          const target = groupTargets[g];
+          const scale = target / (allocated || target || 1);
+          temp.forEach((t) => {
+            const passes = Math.max(0, Math.round(t.v * scale));
+            t.p.stats = t.p.stats || {};
+            t.p.stats.passes = (t.p.stats.passes || 0) + passes;
+            // Estimate completed passes per player using team pass accuracy
+            const teamAcc =
+              team === userTeam ? userPassAccuracy : aiPassAccuracy;
+            t.p.stats.passesCompleted =
+              (t.p.stats.passesCompleted || 0) +
+              Math.round(passes * (teamAcc / 100));
+            t.p.stats.passAccuracy = Math.round(
+              (t.p.stats.passesCompleted / (t.p.stats.passes || 1)) * 100
+            );
+          });
+        });
+      }
+
+      distributePassesToPlayers(userTeam, userPasses);
+      distributePassesToPlayers(aiTeam, aiPasses);
+
+      // Distribute dribbles, key passes, interceptions, clearances
+      function distributeMiscStats(
+        team,
+        dribbles,
+        keyPasses,
+        interceptions,
+        clearances
+      ) {
+        const mids = getPlayersByGroup(team, "MID");
+        const fwds = getPlayersByGroup(team, "FWD");
+        const defs = getPlayersByGroup(team, "DEF");
+        const poolDribble = [...mids, ...fwds];
+        for (let i = 0; i < dribbles; i++) {
+          const p = pick(poolDribble.length ? poolDribble : team.players);
+          p.stats = p.stats || {};
+          p.stats.dribbles = (p.stats.dribbles || 0) + 1;
+          adjustMatchRating(p, +0.03, "Successful dribble");
+        }
+        for (let i = 0; i < keyPasses; i++) {
+          const p = pick(mids.length ? mids : team.players);
+          p.stats = p.stats || {};
+          p.stats.keyPasses = (p.stats.keyPasses || 0) + 1;
+          adjustMatchRating(p, +0.08, "Key pass");
+        }
+        for (let i = 0; i < interceptions; i++) {
+          const p = pick(defs.length ? defs : team.players);
+          p.stats = p.stats || {};
+          p.stats.interceptions = (p.stats.interceptions || 0) + 1;
+          adjustMatchRating(p, +0.04, "Interception");
+        }
+        for (let i = 0; i < clearances; i++) {
+          const p = pick(defs.length ? defs : team.players);
+          p.stats = p.stats || {};
+          p.stats.clearances = (p.stats.clearances || 0) + 1;
+        }
+      }
+
+      distributeMiscStats(
+        userTeam,
+        userDribbles,
+        userKeyPasses,
+        userInterceptions,
+        userClearances
+      );
+      distributeMiscStats(
+        aiTeam,
+        aiDribbles,
+        aiKeyPasses,
+        aiInterceptions,
+        aiClearances
+      );
+
+      // Distribute tackles among defenders & midfielders
+      function distributeTackles(team, total) {
+        const candidates = team.players.filter(
+          (p) => getPositionGroup(p.position || p.preferredPosition) !== "FWD"
+        );
+        for (let i = 0; i < total; i++) {
+          const t = pick(candidates.length ? candidates : team.players);
+          t.stats = t.stats || {};
+          t.stats.tackles = (t.stats.tackles || 0) + 1;
+        }
+      }
+
+      distributeTackles(userTeam, userTackles);
+      distributeTackles(aiTeam, aiTackles);
+
+      // Distribute fouls
+      function distributeFouls(team, total) {
+        for (let i = 0; i < total; i++) {
+          const p = pick(team.players);
+          p.stats = p.stats || {};
+          p.stats.fouls = (p.stats.fouls || 0) + 1;
+          // small rating penalty
+          adjustMatchRating(p, -0.2, "Foul committed");
+        }
+      }
+
+      distributeFouls(userTeam, userFouls);
+      distributeFouls(aiTeam, aiFouls);
+
+      // Assign shots to attackers and midfielders
+      function distributeShots(team, totalShots, shotsOnTarget, goals) {
+        const fwd = getPlayersByGroup(team, "FWD");
+        const mid = getPlayersByGroup(team, "MID");
+        const pool = [
+          ...fwd,
+          ...mid,
+          ...team.players.filter(
+            (p) => getPositionGroup(p.position || p.preferredPosition) === "DEF"
+          ),
+        ];
+        // allocate shots
+        let remaining = totalShots;
+        for (const p of pool) {
+          const maxShots =
+            getPositionGroup(p.position || p.preferredPosition) === "FWD"
+              ? 8
+              : getPositionGroup(p.position || p.preferredPosition) === "MID"
+              ? 5
+              : 2;
+          const s = Math.min(remaining, randInt(0, maxShots));
+          p.stats = p.stats || {};
+          p.stats.shots = (p.stats.shots || 0) + s;
+          remaining -= s;
+          if (remaining <= 0) break;
+        }
+        // if still shots remaining, give to random attackers
+        while (remaining > 0) {
+          const p = pick(pool);
+          p.stats = p.stats || {};
+          p.stats.shots = (p.stats.shots || 0) + 1;
+          remaining--;
+        }
+        // Shots on target and goals already accounted separately (goals incremented earlier)
+      }
+
+      distributeShots(userTeam, userShots, userShotsOnTarget, userGoals);
+      distributeShots(aiTeam, aiShots, aiShotsOnTarget, aiGoals);
+
+      // Final stats object
+      const matchData = {
+        userScore: userGoals,
+        aiScore: aiGoals,
+        matchWinnerText:
+          userGoals > aiGoals
+            ? "User Team wins!"
+            : aiGoals > userGoals
+            ? "AI Team wins!"
+            : "It's a draw!",
+        userTeam,
+        aiTeam,
+        timelineEvents,
+        stats: {
+          user: {
+            shots: userShots,
+            shotsOnTarget: userShotsOnTarget,
+            possession: userPossession,
+            passAccuracy: userPassAccuracy,
+            tackles: userTackles,
+            fouls: userFouls,
+            corners: userCorners,
+            offsides: userOffsides,
+            saves: userSaves,
+            passes: userPasses,
+            passesCompleted: Math.round((userPassAccuracy / 100) * userPasses),
+            dribbles: userDribbles,
+            keyPasses: userKeyPasses,
+            interceptions: userInterceptions,
+            clearances: userClearances,
+          },
+          ai: {
+            shots: aiShots,
+            shotsOnTarget: aiShotsOnTarget,
+            possession: aiPossession,
+            passAccuracy: aiPassAccuracy,
+            tackles: aiTackles,
+            fouls: aiFouls,
+            corners: aiCorners,
+            offsides: aiOffsides,
+            saves: aiSaves,
+            passes: aiPasses,
+            passesCompleted: Math.round((aiPassAccuracy / 100) * aiPasses),
+            dribbles: aiDribbles,
+            keyPasses: aiKeyPasses,
+            interceptions: aiInterceptions,
+            clearances: aiClearances,
+          },
+        },
+      };
+
+      // Update tournament results
+      if (matchData.userScore > matchData.aiScore) tournament.userWins++;
+      else if (matchData.aiScore > matchData.userScore) tournament.aiWins++;
+      else tournament.draws++;
       tournament.results.push(matchData);
       saveTournament();
-      
+
       renderPostMatch(matchData);
 
-      if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
-      const postMatchSection = document.getElementById('post-match-section');
-      if(postMatchSection) postMatchSection.classList.remove("hidden");
-
+      if (liveSimulationSection) liveSimulationSection.classList.add("hidden");
+      const postMatchSection = document.getElementById("post-match-section");
+      if (postMatchSection) postMatchSection.classList.remove("hidden");
       updateTournamentUI();
 
-      // Check for tournament winner
+      // Tournament completion handling (unchanged)
       if (
         tournament.userWins >= Math.ceil(tournament.maxRounds / 2) ||
         tournament.aiWins >= Math.ceil(tournament.maxRounds / 2)
       ) {
         let tournamentWinner = "";
-        if (tournament.userWins > tournament.aiWins) {
+        if (tournament.userWins > tournament.aiWins)
           tournamentWinner = "User Team";
-        } else if (tournament.aiWins > tournament.userWins) {
+        else if (tournament.aiWins > tournament.userWins)
           tournamentWinner = "AI Team";
-        } else {
-          tournamentWinner = "It's a draw!";
-        }
-        if(tournamentWinnerSpan) tournamentWinnerSpan.textContent = tournamentWinner;
-        if(finalTournamentScoreSpan) finalTournamentScoreSpan.textContent = `User ${tournament.userWins} - ${tournament.aiWins} AI (${tournament.draws} draws)`;
-        if(postMatchSection) postMatchSection.classList.add("hidden"); // Hide post match section
-        if(tournamentCompleteSection) tournamentCompleteSection.classList.remove("hidden"); // Show tournament complete section
+        else tournamentWinner = "It's a draw!";
+        if (tournamentWinnerSpan)
+          tournamentWinnerSpan.textContent = tournamentWinner;
+        if (finalTournamentScoreSpan)
+          finalTournamentScoreSpan.textContent = `User ${tournament.userWins} - ${tournament.aiWins} AI (${tournament.draws} draws)`;
+        if (postMatchSection) postMatchSection.classList.add("hidden");
+        if (tournamentCompleteSection)
+          tournamentCompleteSection.classList.remove("hidden");
       }
     }
 
     function renderPostMatch(matchData) {
-        renderMatchHeader(matchData);
-        renderTimeline(matchData.timelineEvents);
-        renderGoalScorers(matchData.timelineEvents);
-        renderTeamStats(matchData.stats);
-        renderPlayerRatings(matchData.userTeam.players, matchData.aiTeam.players);
+      renderMatchHeader(matchData);
+      renderTimeline(matchData.timelineEvents);
+      renderGoalScorers(matchData.timelineEvents);
+      renderTeamStats(matchData.stats);
+      renderPlayerRatings(matchData.userTeam.players, matchData.aiTeam.players);
     }
 
     function renderMatchHeader(matchData) {
-        const userTeamInfo = document.querySelector('.match-header .user-team');
-        const aiTeamInfo = document.querySelector('.match-header .ai-team');
-        const scoreContainer = document.querySelector('.score-container');
+      const userTeamInfo = document.querySelector(".match-header .user-team");
+      const aiTeamInfo = document.querySelector(".match-header .ai-team");
+      const scoreContainer = document.querySelector(".score-container");
 
-        if (userTeamInfo) {
-            userTeamInfo.querySelector('.team-name').textContent = 'Your Team';
-            const userChem = calculateTeamChemistry(matchData.userTeam.players);
-            userTeamInfo.querySelector('.chemistry-value').textContent = `${userChem}%`;
-            userTeamInfo.querySelector('.chemistry-fill').style.width = `${userChem}%`;
-        }
-        if (aiTeamInfo) {
-            aiTeamInfo.querySelector('.team-name').textContent = 'Opponent';
-            const aiChem = calculateTeamChemistry(matchData.aiTeam.players);
-            aiTeamInfo.querySelector('.chemistry-value').textContent = `${aiChem}%`;
-            aiTeamInfo.querySelector('.chemistry-fill').style.width = `${aiChem}%`;
-        }
-        if (scoreContainer) {
-            scoreContainer.querySelector('.final-score').textContent = `${matchData.userScore} - ${matchData.aiScore}`;
-            scoreContainer.querySelector('.match-winner').textContent = matchData.matchWinnerText;
-        }
+      if (userTeamInfo) {
+        userTeamInfo.querySelector(".team-name").textContent = "Your Team";
+        const userChem = calculateTeamChemistry(
+          matchData.userTeam.players,
+          matchData.userTeam.playstyle
+        );
+        userTeamInfo.querySelector(
+          ".chemistry-value"
+        ).textContent = `${userChem}%`;
+        userTeamInfo.querySelector(
+          ".chemistry-fill"
+        ).style.width = `${userChem}%`;
+      }
+      if (aiTeamInfo) {
+        aiTeamInfo.querySelector(".team-name").textContent = "Opponent";
+        const aiChem = calculateTeamChemistry(
+          matchData.aiTeam.players,
+          matchData.aiTeam.playstyle
+        );
+        aiTeamInfo.querySelector(".chemistry-value").textContent = `${aiChem}%`;
+        aiTeamInfo.querySelector(".chemistry-fill").style.width = `${aiChem}%`;
+      }
+      if (scoreContainer) {
+        scoreContainer.querySelector(
+          ".final-score"
+        ).textContent = `${matchData.userScore} - ${matchData.aiScore}`;
+        scoreContainer.querySelector(".match-winner").textContent =
+          matchData.matchWinnerText;
+      }
     }
 
     function renderTimeline(events) {
-        const timelineContainer = document.querySelector('.timeline');
-        if (!timelineContainer) return;
-        timelineContainer.innerHTML = '';
-        events.forEach(event => {
-            const eventElement = document.createElement('div');
-            eventElement.className = `timeline-event ${event.team}`;
-            eventElement.innerHTML = `
-                <div class="event-icon">${event.icon}</div>
-                <div class="event-details"><strong>${event.minute}'</strong> - ${event.text}</div>
+      const timelineContainer = document.querySelector(".timeline");
+      if (!timelineContainer) return;
+      timelineContainer.innerHTML = "";
+      events.forEach((event) => {
+        const eventElement = document.createElement("div");
+        // include team and type (goal/assist/start/end) for styling
+        const typeClass = event.type ? ` ${event.type}` : "";
+        eventElement.className = `timeline-event ${event.team}${typeClass}`;
+        eventElement.innerHTML = `
+                <div class="event-icon">${event.icon || ""}</div>
+                <div class="event-details"><strong>${
+                  event.minute
+                }'</strong> - ${event.text}</div>
             `;
-            timelineContainer.appendChild(eventElement);
-        });
+        timelineContainer.appendChild(eventElement);
+      });
     }
 
     function renderGoalScorers(events) {
-        const goalScorersContainer = document.getElementById('goal-scorers-list');
-        if (!goalScorersContainer) return;
-        goalScorersContainer.innerHTML = '';
-        const goalEvents = events.filter(e => e.type === 'goal');
-        goalEvents.forEach(event => {
-            const scorerCard = document.createElement('div');
-            scorerCard.className = 'goal-scorer-card';
-            scorerCard.innerHTML = `
+      const goalScorersContainer = document.getElementById("goal-scorers-list");
+      if (!goalScorersContainer) return;
+      goalScorersContainer.innerHTML = "";
+      const goalEvents = events.filter((e) => e.type === "goal");
+      goalEvents.forEach((event) => {
+        const scorerCard = document.createElement("div");
+        scorerCard.className = "goal-scorer-card";
+        scorerCard.innerHTML = `
                 <img src="${event.player.imageUrl}" alt="${event.player.name}">
                 <div class="scorer-info">
-                    <div class="scorer-name">${event.player.name} (${event.minute}')</div>
-                    ${event.assist ? `<div class="assist-info">Assist by ${event.assist.name}</div>` : ''}
+                    <div class="scorer-name">${event.player.name} (${
+          event.minute
+        }')</div>
+                    ${
+                      event.assist
+                        ? `<div class="assist-info">Assist by ${event.assist.name}</div>`
+                        : ""
+                    }
                 </div>
             `;
-            goalScorersContainer.appendChild(scorerCard);
-        });
+        goalScorersContainer.appendChild(scorerCard);
+      });
     }
 
     function renderTeamStats(stats) {
-        const statsContainer = document.getElementById('team-stats-content');
-        if (!statsContainer) return;
-        statsContainer.innerHTML = `
+      const statsContainer = document.getElementById("team-stats-content");
+      if (!statsContainer) return;
+      statsContainer.innerHTML = `
             <div class="stat-bar-container">
                 <div class="stat-values">
-                    <span class="user-stat">${stats.user.shots} (${stats.user.shotsOnTarget})</span>
+                    <span class="user-stat">${stats.user.shots} (${
+        stats.user.shotsOnTarget
+      })</span>
                     <span>Shots (On Target)</span>
-                    <span class="ai-stat">${stats.ai.shots} (${stats.ai.shotsOnTarget})</span>
+                    <span class="ai-stat">${stats.ai.shots} (${
+        stats.ai.shotsOnTarget
+      })</span>
                 </div>
                 <div class="stat-bar">
-                    <div class="stat-bar-user" style="width: ${stats.user.shots / (stats.user.shots + stats.ai.shots || 1) * 100}%"></div>
-                    <div class="stat-bar-ai" style="width: ${stats.ai.shots / (stats.user.shots + stats.ai.shots || 1) * 100}%"></div>
+                    <div class="stat-bar-user" style="width: ${
+                      (stats.user.shots /
+                        (stats.user.shots + stats.ai.shots || 1)) *
+                      100
+                    }%"></div>
+                    <div class="stat-bar-ai" style="width: ${
+                      (stats.ai.shots /
+                        (stats.user.shots + stats.ai.shots || 1)) *
+                      100
+                    }%"></div>
                 </div>
             </div>
             <div class="stat-bar-container">
@@ -2034,8 +2953,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="ai-stat">${stats.ai.possession}%</span>
                 </div>
                 <div class="stat-bar">
-                    <div class="stat-bar-user" style="width: ${stats.user.possession}%"></div>
-                    <div class="stat-bar-ai" style="width: ${stats.ai.possession}%"></div>
+                    <div class="stat-bar-user" style="width: ${
+                      stats.user.possession
+                    }%"></div>
+                    <div class="stat-bar-ai" style="width: ${
+                      stats.ai.possession
+                    }%"></div>
                 </div>
             </div>
             <div class="stat-bar-container">
@@ -2045,10 +2968,53 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="ai-stat">${stats.ai.passAccuracy}%</span>
                 </div>
                 <div class="stat-bar">
-                    <div class="stat-bar-user" style="width: ${stats.user.passAccuracy}%"></div>
-                    <div class="stat-bar-ai" style="width: ${stats.ai.passAccuracy}%"></div>
+                    <div class="stat-bar-user" style="width: ${
+                      stats.user.passAccuracy
+                    }%"></div>
+                    <div class="stat-bar-ai" style="width: ${
+                      stats.ai.passAccuracy
+                    }%"></div>
                 </div>
             </div>
+      <div class="stat-bar-container">
+        <div class="stat-values">
+          <span class="user-stat">${stats.user.passes} (${
+        stats.user.passesCompleted
+      })</span>
+          <span>Passes (Completed)</span>
+          <span class="ai-stat">${stats.ai.passes} (${
+        stats.ai.passesCompleted
+      })</span>
+        </div>
+      </div>
+      <div class="stat-bar-container">
+        <div class="stat-values">
+          <span class="user-stat">${stats.user.dribbles}</span>
+          <span>Dribbles</span>
+          <span class="ai-stat">${stats.ai.dribbles}</span>
+        </div>
+      </div>
+      <div class="stat-bar-container">
+        <div class="stat-values">
+          <span class="user-stat">${stats.user.keyPasses}</span>
+          <span>Key Passes</span>
+          <span class="ai-stat">${stats.ai.keyPasses}</span>
+        </div>
+      </div>
+      <div class="stat-bar-container">
+        <div class="stat-values">
+          <span class="user-stat">${stats.user.interceptions}</span>
+          <span>Interceptions</span>
+          <span class="ai-stat">${stats.ai.interceptions}</span>
+        </div>
+      </div>
+      <div class="stat-bar-container">
+        <div class="stat-values">
+          <span class="user-stat">${stats.user.clearances}</span>
+          <span>Clearances</span>
+          <span class="ai-stat">${stats.ai.clearances}</span>
+        </div>
+      </div>
             <div class="stat-bar-container">
                 <div class="stat-values">
                     <span class="user-stat">${stats.user.tackles}</span>
@@ -2081,32 +3047,231 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderPlayerRatings(userPlayers, aiPlayers) {
-        const ratingsContainer = document.querySelector('.player-ratings-grid');
-        if (!ratingsContainer) return;
-        ratingsContainer.innerHTML = '<h3>Your Team</h3>';
-        userPlayers.forEach(player => {
-            const ratingCard = document.createElement('div');
-            ratingCard.className = 'player-rating-card';
-            ratingCard.innerHTML = `
-                <img src="${player.imageUrl}" alt="${player.name}" class="player-img">
-                <div class="player-name">${player.name}</div>
-                <div class="player-position">${player.position}</div>
-                <div class="match-rating">${player.matchRating.toFixed(1)}</div>
-            `;
-            ratingsContainer.appendChild(ratingCard);
+      const ratingsRoot = document.querySelector(".player-ratings-grid");
+      if (!ratingsRoot) return;
+
+      // Helper: compute team rating as average of available matchRating or fallback to baseRating
+      function computeTeamRating(players) {
+        if (!players || players.length === 0) return 0;
+        let sum = 0;
+        let count = 0;
+        players.forEach((p) => {
+          const r =
+            typeof p.matchRating === "number"
+              ? p.matchRating
+              : p.baseRating || 0;
+          sum += r;
+          count++;
         });
-        ratingsContainer.innerHTML += '<h3 class="mt-4">Opponent Team</h3>';
-        aiPlayers.forEach(player => {
-            const ratingCard = document.createElement('div');
-            ratingCard.className = 'player-rating-card';
-            ratingCard.innerHTML = `
-                <img src="${player.imageUrl}" alt="${player.name}" class="player-img">
+        return count ? sum / count : 0;
+      }
+
+      // Clear container
+      ratingsRoot.innerHTML = "";
+
+      // Build a team section block to keep each team's ratings visually separated
+      function buildTeamSection(teamName, players, extraClass) {
+        const teamBlock = document.createElement("div");
+        teamBlock.className = `team-ratings ${extraClass || ""}`.trim();
+
+        const teamHeader = document.createElement("div");
+        teamHeader.className =
+          "team-rating-header d-flex align-items-center justify-content-between";
+
+        const title = document.createElement("div");
+        title.className = "team-title h5 mb-0";
+        title.textContent = teamName;
+
+        const ratingValue = document.createElement("div");
+        ratingValue.className = "team-rating-value text-end";
+        const avg = computeTeamRating(players);
+        ratingValue.innerHTML = `<div class="fw-bold">Team Rating</div><div class="display-6 team-rating-num">${avg.toFixed(
+          1
+        )}</div>`;
+
+        teamHeader.appendChild(title);
+        teamHeader.appendChild(ratingValue);
+
+        teamBlock.appendChild(teamHeader);
+
+        // Player grid inside team block
+        const grid = document.createElement("div");
+        grid.className = "player-ratings-grid team-player-grid mt-3";
+
+        players.forEach((player) => {
+          const ratingCard = document.createElement("div");
+          ratingCard.className = "player-rating-card";
+          ratingCard.innerHTML = `
+                <img src="${player.imageUrl}" alt="${
+            player.name
+          }" class="player-img">
                 <div class="player-name">${player.name}</div>
-                <div class="player-position">${player.preferredPosition}</div>
-                <div class="match-rating">${player.matchRating.toFixed(1)}</div>
+                <div class="player-position">${
+                  player.position || player.preferredPosition || ""
+                }</div>
+                <div class="match-rating">${(player.matchRating || 0).toFixed(
+                  1
+                )}</div>
+                <div class="player-card-buttons">
+                  <button class="btn btn-sm btn-info rating-details-btn" data-player="${
+                    player.name
+                  }">Details</button>
+                </div>
             `;
-            ratingsContainer.appendChild(ratingCard);
+          // Provide team reference for detail modal
+          ratingCard.dataset.team = teamName;
+          grid.appendChild(ratingCard);
         });
+
+        teamBlock.appendChild(grid);
+        return { teamBlock, avg };
+      }
+
+      // Prepare player lists
+      const userList = Array.isArray(userPlayers) ? userPlayers : [];
+      const aiList = Array.isArray(aiPlayers) ? aiPlayers : [];
+
+      // Build sections
+      const userSection = buildTeamSection("Your Team", userList, "team-user");
+      const aiSection = buildTeamSection(
+        "Opponent Team",
+        aiList,
+        "team-opponent"
+      );
+
+      // Insert user section then opponent section
+      ratingsRoot.appendChild(userSection.teamBlock);
+
+      // Insert MOTM if present (computed below) between sections
+
+      ratingsRoot.appendChild(aiSection.teamBlock);
+
+      // Compute Man of the Match across both teams
+      const allPlayers = [...userList, ...aiList];
+      allPlayers.forEach((p) => {
+        if (!p.stats)
+          p.stats = {
+            goals: 0,
+            assists: 0,
+            tackles: 0,
+            saves: 0,
+            shots: 0,
+            passes: 0,
+          };
+      });
+      const motm = allPlayers
+        .slice()
+        .sort((a, b) => (b.matchRating || 0) - (a.matchRating || 0))[0];
+      if (motm) {
+        const motmCard = document.createElement("div");
+        motmCard.className = "motm-card mt-4";
+        motmCard.innerHTML = `
+            <img class="motm-img" src="${motm.imageUrl}" alt="${motm.name}" />
+            <div class="motm-details">
+              <div class="motm-name">${
+                motm.name
+              } <span class="small text-muted">• ${
+          motm.position || motm.preferredPosition || ""
+        } • ${motm.team || ""}</span></div>
+              <div class="mt-1"><strong>Rating:</strong> <span class="match-rating">${(
+                motm.matchRating || 0
+              ).toFixed(1)}</span></div>
+              <div class="motm-stats">
+                <div class="motm-stat">Goals: ${motm.stats.goals || 0}</div>
+                <div class="motm-stat">Assists: ${motm.stats.assists || 0}</div>
+                <div class="motm-stat">Tackles: ${motm.stats.tackles || 0}</div>
+                <div class="motm-stat">Saves: ${motm.stats.saves || 0}</div>
+                <div class="motm-stat">Shots: ${motm.stats.shots || 0}</div>
+              </div>
+            </div>
+            <div style="min-width:120px;text-align:center;">
+              <button class="btn btn-warning btn-lg" id="motm-details-btn" data-player="${
+                motm.name
+              }">View Details</button>
+            </div>
+          `;
+        // Insert motm card at top of ratingsRoot
+        ratingsRoot.insertBefore(motmCard, ratingsRoot.firstChild);
+      }
+
+      // Wire up details buttons (delegation)
+      ratingsRoot.querySelectorAll(".rating-details-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const playerName = btn.getAttribute("data-player");
+          const found = allPlayers.find((p) => p.name === playerName);
+          if (found) showPlayerDetailModal(found);
+        });
+      });
+      const motmBtn = ratingsRoot.querySelector("#motm-details-btn");
+      if (motmBtn)
+        motmBtn.addEventListener("click", () => {
+          const name = motmBtn.getAttribute("data-player");
+          const found = allPlayers.find((p) => p.name === name);
+          if (found) showPlayerDetailModal(found);
+        });
+    }
+
+    // Populate and show the player detail modal
+    function showPlayerDetailModal(player) {
+      const modalEl = document.getElementById("player-detail-modal");
+      if (!modalEl) return;
+      const img = document.getElementById("detail-player-img");
+      const name = document.getElementById("detail-player-name");
+      const sub = document.getElementById("detail-player-sub");
+      const rating = document.getElementById("detail-player-rating");
+      const grid = document.getElementById("detail-stats-grid");
+
+      img.src = player.imageUrl || "images/default.jpg";
+      name.textContent = player.name || "";
+      sub.textContent = `${player.position || player.preferredPosition || ""} ${
+        player.team ? "• " + player.team : ""
+      }`;
+      rating.textContent = (player.matchRating || 0).toFixed(1);
+
+      // Ensure stats object
+      const s = player.stats || {
+        goals: 0,
+        assists: 0,
+        tackles: 0,
+        saves: 0,
+        shots: 0,
+        passes: 0,
+        passesCompleted: 0,
+        passAccuracy: null,
+        dribbles: 0,
+        interceptions: 0,
+        clearances: 0,
+        keyPasses: 0,
+      };
+      grid.innerHTML = "";
+      const statsList = [
+        ["Goals", s.goals || 0],
+        ["Assists", s.assists || 0],
+        ["Shots", s.shots || 0],
+        ["Tackles", s.tackles || 0],
+        ["Saves", s.saves || 0],
+        ["Passes", s.passes || 0],
+        ["Passes Completed", s.passesCompleted || 0],
+        [
+          "Pass Accuracy",
+          s.passAccuracy !== null && s.passAccuracy !== undefined
+            ? s.passAccuracy + "%"
+            : "N/A",
+        ],
+        ["Key Passes", s.keyPasses || 0],
+        ["Dribbles", s.dribbles || 0],
+        ["Interceptions", s.interceptions || 0],
+        ["Clearances", s.clearances || 0],
+      ];
+      statsList.forEach(([label, val]) => {
+        const col = document.createElement("div");
+        col.className = "col-6 col-md-4 mb-2";
+        col.innerHTML = `<div class="fw-bold">${label}</div><div>${val}</div>`;
+        grid.appendChild(col);
+      });
+
+      const bsModal = new bootstrap.Modal(modalEl);
+      bsModal.show();
     }
 
     // Calculates team strength based on adjusted player ratings
@@ -2117,14 +3282,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const adjustedRating = calculatePlayerRating(player, assignedPosition);
         totalAdjustedRating += adjustedRating;
       });
-      return Math.round(totalAdjustedRating / teamPlayers.length); // Average adjusted rating
+      // If an optional playstyle is passed via last argument, apply its strength modifier
+      const lastArg = arguments[1];
+      let avg = Math.round(totalAdjustedRating / teamPlayers.length);
+      if (typeof lastArg === "string" && playstyles[lastArg]) {
+        avg = Math.round(avg + playstyles[lastArg].strengthModifier);
+      }
+      return avg; // Average adjusted rating (possibly modified by playstyle)
     }
 
     // Helper to get general position type from specific position
     function getGeneralPositionType(specificPosition) {
       if (["ST", "LW", "RW", "CF"].includes(specificPosition)) return "Forward";
       if (
-        ["CM", "CAM", "CDM", "LM", "RM", "LWB", "RWB"].includes(specificPosition)
+        ["CM", "CAM", "CDM", "LM", "RM", "LWB", "RWB"].includes(
+          specificPosition
+        )
       )
         return "Midfielder";
       if (["CB", "LB", "RB", "LWB", "RWB"].includes(specificPosition))
@@ -2135,12 +3308,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Generates a random AI team, excluding players from the user's team
     function generateAITeam(excludedPlayers = []) {
-      const excludedPlayerNames = excludedPlayers.map(p => p.name);
+      const excludedPlayerNames = excludedPlayers.map((p) => p.name);
 
-      const availableForwards = predefinedPlayers.forwards.filter(p => !excludedPlayerNames.includes(p.name));
-      const availableMidfielders = predefinedPlayers.midfielders.filter(p => !excludedPlayerNames.includes(p.name));
-      const availableDefenders = predefinedPlayers.defenders.filter(p => !excludedPlayerNames.includes(p.name));
-      const availableGoalkeepers = predefinedPlayers.goalkeepers.filter(p => !excludedPlayerNames.includes(p.name));
+      const availableForwards = predefinedPlayers.forwards.filter(
+        (p) => !excludedPlayerNames.includes(p.name)
+      );
+      const availableMidfielders = predefinedPlayers.midfielders.filter(
+        (p) => !excludedPlayerNames.includes(p.name)
+      );
+      const availableDefenders = predefinedPlayers.defenders.filter(
+        (p) => !excludedPlayerNames.includes(p.name)
+      );
+      const availableGoalkeepers = predefinedPlayers.goalkeepers.filter(
+        (p) => !excludedPlayerNames.includes(p.name)
+      );
 
       const aiPlayers = [];
 
@@ -2158,33 +3339,133 @@ document.addEventListener("DOMContentLoaded", () => {
       return { players: aiPlayers, formation: "4-4-2" };
     }
 
-    // Calculates a simple team chemistry score
-    function calculateTeamChemistry(teamPlayers) {
-        let chemistry = 50; // Base chemistry
-        const positionCounts = { GK: 0, DEF: 0, MID: 0, FWD: 0 };
-        teamPlayers.forEach(p => {
-            const group = getPositionGroup(p.position);
-            if(positionCounts[group] !== undefined) positionCounts[group]++;
-        });
+    // Calculates a team chemistry score based on three components:
+    // 1) Per-player position fit (how well each player's assigned position matches their preferred/secondary)
+    // 2) Formation fit (how well the team's assigned position counts match a reasonable formation)
+    // 3) Preferred-position overlap (how well players' preferred positions align with the assigned roles)
+    // Returns an integer 0-100.
+    function calculateTeamChemistry(teamPlayers, playstyle) {
+      if (!Array.isArray(teamPlayers) || teamPlayers.length === 0) return 0;
 
-        // Bonus for balanced formation
-        if (positionCounts.GK === 1 && positionCounts.DEF >= 3 && positionCounts.MID >= 3 && positionCounts.FWD >= 1) {
-            chemistry += 20;
+      // --- Helper: per-player fit score (0-100) ---
+      function playerFitScore(player) {
+        try {
+          const assigned = normalizePosition(
+            player.position || player.assignedPosition || ""
+          );
+          const preferred = normalizePosition(player.preferredPosition || "");
+          const secondary = (player.secondaryPositions || []).map(
+            normalizePosition
+          );
+
+          if (!assigned || !preferred) return 50; // neutral if missing data
+
+          if (assigned === preferred) return 100;
+          if (secondary.includes(assigned)) return 85;
+
+          const assignedGroup = getPositionGroup(assigned);
+          const preferredGroup = getPositionGroup(preferred);
+
+          if (assignedGroup === preferredGroup) return 70; // same general group
+
+          // adjacent group (e.g., MID <-> DEF, MID <-> FWD)
+          if (
+            positionGroupAdjacency[preferredGroup] &&
+            positionGroupAdjacency[preferredGroup].includes(assignedGroup)
+          ) {
+            return 45;
+          }
+
+          // far group (big mismatch)
+          return 20;
+        } catch (e) {
+          return 50;
         }
+      }
 
-        // Bonus for players in preferred positions
-        const preferredPositionBonus = teamPlayers.reduce((bonus, p) => {
-            return bonus + (p.position === p.preferredPosition ? 2 : (p.secondaryPositions.includes(p.position) ? 1 : 0));
-        }, 0);
-        chemistry += preferredPositionBonus;
+      // --- Component A: average player fit ---
+      const fitScores = teamPlayers.map((p) => playerFitScore(p));
+      const avgPlayerFit =
+        fitScores.reduce((s, v) => s + v, 0) / fitScores.length; // 0-100
 
-        return Math.max(0, Math.min(100, chemistry)); // Keep between 0 and 100
+      // --- Component B: formation fit ---
+      // Count assigned players by group
+      const assignedCounts = { GK: 0, DEF: 0, MID: 0, FWD: 0 };
+      teamPlayers.forEach((p) => {
+        const grp = getPositionGroup(
+          normalizePosition(
+            p.position || p.assignedPosition || p.preferredPosition || ""
+          )
+        );
+        if (assignedCounts[grp] !== undefined) assignedCounts[grp]++;
+      });
+
+      // Define a few common formation targets (GK, DEF, MID, FWD)
+      const formationTargets = [
+        { name: "4-4-2", target: { GK: 1, DEF: 4, MID: 4, FWD: 2 } },
+        { name: "4-3-3", target: { GK: 1, DEF: 4, MID: 3, FWD: 3 } },
+        { name: "3-5-2", target: { GK: 1, DEF: 3, MID: 5, FWD: 2 } },
+        { name: "3-4-3", target: { GK: 1, DEF: 3, MID: 4, FWD: 3 } },
+        { name: "4-2-3-1", target: { GK: 1, DEF: 4, MID: 5, FWD: 1 } },
+      ];
+
+      // Choose the formation target that minimizes total absolute difference
+      let bestFormation = formationTargets[0];
+      let bestError = Infinity;
+      formationTargets.forEach((f) => {
+        const err =
+          Math.abs((assignedCounts.DEF || 0) - f.target.DEF) +
+          Math.abs((assignedCounts.MID || 0) - f.target.MID) +
+          Math.abs((assignedCounts.FWD || 0) - f.target.FWD) +
+          Math.abs((assignedCounts.GK || 0) - f.target.GK);
+        if (err < bestError) {
+          bestError = err;
+          bestFormation = f;
+        }
+      });
+
+      // Convert bestError into a 0-100 score: perfect match => 100, each unit of error costs ~8 points
+      // Tuned so reasonable small deviations produce realistic drops
+      const formationFit = Math.max(
+        0,
+        Math.min(100, Math.round(100 - bestError * 8))
+      );
+
+      // --- Component C: preferred-position overlap ---
+      const preferredCounts = { GK: 0, DEF: 0, MID: 0, FWD: 0 };
+      teamPlayers.forEach((p) => {
+        const grp = getPositionGroup(
+          normalizePosition(p.preferredPosition || "")
+        );
+        if (preferredCounts[grp] !== undefined) preferredCounts[grp]++;
+      });
+
+      const totalPlayers = teamPlayers.length;
+      const overlap =
+        (Math.min(preferredCounts.GK, assignedCounts.GK) +
+          Math.min(preferredCounts.DEF, assignedCounts.DEF) +
+          Math.min(preferredCounts.MID, assignedCounts.MID) +
+          Math.min(preferredCounts.FWD, assignedCounts.FWD)) /
+        Math.max(1, totalPlayers);
+
+      const preferredOverlapScore = Math.round(overlap * 100); // 0-100
+
+      // --- Combine components with weights ---
+      // Player fit should influence the majority, formation fit and preference overlap smaller
+      let finalScore = Math.round(
+        avgPlayerFit * 0.55 + formationFit * 0.25 + preferredOverlapScore * 0.2
+      );
+      // Apply playstyle chemistry modifier if provided
+      if (typeof playstyle === "string" && playstyles[playstyle]) {
+        finalScore = finalScore + playstyles[playstyle].chemistryModifier;
+      }
+      return Math.max(0, Math.min(100, finalScore));
     }
 
     // Clears the user's selected team and lineup
     function clearTeam() {
       selectedPlayers = [];
-      lineup = lineup.map(slot => ({ ...slot, player: null })); // Clear players from existing slots
+      lineup = lineup.map((slot) => ({ ...slot, player: null })); // Clear players from existing slots
       updateSelectedPlayerCount();
       renderPlayers(allPlayersData, availablePlayersDiv, true); // Re-render available players to update 'selected' state
       renderLineup(); // Clear visual lineup on the field
@@ -2192,85 +3473,153 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to randomize the team
     function randomizeTeam() {
-        console.log("randomizeTeam: Starting randomization.");
-        if (!currentFormation) {
-            alert("Please select a formation first.");
-            console.log("randomizeTeam: No formation selected. Aborting.");
-            return;
+      console.log("randomizeTeam: Starting randomization.");
+      if (!currentFormation) {
+        alert("Please select a formation first.");
+        console.log("randomizeTeam: No formation selected. Aborting.");
+        return;
+      }
+
+      clearTeam(); // Clear any existing players
+      console.log("randomizeTeam: Team cleared.");
+
+      const availablePlayersCopy = [...allPlayersData]; // Work with a copy
+      const shuffledPlayers = availablePlayersCopy.sort(
+        () => 0.5 - Math.random()
+      );
+      console.log("randomizeTeam: Shuffled players:", shuffledPlayers);
+
+      const formationConfig = formationRequirements[currentFormation];
+      const newSelectedPlayers = [];
+      const newLineup = lineup.map((slot) => ({ ...slot, player: null })); // Create a fresh lineup based on current formation slots
+      console.log("randomizeTeam: Initial new lineup:", newLineup);
+
+      // Helper to find and assign a player
+      const assignPlayer = (slot, playerPool, positionCheckFn) => {
+        const playerIndex = playerPool.findIndex((player) =>
+          positionCheckFn(player, slot.positionType)
+        );
+        if (playerIndex !== -1) {
+          const player = playerPool.splice(playerIndex, 1)[0];
+          slot.player = player;
+          newSelectedPlayers.push(player);
+          console.log(
+            `randomizeTeam: Assigned ${player.name} to ${slot.slotId}`
+          );
+          return true;
         }
+        return false;
+      };
 
-        clearTeam(); // Clear any existing players
-        console.log("randomizeTeam: Team cleared.");
+      // 1. Assign Goalkeeper
+      const gkSlot = newLineup.find(
+        (slot) => getPositionGroup(slot.positionType) === "GK"
+      );
+      if (gkSlot) {
+        assignPlayer(
+          gkSlot,
+          shuffledPlayers,
+          (player, posType) =>
+            getPositionGroup(player.preferredPosition) === "GK"
+        );
+      }
 
-        const availablePlayersCopy = [...allPlayersData]; // Work with a copy
-        const shuffledPlayers = availablePlayersCopy.sort(() => 0.5 - Math.random());
-        console.log("randomizeTeam: Shuffled players:", shuffledPlayers);
-
-        const formationConfig = formationRequirements[currentFormation];
-        const newSelectedPlayers = [];
-        const newLineup = lineup.map(slot => ({ ...slot, player: null })); // Create a fresh lineup based on current formation slots
-        console.log("randomizeTeam: Initial new lineup:", newLineup);
-
-        // Helper to find and assign a player
-        const assignPlayer = (slot, playerPool, positionCheckFn) => {
-            const playerIndex = playerPool.findIndex(player => positionCheckFn(player, slot.positionType));
-            if (playerIndex !== -1) {
-                const player = playerPool.splice(playerIndex, 1)[0];
-                slot.player = player;
-                newSelectedPlayers.push(player);
-                console.log(`randomizeTeam: Assigned ${player.name} to ${slot.slotId}`);
-                return true;
-            }
-            return false;
-        };
-
-        // 1. Assign Goalkeeper
-        const gkSlot = newLineup.find(slot => getPositionGroup(slot.positionType) === 'GK');
-        if (gkSlot) {
-            assignPlayer(gkSlot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'GK');
-        }
-
-        // 2. Assign Defenders
-        const defSlots = newLineup.filter(slot => getPositionGroup(slot.positionType) === 'DEF' && !slot.player);
-        defSlots.forEach(slot => {
-            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'DEF' && (player.preferredPosition === posType || player.secondaryPositions.includes(posType)));
-        });
-        // Fill remaining defender slots with any available defender
-        defSlots.filter(slot => !slot.player).forEach(slot => {
-            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'DEF');
-        });
-
-        // 3. Assign Midfielders
-        const midSlots = newLineup.filter(slot => getPositionGroup(slot.positionType) === 'MID' && !slot.player);
-        midSlots.forEach(slot => {
-            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'MID' && (player.preferredPosition === posType || player.secondaryPositions.includes(posType)));
-        });
-        // Fill remaining midfielder slots with any available midfielder
-        midSlots.filter(slot => !slot.player).forEach(slot => {
-            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'MID');
+      // 2. Assign Defenders
+      const defSlots = newLineup.filter(
+        (slot) => getPositionGroup(slot.positionType) === "DEF" && !slot.player
+      );
+      defSlots.forEach((slot) => {
+        assignPlayer(
+          slot,
+          shuffledPlayers,
+          (player, posType) =>
+            getPositionGroup(player.preferredPosition) === "DEF" &&
+            (player.preferredPosition === posType ||
+              player.secondaryPositions.includes(posType))
+        );
+      });
+      // Fill remaining defender slots with any available defender
+      defSlots
+        .filter((slot) => !slot.player)
+        .forEach((slot) => {
+          assignPlayer(
+            slot,
+            shuffledPlayers,
+            (player, posType) =>
+              getPositionGroup(player.preferredPosition) === "DEF"
+          );
         });
 
-        // 4. Assign Forwards
-        const fwdSlots = newLineup.filter(slot => getPositionGroup(slot.positionType) === 'FWD' && !slot.player);
-        fwdSlots.forEach(slot => {
-            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'FWD' && (player.preferredPosition === posType || player.secondaryPositions.includes(posType)));
-        });
-        // Fill remaining forward slots with any available forward
-        fwdSlots.filter(slot => !slot.player).forEach(slot => {
-            assignPlayer(slot, shuffledPlayers, (player, posType) => getPositionGroup(player.preferredPosition) === 'FWD');
+      // 3. Assign Midfielders
+      const midSlots = newLineup.filter(
+        (slot) => getPositionGroup(slot.positionType) === "MID" && !slot.player
+      );
+      midSlots.forEach((slot) => {
+        assignPlayer(
+          slot,
+          shuffledPlayers,
+          (player, posType) =>
+            getPositionGroup(player.preferredPosition) === "MID" &&
+            (player.preferredPosition === posType ||
+              player.secondaryPositions.includes(posType))
+        );
+      });
+      // Fill remaining midfielder slots with any available midfielder
+      midSlots
+        .filter((slot) => !slot.player)
+        .forEach((slot) => {
+          assignPlayer(
+            slot,
+            shuffledPlayers,
+            (player, posType) =>
+              getPositionGroup(player.preferredPosition) === "MID"
+          );
         });
 
-        // 5. Fill any remaining empty slots with any available player (less ideal, but ensures 11 players)
-        newLineup.filter(slot => !slot.player).forEach(slot => {
-            assignPlayer(slot, shuffledPlayers, (player, posType) => true); // Any player will do
+      // 4. Assign Forwards
+      const fwdSlots = newLineup.filter(
+        (slot) => getPositionGroup(slot.positionType) === "FWD" && !slot.player
+      );
+      fwdSlots.forEach((slot) => {
+        assignPlayer(
+          slot,
+          shuffledPlayers,
+          (player, posType) =>
+            getPositionGroup(player.preferredPosition) === "FWD" &&
+            (player.preferredPosition === posType ||
+              player.secondaryPositions.includes(posType))
+        );
+      });
+      // Fill remaining forward slots with any available forward
+      fwdSlots
+        .filter((slot) => !slot.player)
+        .forEach((slot) => {
+          assignPlayer(
+            slot,
+            shuffledPlayers,
+            (player, posType) =>
+              getPositionGroup(player.preferredPosition) === "FWD"
+          );
         });
 
-        lineup = newLineup;
-        selectedPlayers = newSelectedPlayers;
-        console.log("randomizeTeam: Final lineup:", lineup, "Final selectedPlayers:", selectedPlayers);
+      // 5. Fill any remaining empty slots with any available player (less ideal, but ensures 11 players)
+      newLineup
+        .filter((slot) => !slot.player)
+        .forEach((slot) => {
+          assignPlayer(slot, shuffledPlayers, (player, posType) => true); // Any player will do
+        });
 
-        updateSelectedPlayerCount();
-        renderLineup();
+      lineup = newLineup;
+      selectedPlayers = newSelectedPlayers;
+      console.log(
+        "randomizeTeam: Final lineup:",
+        lineup,
+        "Final selectedPlayers:",
+        selectedPlayers
+      );
+
+      updateSelectedPlayerCount();
+      renderLineup();
     }
 
     // Resets the game to initial state
@@ -2288,32 +3637,38 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSelectedPlayerCount();
       renderPlayers([], selectedPlayersDiv, true); // Clear user selected players display
       renderPlayers([], opponentSelectedPlayersDiv, true, true); // Clear opponent selected players display
-      if(availablePlayersDiv) availablePlayersDiv.innerHTML = ""; // Clear available players
-      if(opponentAvailablePlayersDiv) opponentAvailablePlayersDiv.innerHTML = ""; // Clear opponent available players
+      if (availablePlayersDiv) availablePlayersDiv.innerHTML = ""; // Clear available players
+      if (opponentAvailablePlayersDiv)
+        opponentAvailablePlayersDiv.innerHTML = ""; // Clear opponent available players
       document
         .querySelectorAll(".formation-btn, .custom-formation-btn")
         .forEach((btn) => btn.classList.remove("active"));
-      if(simulateMatchBtn) simulateMatchBtn.disabled = true;
-      if(confirmOpponentTeamBtn) confirmOpponentTeamBtn.disabled = true;
+      if (simulateMatchBtn) simulateMatchBtn.disabled = true;
+      if (confirmOpponentTeamBtn) confirmOpponentTeamBtn.disabled = true;
 
-      if(document.getElementById('post-match-section')) document.getElementById('post-match-section').classList.add("hidden");
-      if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
-      if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
-      if(opponentSelectionSection) opponentSelectionSection.classList.add("hidden");
-      if(playerSourceSelection) playerSourceSelection.classList.add("hidden"); // Hide player source selection initially
-      if(tournamentCompleteSection) tournamentCompleteSection.classList.add("hidden");
-      if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
-      if(tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
+      if (document.getElementById("post-match-section"))
+        document.getElementById("post-match-section").classList.add("hidden");
+      if (formationSelectionSection)
+        formationSelectionSection.classList.add("hidden");
+      if (playerSelectionSection)
+        playerSelectionSection.classList.add("hidden");
+      if (opponentSelectionSection)
+        opponentSelectionSection.classList.add("hidden");
+      if (playerSourceSelection) playerSourceSelection.classList.add("hidden"); // Hide player source selection initially
+      if (tournamentCompleteSection)
+        tournamentCompleteSection.classList.add("hidden");
+      if (liveSimulationSection) liveSimulationSection.classList.add("hidden");
+      if (tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
 
-      if(lineupDisplay) lineupDisplay.innerHTML = ""; // Clear lineup display
-      
+      if (lineupDisplay) lineupDisplay.innerHTML = ""; // Clear lineup display
+
       renderCustomFormationButtons();
     }
 
     // Advances to the next game of the tournament
     function nextGameOfTournament() {
-      const postMatchSection = document.getElementById('post-match-section');
-      if(postMatchSection) postMatchSection.classList.add("hidden");
+      const postMatchSection = document.getElementById("post-match-section");
+      if (postMatchSection) postMatchSection.classList.add("hidden");
 
       // Check if tournament is complete
       if (
@@ -2324,13 +3679,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // For user-picked opponents, go back to opponent selection
-      if (tournament.opponentSelectionMode === 'userPicked') {
-          selectedOpponentPlayers = [];
-          if(opponentSelectedPlayerCountSpan) opponentSelectedPlayerCountSpan.textContent = '0';
-          if(confirmOpponentTeamBtn) confirmOpponentTeamBtn.disabled = true;
-          renderPlayers(allPlayersData, opponentAvailablePlayersDiv, true, true);
-          if(opponentSelectionSection) opponentSelectionSection.style.display = 'block';
-          return;
+      if (tournament.opponentSelectionMode === "userPicked") {
+        selectedOpponentPlayers = [];
+        if (opponentSelectedPlayerCountSpan)
+          opponentSelectedPlayerCountSpan.textContent = "0";
+        if (confirmOpponentTeamBtn) confirmOpponentTeamBtn.disabled = true;
+        renderPlayers(allPlayersData, opponentAvailablePlayersDiv, true, true);
+        if (opponentSelectionSection)
+          opponentSelectionSection.style.display = "block";
+        return;
       }
 
       const newAiTeam = generateAITeam(selectedPlayers).players;
@@ -2341,224 +3698,259 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Custom Formation Functions ---
     function loadCustomFormations() {
-        const savedFormations = localStorage.getItem('customFormations');
-        if (savedFormations) {
-            customFormations = JSON.parse(savedFormations);
-            renderCustomFormationButtons();
-        }
+      const savedFormations = localStorage.getItem("customFormations");
+      if (savedFormations) {
+        customFormations = JSON.parse(savedFormations);
+        renderCustomFormationButtons();
+      }
     }
 
     function renderCustomFormationButtons() {
-        customFormationOptionsDiv.innerHTML = '';
-        customFormations.forEach(formation => {
-            const container = document.createElement('div');
-            container.className = 'custom-formation-btn-container';
+      customFormationOptionsDiv.innerHTML = "";
+      customFormations.forEach((formation) => {
+        const container = document.createElement("div");
+        container.className = "custom-formation-btn-container";
 
-            const btn = document.createElement('button');
-            btn.className = 'btn btn-outline-primary custom-formation-btn';
-            btn.dataset.formation = formation.name;
-            btn.textContent = formation.name;
-            btn.addEventListener('click', () => handleFormationSelection(formation.name, true));
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary custom-formation-btn";
+        btn.dataset.formation = formation.name;
+        btn.textContent = formation.name;
+        btn.addEventListener("click", () =>
+          handleFormationSelection(formation.name, true)
+        );
 
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-formation-btn';
-            deleteBtn.innerHTML = '&times;';
-            deleteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                deleteCustomFormation(formation.name);
-            });
-
-            container.appendChild(btn);
-            container.appendChild(deleteBtn);
-            customFormationOptionsDiv.appendChild(container);
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-formation-btn";
+        deleteBtn.innerHTML = "&times;";
+        deleteBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteCustomFormation(formation.name);
         });
+
+        container.appendChild(btn);
+        container.appendChild(deleteBtn);
+        customFormationOptionsDiv.appendChild(container);
+      });
     }
 
     function initializeFormationBuilder() {
-        playerPlaceholdersContainer.innerHTML = '';
-        for (let i = 1; i <= 11; i++) {
-            const placeholder = document.createElement('div');
-            placeholder.className = 'player-placeholder';
-            placeholder.textContent = i;
-            placeholder.draggable = true;
-            placeholder.id = `placeholder-${i}`;
-            placeholder.style.left = `${10 + (i-1)*8}%`;
-            placeholder.style.top = '45%';
-            playerPlaceholdersContainer.appendChild(placeholder);
+      playerPlaceholdersContainer.innerHTML = "";
+      for (let i = 1; i <= 11; i++) {
+        const placeholder = document.createElement("div");
+        placeholder.className = "player-placeholder";
+        placeholder.textContent = i;
+        placeholder.draggable = true;
+        placeholder.id = `placeholder-${i}`;
+        placeholder.style.left = `${10 + (i - 1) * 8}%`;
+        placeholder.style.top = "45%";
+        playerPlaceholdersContainer.appendChild(placeholder);
 
-            placeholder.addEventListener('dragstart', (e) => {
-                draggedElement = e.target;
-                setTimeout(() => {
-                    e.target.classList.add('dragging');
-                }, 0);
-            });
+        placeholder.addEventListener("dragstart", (e) => {
+          draggedElement = e.target;
+          setTimeout(() => {
+            e.target.classList.add("dragging");
+          }, 0);
+        });
 
-            placeholder.addEventListener('dragend', (e) => {
-                draggedElement.classList.remove('dragging');
-                draggedElement = null;
-            });
-        }
+        placeholder.addEventListener("dragend", (e) => {
+          draggedElement.classList.remove("dragging");
+          draggedElement = null;
+        });
+      }
     }
 
     function saveCustomFormation() {
-        const name = customFormationNameInput.value.trim();
-        if (!name) {
-            alert('Please enter a name for the formation.');
-            return;
+      const name = customFormationNameInput.value.trim();
+      if (!name) {
+        alert("Please enter a name for the formation.");
+        return;
+      }
+      if (
+        customFormations.some((f) => f.name === name) ||
+        formationLineups[name]
+      ) {
+        alert("A formation with this name already exists.");
+        return;
+      }
+
+      const formation = {
+        name: name,
+        isCustom: true,
+        lineup: [],
+        requirements: { GK: 0, DEF: 0, MID: 0, FWD: 0 },
+      };
+
+      const placeholders = playerPlaceholdersContainer.querySelectorAll(
+        ".player-placeholder"
+      );
+      let allPositionsSet = true;
+      placeholders.forEach((p, index) => {
+        const position = p.dataset.position;
+        if (!position) {
+          allPositionsSet = false;
         }
-        if (customFormations.some(f => f.name === name) || formationLineups[name]) {
-            alert('A formation with this name already exists.');
-            return;
-        }
 
-        const formation = {
-            name: name,
-            isCustom: true,
-            lineup: [],
-            requirements: { GK: 0, DEF: 0, MID: 0, FWD: 0 }
-        };
+        const rect = customPitch.getBoundingClientRect();
+        const placeholderRect = p.getBoundingClientRect();
+        const x =
+          ((placeholderRect.left - rect.left + placeholderRect.width / 2) /
+            rect.width) *
+          100;
+        const y =
+          ((placeholderRect.top - rect.top + placeholderRect.height / 2) /
+            rect.height) *
+          100;
 
-        const placeholders = playerPlaceholdersContainer.querySelectorAll('.player-placeholder');
-        let allPositionsSet = true;
-        placeholders.forEach((p, index) => {
-            const position = p.dataset.position;
-            if (!position) {
-                allPositionsSet = false;
-            }
-
-            const rect = customPitch.getBoundingClientRect();
-            const placeholderRect = p.getBoundingClientRect();
-            const x = ((placeholderRect.left - rect.left + placeholderRect.width / 2) / rect.width) * 100;
-            const y = ((placeholderRect.top - rect.top + placeholderRect.height / 2) / rect.height) * 100;
-
-            formation.lineup.push({
-                slotId: `custom${index}`,
-                positionType: position,
-                coords: { x, y }
-            });
-            const group = getPositionGroup(position);
-            if(formation.requirements[group] !== undefined) {
-                formation.requirements[group]++;
-            }
+        formation.lineup.push({
+          slotId: `custom${index}`,
+          positionType: position,
+          coords: { x, y },
         });
-
-        if (!allPositionsSet) {
-            alert('Please set a position for all players on the pitch.');
-            return;
+        const group = getPositionGroup(position);
+        if (formation.requirements[group] !== undefined) {
+          formation.requirements[group]++;
         }
+      });
 
-        if (formation.requirements.GK !== 1) {
-            alert('You must have exactly one Goalkeeper.');
-            return;
-        }
+      if (!allPositionsSet) {
+        alert("Please set a position for all players on the pitch.");
+        return;
+      }
 
-        customFormations.push(formation);
-        localStorage.setItem('customFormations', JSON.stringify(customFormations));
-        renderCustomFormationButtons();
-        customFormationModal.hide();
+      if (formation.requirements.GK !== 1) {
+        alert("You must have exactly one Goalkeeper.");
+        return;
+      }
+
+      customFormations.push(formation);
+      localStorage.setItem(
+        "customFormations",
+        JSON.stringify(customFormations)
+      );
+      renderCustomFormationButtons();
+      customFormationModal.hide();
     }
 
     function deleteCustomFormation(name) {
-        if (confirm(`Are you sure you want to delete the formation "${name}"?`)) {
-            customFormations = customFormations.filter(f => f.name !== name);
-            localStorage.setItem('customFormations', JSON.stringify(customFormations));
-            renderCustomFormationButtons();
-        }
+      if (confirm(`Are you sure you want to delete the formation "${name}"?`)) {
+        customFormations = customFormations.filter((f) => f.name !== name);
+        localStorage.setItem(
+          "customFormations",
+          JSON.stringify(customFormations)
+        );
+        renderCustomFormationButtons();
+      }
     }
 
     function showCustomPositionMenu(element, yPercent, xPercent) {
-        let zone = 'FWD';
-        if (yPercent > 85) zone = 'GK';
-        else if (yPercent > 60) zone = 'DEF';
-        else if (yPercent > 25) zone = 'MID';
+      let zone = "FWD";
+      if (yPercent > 85) zone = "GK";
+      else if (yPercent > 60) zone = "DEF";
+      else if (yPercent > 25) zone = "MID";
 
-        let possiblePositions = [];
-        if (zone === 'GK') {
-            possiblePositions = ['GK'];
-        } else if (zone === 'DEF') {
-            if (xPercent < 33) possiblePositions = ['LB', 'LWB', 'CB'];
-            else if (xPercent > 66) possiblePositions = ['RB', 'RWB', 'CB'];
-            else possiblePositions = ['CB'];
-        } else if (zone === 'MID') {
-            if (xPercent < 33) possiblePositions = ['LM', 'CM', 'CAM', 'CDM'];
-            else if (xPercent > 66) possiblePositions = ['RM', 'CM', 'CAM', 'CDM'];
-            else possiblePositions = ['CM', 'CAM', 'CDM'];
-        } else { // FWD
-            if (xPercent < 33) possiblePositions = ['LW', 'ST', 'CF'];
-            else if (xPercent > 66) possiblePositions = ['RW', 'ST', 'CF'];
-            else possiblePositions = ['ST', 'CF'];
-        }
+      let possiblePositions = [];
+      if (zone === "GK") {
+        possiblePositions = ["GK"];
+      } else if (zone === "DEF") {
+        if (xPercent < 33) possiblePositions = ["LB", "LWB", "CB"];
+        else if (xPercent > 66) possiblePositions = ["RB", "RWB", "CB"];
+        else possiblePositions = ["CB"];
+      } else if (zone === "MID") {
+        if (xPercent < 33) possiblePositions = ["LM", "CM", "CAM", "CDM"];
+        else if (xPercent > 66) possiblePositions = ["RM", "CM", "CAM", "CDM"];
+        else possiblePositions = ["CM", "CAM", "CDM"];
+      } else {
+        // FWD
+        if (xPercent < 33) possiblePositions = ["LW", "ST", "CF"];
+        else if (xPercent > 66) possiblePositions = ["RW", "ST", "CF"];
+        else possiblePositions = ["ST", "CF"];
+      }
 
-        const modalBody = document.getElementById('custom-position-modal-body');
-        modalBody.innerHTML = '';
-        possiblePositions.forEach(pos => {
-            const btn = document.createElement('button');
-            btn.className = 'btn btn-outline-primary m-1';
-            btn.textContent = pos;
-            btn.onclick = () => {
-                element.dataset.position = pos;
-                element.textContent = pos;
-                bootstrap.Modal.getInstance(document.getElementById('custom-position-modal')).hide();
-            };
-            modalBody.appendChild(btn);
-        });
+      const modalBody = document.getElementById("custom-position-modal-body");
+      modalBody.innerHTML = "";
+      possiblePositions.forEach((pos) => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary m-1";
+        btn.textContent = pos;
+        btn.onclick = () => {
+          element.dataset.position = pos;
+          element.textContent = pos;
+          bootstrap.Modal.getInstance(
+            document.getElementById("custom-position-modal")
+          ).hide();
+        };
+        modalBody.appendChild(btn);
+      });
 
-        const posModal = new bootstrap.Modal(document.getElementById('custom-position-modal'));
-        posModal.show();
+      const posModal = new bootstrap.Modal(
+        document.getElementById("custom-position-modal")
+      );
+      posModal.show();
     }
 
-    customPitch.addEventListener('dragover', (e) => {
-        e.preventDefault();
+    customPitch.addEventListener("dragover", (e) => {
+      e.preventDefault();
     });
 
-    customPitch.addEventListener('drop', (e) => {
-        e.preventDefault();
-        if (draggedElement) {
-            const rect = customPitch.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+    customPitch.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (draggedElement) {
+        const rect = customPitch.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-            const xPercent = (x / rect.width) * 100;
-            const yPercent = (y / rect.height) * 100;
-            
-            draggedElement.style.left = `${x - (draggedElement.offsetWidth / 2)}px`;
-            draggedElement.style.top = `${y - (draggedElement.offsetHeight / 2)}px`;
+        const xPercent = (x / rect.width) * 100;
+        const yPercent = (y / rect.height) * 100;
 
-            showCustomPositionMenu(draggedElement, yPercent, xPercent);
-        }
+        draggedElement.style.left = `${x - draggedElement.offsetWidth / 2}px`;
+        draggedElement.style.top = `${y - draggedElement.offsetHeight / 2}px`;
+
+        showCustomPositionMenu(draggedElement, yPercent, xPercent);
+      }
     });
-
 
     // --- Event Listeners ---
-    if(predefinedPlayersBtn) predefinedPlayersBtn.addEventListener("click", () => {
-        if(playerSourceSelection) playerSourceSelection.classList.add("hidden");
-        if(formationSelectionSection) formationSelectionSection.classList.remove("hidden");
+    if (predefinedPlayersBtn)
+      predefinedPlayersBtn.addEventListener("click", () => {
+        if (playerSourceSelection)
+          playerSourceSelection.classList.add("hidden");
+        if (formationSelectionSection)
+          formationSelectionSection.classList.remove("hidden");
         renderPlayers(allPlayersData, availablePlayersDiv, true); // Render for user selection
-    });
+      });
 
-    if(apiPlayersBtn) apiPlayersBtn.addEventListener("click", () =>
-      alert(
-        "API integration is coming soon! Please use pre-defined players for now."
-      )
-    );
+    if (apiPlayersBtn)
+      apiPlayersBtn.addEventListener("click", () =>
+        alert(
+          "API integration is coming soon! Please use pre-defined players for now."
+        )
+      );
 
-    if(confirmTeamBtn) confirmTeamBtn.addEventListener("click", () => {
-      if (isValidTeam()) {
-        if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
-        if (tournament.opponentSelectionMode === "aiGenerated") {
+    if (confirmTeamBtn)
+      confirmTeamBtn.addEventListener("click", () => {
+        if (isValidTeam()) {
+          if (playerSelectionSection)
+            playerSelectionSection.classList.add("hidden");
+          if (tournament.opponentSelectionMode === "aiGenerated") {
             const aiTeam = generateAITeam(selectedPlayers);
             tournament.opponents.push(aiTeam.players);
             simulateMatch();
+          } else {
+            if (opponentSelectionSection)
+              opponentSelectionSection.classList.remove("hidden");
+            renderPlayers(
+              allPlayersData,
+              opponentAvailablePlayersDiv,
+              true,
+              true
+            );
+          }
         } else {
-            if(opponentSelectionSection) opponentSelectionSection.classList.remove("hidden");
-            renderPlayers(allPlayersData, opponentAvailablePlayersDiv, true, true);
+          alert(
+            `Please select exactly ${MAX_PLAYERS} players and ensure all position requirements for the chosen formation are met.`
+          );
         }
-      } else {
-        alert(
-          `Please select exactly ${MAX_PLAYERS} players and ensure all position requirements for the chosen formation are met.`
-        );
-      }
-    });
+      });
 
     const clearTeamBtn = document.getElementById("clear-team-btn");
     if (clearTeamBtn) {
@@ -2567,127 +3959,146 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const randomizeTeamBtn = document.getElementById("randomize-team-btn");
     if (randomizeTeamBtn) {
-        randomizeTeamBtn.addEventListener("click", randomizeTeam);
+      randomizeTeamBtn.addEventListener("click", randomizeTeam);
     }
 
     if (confirmOpponentTeamBtn) {
       confirmOpponentTeamBtn.addEventListener("click", () => {
         if (isValidOpponentTeam()) {
-          if(opponentSelectionSection) opponentSelectionSection.classList.add("hidden");
+          if (opponentSelectionSection)
+            opponentSelectionSection.classList.add("hidden");
           simulateMatch();
         }
       });
     }
 
-    if(formationOptionsDiv) formationOptionsDiv.addEventListener("click", (event) => {
-      if (event.target.classList.contains("formation-btn")) {
-        handleFormationSelection(event.target.dataset.formation);
-      }
-    });
+    if (formationOptionsDiv)
+      formationOptionsDiv.addEventListener("click", (event) => {
+        if (event.target.classList.contains("formation-btn")) {
+          handleFormationSelection(event.target.dataset.formation);
+        }
+      });
 
-    if(skipSimulationBtn) skipSimulationBtn.addEventListener("click", () => {
+    if (skipSimulationBtn)
+      skipSimulationBtn.addEventListener("click", () => {
         isSimulationSkipped = true;
-    });
+      });
 
-    const postMatchReSimBtn = document.getElementById('re-sim-match-btn');
-    if(postMatchReSimBtn) postMatchReSimBtn.addEventListener('click', simulateMatch);
+    const postMatchReSimBtn = document.getElementById("re-sim-match-btn");
+    if (postMatchReSimBtn)
+      postMatchReSimBtn.addEventListener("click", simulateMatch);
 
-    const postMatchNextGameBtn = document.getElementById('next-game-tournament-btn');
-    if(postMatchNextGameBtn) postMatchNextGameBtn.addEventListener('click', nextGameOfTournament);
-    
-    const mainMenuBtn = document.getElementById('main-menu-btn');
-    if(mainMenuBtn) mainMenuBtn.addEventListener('click', resetGame);
+    const postMatchNextGameBtn = document.getElementById(
+      "next-game-tournament-btn"
+    );
+    if (postMatchNextGameBtn)
+      postMatchNextGameBtn.addEventListener("click", nextGameOfTournament);
+
+    const mainMenuBtn = document.getElementById("main-menu-btn");
+    if (mainMenuBtn) mainMenuBtn.addEventListener("click", resetGame);
 
     if (resetTournamentBtn) {
       resetTournamentBtn.addEventListener("click", resetGame);
     }
-    
+
     // Tournament type selection
-    if(tournamentTypeSelect) tournamentTypeSelect.addEventListener("change", (event) => {
-      tournament.maxRounds = parseInt(event.target.value);
-      saveTournament();
-    });
+    if (tournamentTypeSelect)
+      tournamentTypeSelect.addEventListener("change", (event) => {
+        tournament.maxRounds = parseInt(event.target.value);
+        saveTournament();
+      });
 
     // Opponent type selection
-    if(aiGeneratedOpponentRadio) aiGeneratedOpponentRadio.addEventListener("change", () => {
-      tournament.opponentSelectionMode = "aiGenerated";
-      saveTournament();
-    });
+    if (aiGeneratedOpponentRadio)
+      aiGeneratedOpponentRadio.addEventListener("change", () => {
+        tournament.opponentSelectionMode = "aiGenerated";
+        saveTournament();
+      });
 
-    if(pickOpponentTeamRadio) pickOpponentTeamRadio.addEventListener("change", () => {
-      tournament.opponentSelectionMode = "userPicked";
-      saveTournament();
-    });
+    if (pickOpponentTeamRadio)
+      pickOpponentTeamRadio.addEventListener("change", () => {
+        tournament.opponentSelectionMode = "userPicked";
+        saveTournament();
+      });
 
     // Start Tournament button functionality
-    if(startTournamentBtn) startTournamentBtn.addEventListener("click", () => {
-      console.log("Start Tournament button clicked.");
+    if (startTournamentBtn)
+      startTournamentBtn.addEventListener("click", () => {
+        console.log("Start Tournament button clicked.");
 
-      // Initialize tournament state
-      tournament.round = 0;
-      tournament.userWins = 0;
-      tournament.aiWins = 0;
-      tournament.draws = 0;
-      tournament.results = [];
-      tournament.opponents = []; // Clear previous opponents
-      tournament.maxRounds = parseInt(tournamentTypeSelect.value);
-      tournament.opponentSelectionMode = document.querySelector(
-        'input[name="opponentType"]:checked'
-      ).value;
+        // Initialize tournament state
+        tournament.round = 0;
+        tournament.userWins = 0;
+        tournament.aiWins = 0;
+        tournament.draws = 0;
+        tournament.results = [];
+        tournament.opponents = []; // Clear previous opponents
+        tournament.maxRounds = parseInt(tournamentTypeSelect.value);
+        tournament.opponentSelectionMode = document.querySelector(
+          'input[name="opponentType"]:checked'
+        ).value;
 
-      saveTournament();
-      updateTournamentUI();
+        saveTournament();
+        updateTournamentUI();
 
-      if(tournamentSection) tournamentSection.classList.add("hidden");
-      if(playerSourceSelection) playerSourceSelection.classList.remove("hidden");
-      
-    });
+        if (tournamentSection) tournamentSection.classList.add("hidden");
+        if (playerSourceSelection)
+          playerSourceSelection.classList.remove("hidden");
+      });
 
     // Navbar Home and Brand link functionality
-    if(homeLink) homeLink.addEventListener("click", (event) => {
-      event.preventDefault(); // Prevent default link behavior
-      resetGame();
-    });
+    if (homeLink)
+      homeLink.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent default link behavior
+        resetGame();
+      });
 
-    if(navbarBrand) navbarBrand.addEventListener("click", (event) => {
-      event.preventDefault(); // Prevent default link behavior
-      resetGame();
-    });
+    if (navbarBrand)
+      navbarBrand.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent default link behavior
+        resetGame();
+      });
 
     // Go Back button functionality
-    if(goBackButtons) goBackButtons.forEach((button) => {
-      button.addEventListener("click", (event) => {
-        const currentSection = event.target.closest(".card");
-        const targetSectionId = event.target.dataset.targetSection;
-        const targetSection = document.getElementById(targetSectionId);
+    if (goBackButtons)
+      goBackButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const currentSection = event.target.closest(".card");
+          const targetSectionId = event.target.dataset.targetSection;
+          const targetSection = document.getElementById(targetSectionId);
 
-        // Hide current section
-        if(currentSection) currentSection.classList.add("hidden");
+          // Hide current section
+          if (currentSection) currentSection.classList.add("hidden");
 
-        // Show target section
-        if(targetSection) targetSection.classList.remove("hidden");
+          // Show target section
+          if (targetSection) targetSection.classList.remove("hidden");
+        });
       });
-    });
 
     // Custom Formation Listeners
-    if(createCustomFormationBtn) createCustomFormationBtn.addEventListener('click', () => {
+    if (createCustomFormationBtn)
+      createCustomFormationBtn.addEventListener("click", () => {
         initializeFormationBuilder();
         customFormationModal.show();
-    });
+      });
 
-    if(saveCustomFormationBtn) saveCustomFormationBtn.addEventListener('click', saveCustomFormation);
-
+    if (saveCustomFormationBtn)
+      saveCustomFormationBtn.addEventListener("click", saveCustomFormation);
 
     // Initial setup
     // Ensure all sections are hidden except tournament section on initial load
-    if(playerSourceSelection) playerSourceSelection.classList.add("hidden");
-    if(playerSelectionSection) playerSelectionSection.classList.add("hidden");
-    if(formationSelectionSection) formationSelectionSection.classList.add("hidden");
-    if(document.getElementById('post-match-section')) document.getElementById('post-match-section').classList.add("hidden");
-    if(opponentSelectionSection) opponentSelectionSection.classList.add("hidden");
-    if(tournamentCompleteSection) tournamentCompleteSection.classList.add("hidden");
-    if(liveSimulationSection) liveSimulationSection.classList.add("hidden");
-    if(tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
+    if (playerSourceSelection) playerSourceSelection.classList.add("hidden");
+    if (playerSelectionSection) playerSelectionSection.classList.add("hidden");
+    if (formationSelectionSection)
+      formationSelectionSection.classList.add("hidden");
+    if (document.getElementById("post-match-section"))
+      document.getElementById("post-match-section").classList.add("hidden");
+    if (opponentSelectionSection)
+      opponentSelectionSection.classList.add("hidden");
+    if (tournamentCompleteSection)
+      tournamentCompleteSection.classList.add("hidden");
+    if (liveSimulationSection) liveSimulationSection.classList.add("hidden");
+    if (tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
 
     // Populate allPlayersData initially so it's ready for any selection mode
     allPlayersData = [
@@ -2719,7 +4130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof window.updateOpponentSelectedPlayerCount === "function") {
       window.updateOpponentSelectedPlayerCount(); // Call once to set initial state of confirmOpponentTeamBtn
     }
-    if(simulateMatchBtn) simulateMatchBtn.disabled = true;
+    if (simulateMatchBtn) simulateMatchBtn.disabled = true;
   } catch (error) {
     console.error("An error occurred: ", error);
   }

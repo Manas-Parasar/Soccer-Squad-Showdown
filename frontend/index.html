@@ -56,6 +56,7 @@
                     </label>
                 </div>
             </div>
+            
             <div class="d-flex justify-content-center mt-4">
                 <button id="start-tournament-btn" class="btn btn-primary btn-lg">Start Tournament</button>
             </div>
@@ -83,6 +84,23 @@
                 <button class="btn btn-outline-primary formation-btn" data-formation="3-5-2">3-5-2</button>
                 <button class="btn btn-outline-primary formation-btn" data-formation="4-2-3-1">4-2-3-1</button>
                 <button id="create-custom-formation-btn" class="btn btn-outline-info">Custom</button>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6 offset-md-3">
+                    <label for="playstyle-select" class="form-label">Your Team Playstyle:</label>
+                    <select class="form-select" id="playstyle-select">
+                        <option value="Balanced" selected>Balanced</option>
+                        <option value="Attacking">Attacking</option>
+                        <option value="Defensive">Defensive</option>
+                        <option value="Possession">Possession</option>
+                        <option value="Counter-Attack">Counter-Attack</option>
+                        <option value="High-Press">High-Press</option>
+                    </select>
+                    <div class="mt-2 text-center small text-muted">
+                        <span>AI Playstyle (will be chosen randomly each match): </span>
+                        <strong id="ai-playstyle-display">Random</strong>
+                    </div>
+                </div>
             </div>
             <div id="custom-formation-options" class="d-flex justify-content-center flex-wrap gap-2 mb-4">
                 <!-- Custom formations will be loaded here -->
@@ -394,6 +412,8 @@
                 <!-- Team Stats Tab -->
                 <div class="tab-pane fade" id="team-stats-content" role="tabpanel">
                     <!-- Detailed stats will be injected here -->
+
+                <!-- Player Detail Modal moved to end of document -->
                 </div>
                 <!-- Player Ratings Tab -->
                 <div class="tab-pane fade" id="player-ratings-content" role="tabpanel">
@@ -456,3 +476,34 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+<!-- Player Detail Modal (opened from player rating cards) -->
+<div class="modal fade" id="player-detail-modal" tabindex="-1" aria-labelledby="playerDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="playerDetailModalLabel">Player Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex gap-3 align-items-center">
+                    <img id="detail-player-img" src="images/default.jpg" alt="Player" style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid var(--text-accent);"/>
+                    <div>
+                        <h4 id="detail-player-name" class="mb-0"></h4>
+                        <div id="detail-player-sub" class="text-muted small"></div>
+                        <div class="mt-2"><strong>Match Rating: </strong><span id="detail-player-rating"></span></div>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div id="detail-stats-grid" class="row">
+                    <!-- Stats populated by script.js -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
