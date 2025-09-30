@@ -20,43 +20,38 @@ document.addEventListener("DOMContentLoaded", () => {
             (slot) => slot && slot.player !== null
           ).length;
         } else {
-          // 2. Fall back to counting DOM elements
-          const opponentPlayerElements = document.querySelectorAll(
-            ".opponent .player-card, .opponent-slot .assigned, .position-slot.opponent img.player"
-          );
-          count = opponentPlayerElements.length;
-        }
-
-        // 3. Update the UI element
-        let opponentCountElement =
-          document.getElementById("opponentSelectedCount") ||
-          document.querySelector("[data-opponent-count]");
-
-        // If the element doesn't exist, create it dynamically
-
-        if (!opponentCountElement) {
-          opponentCountElement = document.createElement("span");
-          opponentCountElement.id = "opponentSelectedCount";
-          opponentCountElement.setAttribute("data-opponent-count", ""); // Add data attribute for future selection
-          // Find a suitable parent to append to.
           // opponentSelectedPlayerCountSpan is a good candidate for a nearby element.
           const parentForOpponentCountElement = document.getElementById(
             "opponent-selected-player-count"
           );
+          // Ensure we have an element reference to update or insert
+          let opponentCountElement = document.getElementById(
+            "opponentSelectedCount"
+          );
+          if (!opponentCountElement) {
+            opponentCountElement = document.createElement("span");
+            opponentCountElement.id = "opponentSelectedCount";
+            opponentCountElement.style.marginLeft = "6px";
+          }
           if (
             parentForOpponentCountElement &&
             parentForOpponentCountElement.parentNode
           ) {
-            parentForOpponentCountElement.parentNode.insertBefore(
-              opponentCountElement,
-              parentForOpponentCountElement.nextSibling
-            );
-            console.info("Dynamically created #opponentSelectedCount element.");
+            // If not already in DOM, insert it after the parent count span
+            if (!document.getElementById("opponentSelectedCount")) {
+              parentForOpponentCountElement.parentNode.insertBefore(
+                opponentCountElement,
+                parentForOpponentCountElement.nextSibling
+              );
+              console.info(
+                "Dynamically created #opponentSelectedCount element."
+              );
+            }
           }
         }
-        if (opponentCountElement) {
-          opponentCountElement.textContent = count;
-        }
+        // Update the display element if present
+        const updateElem = document.getElementById("opponentSelectedCount");
+        if (updateElem) updateElem.textContent = count;
 
         // Also update the existing opponentSelectedPlayerCountSpan and confirmOpponentTeamBtn if they exist
         const opponentSelectedPlayerCountSpan = document.getElementById(
@@ -305,6 +300,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const aiPlaystyleDisplay = document.getElementById("ai-playstyle-display");
     let selectedOpponentPlayers = []; // Stores opponent's player objects
     let currentFormation = null;
+    let currentBuilder = "player1"; // 'player1' or 'player2' when PvP
+    let player1State = null; // store player1's team/lineup when building PvP
+    let player2State = null; // store player2's team/lineup when editing in PvP rematch
+    let player1Confirmed = false; // track if player1 has confirmed their team
+    let player2Confirmed = false; // track if player2 has confirmed their team
     let tournament = {};
     let draggedSlotId = null; // Changed from draggedPlayerIndex to draggedSlotId
     let isSimulationSkipped = false;
@@ -1141,10 +1141,7 @@ document.addEventListener("DOMContentLoaded", () => {
               ? tournament.results[tournament.results.length - 1]
               : null;
           if (lastResult) {
-            renderPlayerRatings(
-              lastResult.userTeam.players || [],
-              lastResult.aiTeam.players || []
-            );
+            renderPlayerRatings(lastResult);
           } else {
             // fallback: try to update ratings grid by forcing a repaint
             ratingsRoot
@@ -2036,7 +2033,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Simulates the match (client-side logic)
-    async function simulateMatch() {
+    // simulateMatch can accept optional two-player states for PvP: simulateMatch(player1State, player2State)
+    async function simulateMatch(p1State = null, p2State = null) {
       // New, more realistic match engine
       isSimulationSkipped = false;
       if (!isValidTeam()) {
@@ -2052,18 +2050,28 @@ document.addEventListener("DOMContentLoaded", () => {
       tournament.formation = currentFormation;
 
       let aiTeamPlayers;
-      if (tournament.opponentSelectionMode === "aiGenerated") {
-        aiTeamPlayers = generateAITeam(selectedPlayers).players;
+      let humanVsHuman = false;
+      // If p1State and p2State provided -> PvP immediate simulation
+      if (p1State && p2State) {
+        humanVsHuman = true;
+        // Set up teams directly from states
+        // We'll assign p1 as "user" and p2 as "ai" for internal flow but label later
+        aiTeamPlayers = p2State.players;
+        // override userTeam setup later using p1State
       } else {
-        if (!isValidOpponentTeam()) {
-          alert(
-            "Please select exactly 11 players for the opponent team and ensure all position requirements for the chosen formation are met."
-          );
-          return;
+        if (tournament.opponentSelectionMode === "aiGenerated") {
+          aiTeamPlayers = generateAITeam(selectedPlayers).players;
+        } else {
+          if (!isValidOpponentTeam()) {
+            alert(
+              "Please select exactly 11 players for the opponent team and ensure all position requirements for the chosen formation are met."
+            );
+            return;
+          }
+          aiTeamPlayers = selectedOpponentPlayers;
         }
-        aiTeamPlayers = selectedOpponentPlayers;
+        tournament.opponents.push(aiTeamPlayers);
       }
-      tournament.opponents.push(aiTeamPlayers);
 
       // UI setup
       if (playerSelectionSection)
@@ -2080,55 +2088,147 @@ document.addEventListener("DOMContentLoaded", () => {
         ? playstyleSelect.value
         : "Balanced";
 
-      const userTeam = {
-        players: lineup.map((slot) => {
-          const base = {
-            ...slot.player,
-            position: slot.positionType,
-            matchRating: 6.5,
+      // Build userTeam from either p1State (PvP) or current lineup
+      const userTeam = (function () {
+        if (p1State) {
+          // Use lineup if available and valid, otherwise use players array
+          const usePlayers = p1State.lineup && p1State.lineup.length > 0 && p1State.lineup[0].player
+            ? p1State.lineup.map((slot) => ({
+                ...slot.player,
+                position: slot.positionType || slot.player.preferredPosition,
+                matchRating: 6.5,
+                stats: slot.player.stats || {
+                  goals: 0,
+                  assists: 0,
+                  tackles: 0,
+                  saves: 0,
+                  shots: 0,
+                  passes: 0,
+                  passAccuracy: null,
+                },
+                team: slot.player.team || "Player 1"
+              }))
+            : p1State.players.map((p) => ({
+                ...p,
+                position: p.position || p.preferredPosition,
+                matchRating: 6.5,
+                stats: p.stats || {
+                  goals: 0,
+                  assists: 0,
+                  tackles: 0,
+                  saves: 0,
+                  shots: 0,
+                  passes: 0,
+                  passAccuracy: null,
+                },
+                team: p.team || "Player 1"
+              }));
+          
+          return {
+            players: usePlayers,
+            formation: p1State.formation || currentFormation,
+            playstyle:
+              p1State.playstyle ||
+              (playstyleSelect ? playstyleSelect.value : "Balanced"),
+            strength:
+              p1State.strength || calculateTeamStrength(p1State.players),
           };
-          base.stats = base.stats || {
-            goals: 0,
-            assists: 0,
-            tackles: 0,
-            saves: 0,
-            shots: 0,
-            passes: 0,
-            passAccuracy: null,
-          };
-          base.team = base.team || "Your Team";
-          return base;
-        }),
-        formation: currentFormation,
-        playstyle: userPlaystyle,
-        strength: calculateTeamStrength(
-          lineup.map((s) => s.player).filter(Boolean),
-          userPlaystyle
-        ),
-      };
+        }
+
+        return {
+          players: lineup.map((slot) => {
+            const base = {
+              ...slot.player,
+              position: slot.positionType,
+              matchRating: 6.5,
+            };
+            base.stats = base.stats || {
+              goals: 0,
+              assists: 0,
+              tackles: 0,
+              saves: 0,
+              shots: 0,
+              passes: 0,
+              passAccuracy: null,
+            };
+            base.team = base.team || "Your Team";
+            return base;
+          }),
+          formation: currentFormation,
+          playstyle: userPlaystyle,
+          strength: calculateTeamStrength(
+            lineup.map((s) => s.player).filter(Boolean),
+            userPlaystyle
+          ),
+        };
+      })();
 
       const aiPlaystyle = chooseAIPlaystyle(aiTeamPlayers);
       if (aiPlaystyleDisplay) aiPlaystyleDisplay.textContent = aiPlaystyle;
 
-      const aiTeam = {
-        players: aiTeamPlayers.map((p) => ({
-          ...p,
-          matchRating: 6.5,
-          stats: p.stats || {
-            goals: 0,
-            assists: 0,
-            tackles: 0,
-            saves: 0,
-            shots: 0,
-            passes: 0,
-            passAccuracy: null,
-          },
-          team: p.team || "AI Team",
-        })),
-        formation: "4-4-2",
-        playstyle: aiPlaystyle,
-        strength: calculateTeamStrength(aiTeamPlayers, aiPlaystyle),
-      };
+      const aiTeam = (function() {
+        if (p2State) {
+          // Use lineup if available and valid, otherwise use players array
+          const usePlayers = p2State.lineup && p2State.lineup.length > 0 && p2State.lineup[0].player
+            ? p2State.lineup.map((slot) => ({
+                ...slot.player,
+                position: slot.positionType || slot.player.preferredPosition,
+                matchRating: 6.5,
+                stats: slot.player.stats || {
+                  goals: 0,
+                  assists: 0,
+                  tackles: 0,
+                  saves: 0,
+                  shots: 0,
+                  passes: 0,
+                  passAccuracy: null,
+                },
+                team: slot.player.team || "Player 2"
+              }))
+            : p2State.players.map((p) => ({
+                ...p,
+                position: p.position || p.preferredPosition,
+                matchRating: 6.5,
+                stats: p.stats || {
+                  goals: 0,
+                  assists: 0,
+                  tackles: 0,
+                  saves: 0,
+                  shots: 0,
+                  passes: 0,
+                  passAccuracy: null,
+                },
+                team: p.team || "Player 2"
+              }));
+          
+          return {
+            players: usePlayers,
+            formation: p2State.formation || "4-4-2",
+            playstyle: p2State.playstyle || aiPlaystyle,
+            strength: p2State.strength || calculateTeamStrength(p2State.players, p2State.playstyle || aiPlaystyle),
+          };
+        }
+        
+        return {
+          players: aiTeamPlayers.map((p) => ({
+            ...p,
+            matchRating: 6.5,
+            stats: p.stats || {
+              goals: 0,
+              assists: 0,
+              tackles: 0,
+              saves: 0,
+              shots: 0,
+              passes: 0,
+              passAccuracy: null,
+            },
+            team: p.team || "AI Team",
+          })),
+          formation: "4-4-2",
+          playstyle: aiPlaystyle,
+          strength: calculateTeamStrength(aiTeamPlayers, aiPlaystyle),
+        };
+      })();
 
       // Helpers
       const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -2803,6 +2903,23 @@ document.addEventListener("DOMContentLoaded", () => {
       tournament.results.push(matchData);
       saveTournament();
 
+      // When PvP, label teams as Player 1 and Player 2 in header
+      if (humanVsHuman || (p1State && p2State)) {
+        // adjust names in matchData for rendering
+        matchData.userTeam.players.forEach(
+          (p) => (p.team = p.team || "Player 1")
+        );
+        matchData.aiTeam.players.forEach(
+          (p) => (p.team = p.team || "Player 2")
+        );
+        matchData.matchWinnerText =
+          userGoals > aiGoals
+            ? "Player 1 wins!"
+            : aiGoals > userGoals
+            ? "Player 2 wins!"
+            : "It's a draw!";
+      }
+
       renderPostMatch(matchData);
 
       if (liveSimulationSection) liveSimulationSection.classList.add("hidden");
@@ -2836,7 +2953,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderTimeline(matchData.timelineEvents);
       renderGoalScorers(matchData.timelineEvents);
       renderTeamStats(matchData.stats);
-      renderPlayerRatings(matchData.userTeam.players, matchData.aiTeam.players);
+      renderPlayerRatings(matchData);
     }
 
     function renderMatchHeader(matchData) {
@@ -2845,7 +2962,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const scoreContainer = document.querySelector(".score-container");
 
       if (userTeamInfo) {
-        userTeamInfo.querySelector(".team-name").textContent = "Your Team";
+        const userName =
+          (matchData.userTeam &&
+            matchData.userTeam.players &&
+            matchData.userTeam.players[0] &&
+            matchData.userTeam.players[0].team) ||
+          "Your Team";
+        userTeamInfo.querySelector(".team-name").textContent = userName;
         const userChem = calculateTeamChemistry(
           matchData.userTeam.players,
           matchData.userTeam.playstyle
@@ -2858,7 +2981,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ).style.width = `${userChem}%`;
       }
       if (aiTeamInfo) {
-        aiTeamInfo.querySelector(".team-name").textContent = "Opponent";
+        const aiName =
+          (matchData.aiTeam &&
+            matchData.aiTeam.players &&
+            matchData.aiTeam.players[0] &&
+            matchData.aiTeam.players[0].team) ||
+          "Opponent";
+        aiTeamInfo.querySelector(".team-name").textContent = aiName;
         const aiChem = calculateTeamChemistry(
           matchData.aiTeam.players,
           matchData.aiTeam.playstyle
@@ -3046,9 +3175,31 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     }
 
-    function renderPlayerRatings(userPlayers, aiPlayers) {
+    function renderPlayerRatings(matchDataOrUserPlayers, aiPlayersOptional) {
       const ratingsRoot = document.querySelector(".player-ratings-grid");
       if (!ratingsRoot) return;
+
+      // Support both signatures: (userPlayers, aiPlayers) OR (matchData)
+      let userPlayers = [];
+      let aiPlayers = [];
+      let userTitle = "Your Team";
+      let aiTitle = "Opponent Team";
+      if (
+        matchDataOrUserPlayers &&
+        matchDataOrUserPlayers.userTeam &&
+        matchDataOrUserPlayers.aiTeam
+      ) {
+        const md = matchDataOrUserPlayers;
+        userPlayers = md.userTeam.players || [];
+        aiPlayers = md.aiTeam.players || [];
+        userTitle = (userPlayers[0] && userPlayers[0].team) || userTitle;
+        aiTitle = (aiPlayers[0] && aiPlayers[0].team) || aiTitle;
+      } else {
+        userPlayers = Array.isArray(matchDataOrUserPlayers)
+          ? matchDataOrUserPlayers
+          : [];
+        aiPlayers = Array.isArray(aiPlayersOptional) ? aiPlayersOptional : [];
+      }
 
       // Helper: compute team rating as average of available matchRating or fallback to baseRating
       function computeTeamRating(players) {
@@ -3099,25 +3250,50 @@ document.addEventListener("DOMContentLoaded", () => {
         grid.className = "player-ratings-grid team-player-grid mt-3";
 
         players.forEach((player) => {
+          // compute a more varied match rating if not provided
+          if (typeof player.matchRating !== "number") {
+            const base = player.baseRating || 6.5;
+            const s = player.stats || {};
+            // Weighted stat contributions
+            const statBonus =
+              (s.goals || 0) * 0.9 +
+              (s.assists || 0) * 0.6 +
+              (s.saves || 0) * 0.5 +
+              (s.tackles || 0) * 0.25 +
+              ((s.passes || 0) / 50) * 0.1;
+            // small randomness for visual variety (kept deterministic-ish using name hash fallback)
+            let noise = (Math.random() - 0.5) * 0.6; // ±0.3
+            // Clamp
+            const computed = Math.max(
+              1,
+              Math.min(10, base + statBonus + noise)
+            );
+            player.matchRating = Number(computed.toFixed(1));
+          }
           const ratingCard = document.createElement("div");
           ratingCard.className = "player-rating-card";
+          // choose a color class for rating
+          let ratingClass = "rating-mid";
+          if ((player.matchRating || 0) >= 8.0) ratingClass = "rating-high";
+          else if ((player.matchRating || 0) <= 6.2) ratingClass = "rating-low";
+
           ratingCard.innerHTML = `
-                <img src="${player.imageUrl}" alt="${
+                  <img src="${player.imageUrl || "images/default.jpg"}" alt="${
             player.name
           }" class="player-img">
-                <div class="player-name">${player.name}</div>
-                <div class="player-position">${
-                  player.position || player.preferredPosition || ""
-                }</div>
-                <div class="match-rating">${(player.matchRating || 0).toFixed(
-                  1
-                )}</div>
-                <div class="player-card-buttons">
-                  <button class="btn btn-sm btn-info rating-details-btn" data-player="${
-                    player.name
-                  }">Details</button>
-                </div>
-            `;
+                  <div class="player-name">${player.name}</div>
+                  <div class="player-position">${
+                    player.position || player.preferredPosition || ""
+                  }</div>
+                  <div class="match-rating ${ratingClass}">${(
+            player.matchRating || 0
+          ).toFixed(1)}</div>
+                  <div class="player-card-buttons">
+                    <button class="btn btn-sm btn-info rating-details-btn" data-player="${
+                      player.name
+                    }">Details</button>
+                  </div>
+              `;
           // Provide team reference for detail modal
           ratingCard.dataset.team = teamName;
           grid.appendChild(ratingCard);
@@ -3132,12 +3308,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const aiList = Array.isArray(aiPlayers) ? aiPlayers : [];
 
       // Build sections
-      const userSection = buildTeamSection("Your Team", userList, "team-user");
-      const aiSection = buildTeamSection(
-        "Opponent Team",
-        aiList,
-        "team-opponent"
-      );
+      const userSection = buildTeamSection(userTitle, userList, "team-user");
+      const aiSection = buildTeamSection(aiTitle, aiList, "team-opponent");
 
       // Insert user section then opponent section
       ratingsRoot.appendChild(userSection.teamBlock);
@@ -3666,15 +3838,188 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Advances to the next game of the tournament
+    function updatePvpCheckmarks() {
+      const p1Check = document.getElementById("player1-checkmark");
+      const p2Check = document.getElementById("player2-checkmark");
+      if (p1Check) p1Check.style.display = player1Confirmed ? "inline" : "none";
+      if (p2Check) p2Check.style.display = player2Confirmed ? "inline" : "none";
+    }
+
     function nextGameOfTournament() {
       const postMatchSection = document.getElementById("post-match-section");
       if (postMatchSection) postMatchSection.classList.add("hidden");
 
-      // Check if tournament is complete
+      // Check if max rounds reached
+      if (tournament.round >= tournament.maxRounds) {
+        alert(`Tournament complete! All ${tournament.maxRounds} games have been played.`);
+        if (resultsSection) resultsSection.classList.remove("hidden");
+        return;
+      }
+
+      // Check if tournament is complete by wins
       if (
         tournament.userWins >= Math.ceil(tournament.maxRounds / 2) ||
         tournament.aiWins >= Math.ceil(tournament.maxRounds / 2)
       ) {
+        return;
+      }
+
+      // For PvP: show a dedicated next-game screen (Edit Player 1 / Edit Player 2 / Continue)
+      if (tournament.opponentSelectionMode === "pvp") {
+        const pvpNextScreen = document.getElementById("pvp-nextgame-section");
+        const cancelNextGameBtn = document.getElementById(
+          "cancel-nextgame-btn"
+        );
+        const lastResult =
+          tournament.results && tournament.results.length
+            ? tournament.results[tournament.results.length - 1]
+            : null;
+
+        // Initialize confirmation states - both players start as confirmed since they just played
+        player1Confirmed = true;
+        player2Confirmed = true;
+        if (lastResult && lastResult.userTeam) {
+          player1State = {
+            players: lastResult.userTeam.players || [],
+            lineup: lastResult.userTeam.lineup || [],
+            formation: lastResult.userTeam.formation || "4-3-3",
+            playstyle: lastResult.userTeam.playstyle || "Balanced",
+            strength: calculateTeamStrength(lastResult.userTeam.players || [])
+          };
+        }
+        if (lastResult && lastResult.aiTeam) {
+          player2State = {
+            players: lastResult.aiTeam.players || [],
+            lineup: lastResult.aiTeam.lineup || [],
+            formation: lastResult.aiTeam.formation || "4-3-3",
+            playstyle: lastResult.aiTeam.playstyle || "Balanced",
+            strength: calculateTeamStrength(lastResult.aiTeam.players || [])
+          };
+        }
+
+        // Show the dedicated PvP page, hide the post-match results
+        if (postMatchSection) postMatchSection.classList.add("hidden");
+        if (pvpNextScreen) pvpNextScreen.classList.remove("hidden");
+        updatePvpCheckmarks();
+
+        // Helper: load a team's players into builder for editing
+        function loadTeamIntoBuilder(teamPlayers, teamLineup) {
+          selectedPlayers = teamPlayers ? teamPlayers.slice() : [];
+          // reset lineup then naive-map players into slots
+          lineup =
+            teamLineup && teamLineup.length
+              ? JSON.parse(JSON.stringify(teamLineup))
+              : lineup.map((s) => ({ ...s, player: null }));
+          if (!teamLineup || !teamLineup.length) {
+            let i = 0;
+            lineup = lineup.map((slot) => {
+              if (i < selectedPlayers.length)
+                slot.player = selectedPlayers[i++];
+              return slot;
+            });
+          }
+          if (formationSelectionSection)
+            formationSelectionSection.classList.remove("hidden");
+          if (playerSelectionSection)
+            playerSelectionSection.classList.remove("hidden");
+          renderPlayers(allPlayersData, availablePlayersDiv, true);
+          renderLineup();
+          updateSelectedPlayerCount();
+        }
+
+        // Wire buttons (idempotent)
+        const editP1Btn = document.getElementById("edit-player1-btn");
+        const editP2Btn = document.getElementById("edit-player2-btn");
+        const continueBtn = document.getElementById("continue-next-game-btn");
+
+        if (editP1Btn) {
+          editP1Btn.onclick = () => {
+            // hide the PvP page
+            if (pvpNextScreen) pvpNextScreen.classList.add("hidden");
+            currentBuilder = "player1";
+            player1Confirmed = false; // Mark as unconfirmed when editing
+            if (lastResult && lastResult.userTeam) {
+              loadTeamIntoBuilder(
+                lastResult.userTeam.players || [],
+                lastResult.userTeam.lineup || []
+              );
+            } else {
+              // nothing saved - allow fresh build
+              selectedPlayers = [];
+              lineup = lineup.map((s) => ({ ...s, player: null }));
+              loadTeamIntoBuilder([], []);
+            }
+          };
+        }
+
+        if (editP2Btn) {
+          editP2Btn.onclick = () => {
+            if (pvpNextScreen) pvpNextScreen.classList.add("hidden");
+            currentBuilder = "player2";
+            player2Confirmed = false; // Mark as unconfirmed when editing
+            if (lastResult && lastResult.aiTeam) {
+              loadTeamIntoBuilder(
+                lastResult.aiTeam.players || [],
+                lastResult.aiTeam.lineup || []
+              );
+            } else if (tournament.opponents && tournament.opponents.length) {
+              loadTeamIntoBuilder(
+                tournament.opponents[tournament.opponents.length - 1] || [],
+                []
+              );
+            } else {
+              selectedPlayers = [];
+              lineup = lineup.map((s) => ({ ...s, player: null }));
+              loadTeamIntoBuilder([], []);
+            }
+          };
+        }
+
+        // Cancel/back to results wiring
+        if (cancelNextGameBtn) {
+          cancelNextGameBtn.onclick = () => {
+            if (pvpNextScreen) pvpNextScreen.classList.add("hidden");
+            if (postMatchSection) postMatchSection.classList.remove("hidden");
+          };
+        }
+
+        if (continueBtn) {
+          continueBtn.onclick = () => {
+            // Check if tournament has reached maximum rounds
+            if (tournament.round >= tournament.maxRounds) {
+              alert(`Tournament complete! Best of ${tournament.maxRounds} has finished.`);
+              // Show results and don't allow more games
+              if (pvpNextScreen) pvpNextScreen.classList.add("hidden");
+              if (resultsSection) resultsSection.classList.remove("hidden");
+              return;
+            }
+
+            // hide PvP page
+            if (pvpNextScreen) pvpNextScreen.classList.add("hidden");
+            // Use the stored player states (which may have been edited)
+            if (player1State && player2State) {
+              tournament.opponents.push(player1State.players);
+              tournament.opponents.push(player2State.players);
+              simulateMatch(player1State, player2State);
+              // Reset for next round
+              player1Confirmed = false;
+              player2Confirmed = false;
+              return;
+            }
+            // fallback: go to Player1 build
+            currentBuilder = "player1";
+            selectedPlayers = [];
+            lineup = lineup.map((s) => ({ ...s, player: null }));
+            if (formationSelectionSection)
+              formationSelectionSection.classList.remove("hidden");
+            if (playerSelectionSection)
+              playerSelectionSection.classList.remove("hidden");
+            renderPlayers(allPlayersData, availablePlayersDiv, true);
+            renderLineup();
+            updateSelectedPlayerCount();
+          };
+        }
+
         return;
       }
 
@@ -3928,26 +4273,124 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (confirmTeamBtn)
       confirmTeamBtn.addEventListener("click", () => {
-        if (isValidTeam()) {
-          if (playerSelectionSection)
-            playerSelectionSection.classList.add("hidden");
-          if (tournament.opponentSelectionMode === "aiGenerated") {
-            const aiTeam = generateAITeam(selectedPlayers);
-            tournament.opponents.push(aiTeam.players);
-            simulateMatch();
-          } else {
-            if (opponentSelectionSection)
-              opponentSelectionSection.classList.remove("hidden");
-            renderPlayers(
-              allPlayersData,
-              opponentAvailablePlayersDiv,
-              true,
-              true
-            );
-          }
-        } else {
+        if (!isValidTeam()) {
           alert(
             `Please select exactly ${MAX_PLAYERS} players and ensure all position requirements for the chosen formation are met.`
+          );
+          return;
+        }
+
+        // If PvP mode, handle two builders sequentially
+        if (tournament.opponentSelectionMode === "pvp") {
+          if (currentBuilder === "player1") {
+            // Save player1 state
+            player1State = {
+              players: lineup.map((s) => s.player).filter(Boolean),
+              lineup: JSON.parse(JSON.stringify(lineup)),
+              formation: currentFormation,
+              playstyle: playstyleSelect ? playstyleSelect.value : "Balanced",
+              strength: calculateTeamStrength(
+                lineup.map((s) => s.player).filter(Boolean)
+              ),
+            };
+            player1Confirmed = true;
+            
+            // Check if this is editing after a match
+            const lastResult =
+              tournament.results && tournament.results.length
+                ? tournament.results[tournament.results.length - 1]
+                : null;
+            if (lastResult && lastResult.aiTeam && lastResult.aiTeam.players) {
+              // We're editing Player 1 after a match - return to post-match options
+              if (playerSelectionSection)
+                playerSelectionSection.classList.add("hidden");
+              if (formationSelectionSection)
+                formationSelectionSection.classList.add("hidden");
+              const pvpNextScreen = document.getElementById("pvp-nextgame-section");
+              if (pvpNextScreen) pvpNextScreen.classList.remove("hidden");
+              updatePvpCheckmarks();
+              return;
+            }
+            
+            // Initial tournament setup: Reset builder for player2
+            selectedPlayers = [];
+            lineup = lineup.map((slot) => ({ ...slot, player: null }));
+            currentFormation = null;
+            selectedOpponentPlayers = [];
+            updateSelectedPlayerCount();
+            renderPlayers(allPlayersData, availablePlayersDiv, true);
+            renderLineup();
+            // Show formation selection again for player2
+            if (playerSelectionSection)
+              playerSelectionSection.classList.add("hidden");
+            if (formationSelectionSection)
+              formationSelectionSection.classList.remove("hidden");
+            currentBuilder = "player2";
+            alert(
+              "Player 1 team saved. Now Player 2, select your formation and build your team."
+            );
+            return;
+          }
+        }
+
+        // Normal flow for AI or userPicked (opponent selection) or PvP player2 confirm
+        if (
+          tournament.opponentSelectionMode === "pvp" &&
+          currentBuilder === "player2"
+        ) {
+          // Player 2 has finished building
+          player2State = {
+            players: lineup.map((s) => s.player).filter(Boolean),
+            lineup: JSON.parse(JSON.stringify(lineup)),
+            formation: currentFormation,
+            playstyle: playstyleSelect ? playstyleSelect.value : "Balanced",
+            strength: calculateTeamStrength(
+              lineup.map((s) => s.player).filter(Boolean)
+            ),
+          };
+          player2Confirmed = true;
+          
+          // Check if this is editing after a match
+          const lastResult =
+            tournament.results && tournament.results.length
+              ? tournament.results[tournament.results.length - 1]
+              : null;
+          if (lastResult && lastResult.userTeam && lastResult.userTeam.players) {
+            // We're editing Player 2 after a match - return to post-match options
+            if (playerSelectionSection)
+              playerSelectionSection.classList.add("hidden");
+            if (formationSelectionSection)
+              formationSelectionSection.classList.add("hidden");
+            const pvpNextScreen = document.getElementById("pvp-nextgame-section");
+            if (pvpNextScreen) pvpNextScreen.classList.remove("hidden");
+            updatePvpCheckmarks();
+            return;
+          }
+          
+          // Initial tournament setup - both players confirmed, simulate now
+          if (player1State && player2State) {
+            tournament.opponents.push(player1State.players);
+            tournament.opponents.push(player2State.players);
+            simulateMatch(player1State, player2State);
+            currentBuilder = "player1";
+          }
+          return;
+        }
+
+        if (playerSelectionSection)
+          playerSelectionSection.classList.add("hidden");
+        if (tournament.opponentSelectionMode === "aiGenerated") {
+          const aiTeam = generateAITeam(selectedPlayers);
+          tournament.opponents.push(aiTeam.players);
+          simulateMatch();
+        } else {
+          if (opponentSelectionSection)
+            opponentSelectionSection.classList.remove("hidden");
+          renderPlayers(
+            allPlayersData,
+            opponentAvailablePlayersDiv,
+            true,
+            true
           );
         }
       });
@@ -3964,6 +4407,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (confirmOpponentTeamBtn) {
       confirmOpponentTeamBtn.addEventListener("click", () => {
+        if (tournament.opponentSelectionMode === "pvp") {
+          // In PvP opponent selection, this button confirms Player 2's team
+          if (!isValidTeam()) {
+            alert(
+              `Please ensure Player 2 has a valid team of ${MAX_PLAYERS} players.`
+            );
+            return;
+          }
+          // Build player2 state
+          const player2State = {
+            players: lineup.map((s) => s.player).filter(Boolean),
+            lineup: JSON.parse(JSON.stringify(lineup)),
+            formation: currentFormation,
+            playstyle: playstyleSelect ? playstyleSelect.value : "Balanced",
+            strength: calculateTeamStrength(
+              lineup.map((s) => s.player).filter(Boolean)
+            ),
+          };
+          // Push both players into tournament opponents array for recordkeeping
+          tournament.opponents.push(player1State.players);
+          tournament.opponents.push(player2State.players);
+          // Set a temporary flag to indicate PvP match-up and pass both states to simulateMatch
+          simulateMatch(player1State, player2State);
+          // Reset builder state
+          currentBuilder = "player1";
+          player1State = null;
+          return;
+        }
+
         if (isValidOpponentTeam()) {
           if (opponentSelectionSection)
             opponentSelectionSection.classList.add("hidden");

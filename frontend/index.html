@@ -22,6 +22,8 @@
                 </ul>
             </div>
         </div>
+        </nav>
+
     </nav>
 
     <div class="container my-5">
@@ -50,9 +52,9 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="opponentType" id="pick-opponent-team" value="userPicked">
-                    <label class="form-check-label" for="pick-opponent-team">
-                        Pick Opponent Team Manually
+                    <input class="form-check-input" type="radio" name="opponentType" id="pvp-opponent" value="pvp">
+                    <label class="form-check-label" for="pvp-opponent">
+                        Player vs Player (Local)
                     </label>
                 </div>
             </div>
@@ -428,6 +430,47 @@
                 <button id="re-sim-match-btn" class="btn btn-warning">Re-Sim Match</button>
                 <button id="next-game-tournament-btn" class="btn btn-success">Next Game</button>
                 <button id="main-menu-btn" class="btn btn-secondary">Main Menu</button>
+            </div>
+        </div>
+
+        <!-- PvP Post-Match Options Page -->
+        <div id="pvp-nextgame-section" class="card shadow-lg p-4 mb-5 bg-white rounded hidden">
+            <h2 class="card-title text-center text-secondary mb-4">Post-Match Options</h2>
+            <p class="text-center text-muted mb-4">Player vs Player</p>
+
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="card border-primary">
+                        <div class="card-body text-center">
+                            <div class="mb-3 d-flex align-items-center justify-content-center gap-2">
+                                <span class="badge bg-primary fs-4">P1</span>
+                                <span id="player1-checkmark" class="text-success fs-4" style="display: none;">✓</span>
+                            </div>
+                            <h5 class="card-title">Edit Player 1</h5>
+                            <p class="card-text text-muted">Tweak lineup, formation, or playstyle</p>
+                            <button id="edit-player1-btn" class="btn btn-primary">Edit Player 1</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="card border-secondary">
+                        <div class="card-body text-center">
+                            <div class="mb-3 d-flex align-items-center justify-content-center gap-2">
+                                <span class="badge bg-secondary fs-4">P2</span>
+                                <span id="player2-checkmark" class="text-success fs-4" style="display: none;">✓</span>
+                            </div>
+                            <h5 class="card-title">Edit Player 2</h5>
+                            <p class="card-text text-muted">Adjust Player 2 before the next match</p>
+                            <button id="edit-player2-btn" class="btn btn-secondary">Edit Player 2</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <button id="continue-next-game-btn" class="btn btn-success btn-lg">Continue to Next Game</button>
+                <button id="cancel-nextgame-btn" class="btn btn-secondary btn-lg">Back to Results</button>
             </div>
         </div>
 
