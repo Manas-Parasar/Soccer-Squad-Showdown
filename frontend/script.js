@@ -2396,7 +2396,9 @@ document.addEventListener("DOMContentLoaded", () => {
         minute: 0,
         team: "neutral",
         type: "start",
-        text: `Match Start: User Team (${userTeam.strength}) vs AI Team (${aiTeam.strength})`,
+        text: humanVsHuman 
+          ? `Match Start: Player 1 (${userTeam.strength}) vs Player 2 (${aiTeam.strength})`
+          : `Match Start: User Team (${userTeam.strength}) vs AI Team (${aiTeam.strength})`,
         icon: "⏱️",
       });
 
@@ -2589,7 +2591,9 @@ document.addEventListener("DOMContentLoaded", () => {
         minute: 90,
         team: "neutral",
         type: "end",
-        text: `Full Time! Final Score: User Team ${userGoals} - ${aiGoals} AI Team`,
+        text: humanVsHuman
+          ? `Full Time! Final Score: Player 1 ${userGoals} - ${aiGoals} Player 2`
+          : `Full Time! Final Score: User Team ${userGoals} - ${aiGoals} AI Team`,
         icon: "⏱️",
       });
 
@@ -2851,9 +2855,9 @@ document.addEventListener("DOMContentLoaded", () => {
         aiScore: aiGoals,
         matchWinnerText:
           userGoals > aiGoals
-            ? "User Team wins!"
+            ? (humanVsHuman ? "Player 1 wins!" : "User Team wins!")
             : aiGoals > userGoals
-            ? "AI Team wins!"
+            ? (humanVsHuman ? "Player 2 wins!" : "AI Team wins!")
             : "It's a draw!",
         userTeam,
         aiTeam,
@@ -2927,21 +2931,25 @@ document.addEventListener("DOMContentLoaded", () => {
       if (postMatchSection) postMatchSection.classList.remove("hidden");
       updateTournamentUI();
 
-      // Tournament completion handling (unchanged)
+      // Tournament completion handling
       if (
         tournament.userWins >= Math.ceil(tournament.maxRounds / 2) ||
         tournament.aiWins >= Math.ceil(tournament.maxRounds / 2)
       ) {
+        const isPvP = tournament.opponentSelectionMode === "pvp";
         let tournamentWinner = "";
         if (tournament.userWins > tournament.aiWins)
-          tournamentWinner = "User Team";
+          tournamentWinner = isPvP ? "Player 1" : "User Team";
         else if (tournament.aiWins > tournament.userWins)
-          tournamentWinner = "AI Team";
+          tournamentWinner = isPvP ? "Player 2" : "AI Team";
         else tournamentWinner = "It's a draw!";
         if (tournamentWinnerSpan)
           tournamentWinnerSpan.textContent = tournamentWinner;
-        if (finalTournamentScoreSpan)
-          finalTournamentScoreSpan.textContent = `User ${tournament.userWins} - ${tournament.aiWins} AI (${tournament.draws} draws)`;
+        if (finalTournamentScoreSpan) {
+          const label1 = isPvP ? "Player 1" : "User";
+          const label2 = isPvP ? "Player 2" : "AI";
+          finalTournamentScoreSpan.textContent = `${label1} ${tournament.userWins} - ${tournament.aiWins} ${label2} (${tournament.draws} draws)`;
+        }
         if (postMatchSection) postMatchSection.classList.add("hidden");
         if (tournamentCompleteSection)
           tournamentCompleteSection.classList.remove("hidden");
@@ -3851,8 +3859,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Check if max rounds reached
       if (tournament.round >= tournament.maxRounds) {
-        alert(`Tournament complete! All ${tournament.maxRounds} games have been played.`);
-        if (resultsSection) resultsSection.classList.remove("hidden");
+        // Show tournament complete screen
+        const isPvP = tournament.opponentSelectionMode === "pvp";
+        let tournamentWinner = "";
+        if (tournament.userWins > tournament.aiWins)
+          tournamentWinner = isPvP ? "Player 1" : "User Team";
+        else if (tournament.aiWins > tournament.userWins)
+          tournamentWinner = isPvP ? "Player 2" : "AI Team";
+        else tournamentWinner = "It's a draw!";
+        
+        if (tournamentWinnerSpan)
+          tournamentWinnerSpan.textContent = tournamentWinner;
+        if (finalTournamentScoreSpan) {
+          const label1 = isPvP ? "Player 1" : "User";
+          const label2 = isPvP ? "Player 2" : "AI";
+          finalTournamentScoreSpan.textContent = `${label1} ${tournament.userWins} - ${tournament.aiWins} ${label2} (${tournament.draws} draws)`;
+        }
+        if (postMatchSection) postMatchSection.classList.add("hidden");
+        if (tournamentCompleteSection)
+          tournamentCompleteSection.classList.remove("hidden");
         return;
       }
 
@@ -3987,10 +4012,25 @@ document.addEventListener("DOMContentLoaded", () => {
           continueBtn.onclick = () => {
             // Check if tournament has reached maximum rounds
             if (tournament.round >= tournament.maxRounds) {
-              alert(`Tournament complete! Best of ${tournament.maxRounds} has finished.`);
-              // Show results and don't allow more games
+              // Show tournament complete screen
+              const isPvP = tournament.opponentSelectionMode === "pvp";
+              let tournamentWinner = "";
+              if (tournament.userWins > tournament.aiWins)
+                tournamentWinner = isPvP ? "Player 1" : "User Team";
+              else if (tournament.aiWins > tournament.userWins)
+                tournamentWinner = isPvP ? "Player 2" : "AI Team";
+              else tournamentWinner = "It's a draw!";
+              
+              if (tournamentWinnerSpan)
+                tournamentWinnerSpan.textContent = tournamentWinner;
+              if (finalTournamentScoreSpan) {
+                const label1 = isPvP ? "Player 1" : "User";
+                const label2 = isPvP ? "Player 2" : "AI";
+                finalTournamentScoreSpan.textContent = `${label1} ${tournament.userWins} - ${tournament.aiWins} ${label2} (${tournament.draws} draws)`;
+              }
               if (pvpNextScreen) pvpNextScreen.classList.add("hidden");
-              if (resultsSection) resultsSection.classList.remove("hidden");
+              if (tournamentCompleteSection)
+                tournamentCompleteSection.classList.remove("hidden");
               return;
             }
 
@@ -4512,6 +4552,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         saveTournament();
         updateTournamentUI();
+
+        // Update labels for PvP mode
+        const userLabel = document.getElementById("user-label");
+        const aiLabel = document.getElementById("ai-label");
+        if (tournament.opponentSelectionMode === "pvp") {
+          if (userLabel) userLabel.textContent = "Player 1";
+          if (aiLabel) aiLabel.textContent = "Player 2";
+        } else {
+          if (userLabel) userLabel.textContent = "User";
+          if (aiLabel) aiLabel.textContent = "AI";
+        }
 
         if (tournamentSection) tournamentSection.classList.add("hidden");
         if (playerSourceSelection)
