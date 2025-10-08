@@ -1,16 +1,15 @@
+// models/Player.js
 import mongoose from "mongoose";
 
-const playerSchema = new mongoose.Schema({
+const PlayerSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  nameLower: { type: String, required: true, lowercase: true, unique: true },
-  team: { type: String },
-  nationality: { type: String },
-  age: { type: Number },
+  nameLower: { type: String, required: true },
+  team: { type: String, required: true },
+  nationality: { type: String, required: true },
+  age: { type: Number, required: true },
   image: { type: String },
-
   preferredPosition: { type: String, required: true },
-  secondaryPositions: [{ type: String }],
-
+  secondaryPositions: { type: [String], default: [] },
   overallRating: { type: Number, required: true },
   pace: { type: Number, required: true },
   dribbling: { type: Number, required: true },
@@ -20,5 +19,4 @@ const playerSchema = new mongoose.Schema({
   physical: { type: Number, required: true },
 });
 
-const Player = mongoose.model("Player", playerSchema);
-export default Player;
+export default mongoose.model("Player", PlayerSchema);

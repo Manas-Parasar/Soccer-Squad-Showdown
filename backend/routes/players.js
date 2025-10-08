@@ -1,3 +1,4 @@
+// routes/players.js
 import express from "express";
 import Player from "../models/Player.js";
 import { fetchPlayerFromAPI } from "../services/apiFootball.js";
@@ -5,48 +6,33 @@ import { generatePlayerStats } from "../services/generatePlayerStats.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const name = req.query.name;
-  if (!name) return res.status(400).json({ message: "Missing player name" });
-
-  const nameLower = name.toLowerCase();
+// GET /api/players?name=Messi
+router.get("/players", async (req, res) => {
+  const { name } = req.query;
+  if (!name) return res.status(400).json({ message: "Name is required" });
 
   try {
-    // Check if player exists in Mongo
-    let player = await Player.findOne({ nameLower });
-    if (player) return res.json(player);
+    let player = await Player.findOne({ nameLower: name.toLowerCase() });
 
-    // Fetch from API-Football
-    const apiData = await fetchPlayerFromAPI(name);
-    if (!apiData)
-      return res
-        .status(404)
-        .json({ message: "Player not found in API-Football" });
+    if (!player) {
+      // fetch from API
+      const apiPlayer = await fetchPlayerFromAPI(name);
+      if (!apiPlayer)
+        return res
+          .status(404)
+          .json({ message: "Player not found in API-Football" });
 
-    const apiPlayer = apiData.player;
-    const statistics = apiData.statistics[0];
+      // generate stats
+      const stats = generatePlayerStats(apiPlayer.name);
 
-    const preferredPosition = statistics?.games?.position || "Midfielder";
-
-    const stats = generatePlayerStats(
-      { name: apiPlayer.name, preferredPosition, age: apiPlayer.age },
-      statistics
-    );
-
-    // Save to MongoDB
-    player = new Player({
-      name: apiPlayer.name,
-      nameLower: apiPlayer.name.toLowerCase(),
-      team: statistics.team.name,
-      nationality: apiPlayer.nationality,
-      age: apiPlayer.age,
-      image: apiPlayer.photo,
-      preferredPosition,
-      secondaryPositions: [],
-      ...stats,
-    });
-
-    await player.save();
+      // save to Mongo
+      player = new Player({
+        ...apiPlayer,
+        ...stats,
+        nameLower: apiPlayer.name.toLowerCase(),
+      });
+      await player.save();
+    }
 
     res.json(player);
   } catch (err) {
