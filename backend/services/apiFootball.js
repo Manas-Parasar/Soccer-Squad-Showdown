@@ -15,6 +15,48 @@ const leagues = [
   107, // Bundesliga
 ];
 
+// Map API positions to standard positions
+function mapPosition(apiPosition) {
+  const mapping = {
+    Goalkeeper: "GK",
+    "Centre-Back": "CB",
+    "Left-Back": "LB",
+    "Right-Back": "RB",
+    "Defensive Midfielder": "CDM",
+    "Central Midfielder": "CM",
+    "Attacking Midfielder": "CAM",
+    "Left Midfielder": "LM",
+    "Right Midfielder": "RM",
+    "Left Winger": "LW",
+    "Right Winger": "RW",
+    "Centre-Forward": "ST",
+    Striker: "ST",
+    Midfielder: "CM", // fallback
+    Defender: "CB", // fallback
+    Forward: "ST", // fallback
+  };
+  return mapping[apiPosition] || apiPosition; // if not mapped, use as is
+}
+
+// Get secondary positions based on standard position
+function getSecondaryPositions(position) {
+  const secondary = {
+    GK: [],
+    CB: ["RB"],
+    LB: ["LWB"],
+    RB: ["RWB"],
+    CDM: ["CM"],
+    CM: ["CAM"],
+    CAM: ["CM"],
+    LM: ["LW"],
+    RM: ["RW"],
+    LW: ["LM"],
+    RW: ["RM"],
+    ST: [],
+  };
+  return secondary[position] || [];
+}
+
 export async function fetchPlayerFromAPI(playerName) {
   const foundPlayers = [];
   // Prepare search terms: last word first if has spaces, then full name
@@ -49,17 +91,19 @@ export async function fetchPlayerFromAPI(playerName) {
             const p = item.player;
             const stats = item.statistics;
             const hasStats = stats && stats.length > 0;
+            const apiPosition =
+              hasStats && stats[0].games
+                ? stats[0].games.position
+                : "Midfielder";
+            const mappedPosition = mapPosition(apiPosition);
             foundPlayers.push({
               name: p.name,
               team: hasStats && stats[0].team ? stats[0].team.name : "Unknown",
               nationality: p.nationality,
               age: p.age,
               imageUrl: p.photo || "/images/default.jpg",
-              preferredPosition:
-                hasStats && stats[0].games
-                  ? stats[0].games.position
-                  : "Midfielder",
-              secondaryPositions: [],
+              preferredPosition: mappedPosition,
+              secondaryPositions: getSecondaryPositions(mappedPosition),
             });
           });
           break; // Found in this league, no need to try other terms

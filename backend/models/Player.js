@@ -17,6 +17,7 @@ const PlayerSchema = new mongoose.Schema({
   shooting: { type: Number, required: true },
   defending: { type: Number, required: true },
   physical: { type: Number, required: true },
+  goalkeeping: { type: Number, default: 0 },
 });
 
 export default mongoose.model("Player", PlayerSchema);

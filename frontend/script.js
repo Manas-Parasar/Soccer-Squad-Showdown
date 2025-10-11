@@ -2032,9 +2032,29 @@ document.addEventListener("DOMContentLoaded", () => {
             apiPlayerResults.after(lineupDisplay);
           }
         }
+        // Show confirm team button for API mode
+        if (confirmTeamBtn) {
+          confirmTeamBtn.style.display = "block";
+          // Append to apiPlayerSearchSection if not already there
+          const apiSection = document.getElementById(
+            "api-player-search-section"
+          );
+          if (apiSection && !apiSection.contains(confirmTeamBtn)) {
+            const container =
+              apiSection.querySelector(".container") || apiSection;
+            const btnContainer = document.createElement("div");
+            btnContainer.className = "text-center mt-3";
+            btnContainer.appendChild(confirmTeamBtn);
+            container.appendChild(btnContainer);
+          }
+        }
       } else {
         if (playerSelectionSection)
           playerSelectionSection.classList.remove("hidden");
+        // Hide confirm team button for predefined mode (it's in playerSelectionSection)
+        if (confirmTeamBtn) {
+          confirmTeamBtn.style.display = "none";
+        }
       }
       const randomizeTeamBtn = document.getElementById("randomize-team-btn");
       if (randomizeTeamBtn) {
@@ -3870,7 +3890,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (liveSimulationSection) liveSimulationSection.classList.add("hidden");
       if (tournamentSection) tournamentSection.classList.remove("hidden"); // Show tournament section
 
-      if (lineupDisplay) lineupDisplay.innerHTML = ""; // Clear lineup display
+      if (lineupDisplay) {
+        lineupDisplay.innerHTML = ""; // Clear lineup display
+        lineupDisplay.classList.add("hidden"); // Hide lineup display
+      }
 
       renderCustomFormationButtons();
     }
@@ -4495,6 +4518,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (playerSelectionSection)
           playerSelectionSection.classList.add("hidden");
+        if (apiPlayerSearchSection)
+          apiPlayerSearchSection.classList.add("hidden");
         if (tournament.opponentSelectionMode === "aiGenerated") {
           const aiTeam = generateAITeam(selectedPlayers);
           tournament.opponents.push(aiTeam.players);
@@ -4711,6 +4736,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("post-match-section").classList.add("hidden");
     if (opponentSelectionSection)
       opponentSelectionSection.classList.add("hidden");
+    if (apiPlayerSearchSection) apiPlayerSearchSection.classList.add("hidden");
     if (tournamentCompleteSection)
       tournamentCompleteSection.classList.add("hidden");
     if (liveSimulationSection) liveSimulationSection.classList.add("hidden");

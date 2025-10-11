@@ -15,6 +15,7 @@ const POSITION_BASE_STATS = {
     shooting: 75,
     defending: 70,
     physical: 75,
+    goalkeeping: 0,
   },
   Forward: {
     pace: 90,
@@ -23,6 +24,7 @@ const POSITION_BASE_STATS = {
     shooting: 88,
     defending: 55,
     physical: 82,
+    goalkeeping: 0,
   },
   Defender: {
     pace: 75,
@@ -31,6 +33,7 @@ const POSITION_BASE_STATS = {
     shooting: 65,
     defending: 85,
     physical: 85,
+    goalkeeping: 0,
   },
   Goalkeeper: {
     pace: 60,
@@ -39,6 +42,7 @@ const POSITION_BASE_STATS = {
     shooting: 50,
     defending: 88,
     physical: 88,
+    goalkeeping: 92,
   },
 };
 
@@ -87,6 +91,8 @@ export function generatePlayerStats(playerInfo) {
   const defending =
     scaleStat(base.defending, overallRating) + randomRange(0, 3);
   const physical = scaleStat(base.physical, overallRating) + randomRange(0, 3);
+  const goalkeeping =
+    scaleStat(base.goalkeeping, overallRating) + randomRange(0, 3);
 
   // 5️⃣ Recalculate overall based on final attributes
   const calculatedOverall = Math.round(
@@ -101,5 +107,6 @@ export function generatePlayerStats(playerInfo) {
     shooting,
     defending,
     physical,
+    goalkeeping,
   };
 }
