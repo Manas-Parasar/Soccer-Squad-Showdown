@@ -16,7 +16,7 @@ const POSITION_BASE_STATS = {
     defending: 70,
     physical: 75,
   },
-  Attacker: {
+  Forward: {
     pace: 90,
     dribbling: 90,
     passing: 78,

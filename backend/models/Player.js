@@ -7,7 +7,7 @@ const PlayerSchema = new mongoose.Schema({
   team: { type: String, required: true },
   nationality: { type: String, required: true },
   age: { type: Number, required: true },
-  image: { type: String },
+  imageUrl: { type: String },
   preferredPosition: { type: String, required: true },
   secondaryPositions: { type: [String], default: [] },
   overallRating: { type: Number, required: true },

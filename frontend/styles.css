@@ -1478,8 +1478,6 @@ span#final-tournament-score {
   box-shadow: 0 8px 30px rgba(0, 160, 255, 0.08);
 }
 
-
-
 /* Rating color helpers */
 .rating-high {
   color: #0bd66b;
@@ -1498,4 +1496,26 @@ span#final-tournament-score {
 .glow-outline {
   box-shadow: 0 0 18px rgba(0, 212, 255, 0.08),
     0 6px 20px rgba(0, 0, 0, 0.5) inset;
+}
+
+.player-info {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+}
+
+.player-info .player-name {
+    display: block;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+}
+
+.player-info .player-ovr {
+    display: block;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
 }

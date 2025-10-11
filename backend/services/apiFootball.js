@@ -1,7 +1,7 @@
 // services/apiFootball.js
+import "../loadEnv.js";
+import { generatePlayerStats } from "./generatePlayerStats.js";
 import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
 
 const API_KEY = process.env.API_FOOTBALL_KEY;
 if (!API_KEY) throw new Error("API_FOOTBALL_KEY missing in .env");
@@ -13,42 +13,71 @@ const leagues = [
   78, // Serie A
   61, // Ligue 1
   107, // Bundesliga
-  253, // MLS
-  308, // Saudi Pro League
 ];
 
 export async function fetchPlayerFromAPI(playerName) {
+  const foundPlayers = [];
+  // Prepare search terms: last word first if has spaces, then full name
+  const lastWord = playerName.includes(" ")
+    ? playerName.split(" ").pop().charAt(0).toUpperCase() +
+      playerName.split(" ").pop().slice(1).toLowerCase()
+    : playerName;
+  const searchTerms = playerName.includes(" ")
+    ? [lastWord, playerName]
+    : [playerName];
+
   for (const league of leagues) {
     try {
-      const response = await axios.get(
-        "https://v3.football.api-sports.io/players",
-        {
-          params: { search: playerName, league, season: 2023 },
-          headers: { "x-apisports-key": API_KEY },
+      for (const searchTerm of searchTerms) {
+        const response = await axios.get(
+          "https://v3.football.api-sports.io/players",
+          {
+            params: { search: searchTerm, league, season: 2023 },
+            headers: { "x-apisports-key": API_KEY },
+          }
+        );
+
+        if (response.data.response && response.data.response.length > 0) {
+          console.log(
+            "API response for",
+            playerName,
+            "with term",
+            searchTerm,
+            response.data.response
+          );
+          response.data.response.forEach((item) => {
+            const p = item.player;
+            const stats = item.statistics;
+            const hasStats = stats && stats.length > 0;
+            foundPlayers.push({
+              name: p.name,
+              team: hasStats && stats[0].team ? stats[0].team.name : "Unknown",
+              nationality: p.nationality,
+              age: p.age,
+              imageUrl: p.photo || "/images/default.jpg",
+              preferredPosition:
+                hasStats && stats[0].games
+                  ? stats[0].games.position
+                  : "Midfielder",
+              secondaryPositions: [],
+            });
+          });
+          break; // Found in this league, no need to try other terms
         }
-      );
-
-      if (response.data.results > 0) {
-        const p = response.data.response[0].player;
-        const t = response.data.response[0].statistics[0].team;
-
-        return {
-          name: p.name,
-          team: t.name,
-          nationality: p.nationality,
-          age: p.age,
-          image: p.photo,
-          preferredPosition:
-            response.data.response[0].statistics[0].games.position,
-          secondaryPositions: [], // can enhance later
-        };
       }
     } catch (err) {
       console.error(
         `Error fetching ${playerName} in league ${league}:`,
         err.message
       );
+      if (err.response) {
+        console.error("API Response:", err.response.data);
+      }
     }
   }
-  return null;
+  // Remove duplicates by player name
+  const uniquePlayers = [
+    ...new Map(foundPlayers.map((p) => [p.name, p])).values(),
+  ];
+  return uniquePlayers;
 }
