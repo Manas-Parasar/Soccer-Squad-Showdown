@@ -81,29 +81,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function ensureBackendRunning() {
       try {
-        // Check if Node.js backend is running by testing a health endpoint
-        const healthResponse = await fetch(`${BACKEND_URL}/health`, {
-          method: "GET",
-        });
-        if (healthResponse.ok) {
-          console.log("Backend is already running.");
-          return;
-        }
-      } catch (err) {
-        console.log("Backend not running, starting via Java backend.");
-      }
+        // Use a known player (Messi) to check if backend is alive
+        const response = await fetch(
+          "https://soccer-squad-showdown.onrender.com/api/players?name=Messi"
+        );
 
-      // Backend not running, send request to Java backend to start it
-      try {
-        const startResponse = await fetch("/start-api", { method: "POST" });
-        if (!startResponse.ok) {
-          throw new Error(`Failed to start backend: ${startResponse.status}`);
+        if (!response.ok) {
+          console.warn(
+            "Backend not running or returned error. Attempting to start backend..."
+          );
+          // Optional: If you have a backend start route, call it
+          // await fetch("/start-backend");
+          return false;
         }
-        console.log("Backend start requested successfully.");
-        // Wait for confirmation (assuming the endpoint waits for startup)
+
+        console.log("Backend is running!");
+        return true;
       } catch (err) {
-        console.error("Failed to start backend:", err);
-        throw err; // Propagate error to prevent proceeding
+        console.error("Backend check failed:", err);
+        // Optional: If you have a backend start route, call it
+        // await fetch("/start-backend");
+        return false;
       }
     }
 
