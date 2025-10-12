@@ -15,7 +15,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(cors());
+// Allow requests from your frontend
+app.use(
+  cors({
+    origin: "https://soccer-squad-showdown-frontend.onrender.com",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  })
+);
 app.use(express.json());
 
 // Serve static files from frontend
