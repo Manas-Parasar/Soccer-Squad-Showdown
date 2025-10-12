@@ -1,6 +1,7 @@
 ## Soccer Squad Showdown
 
-This project implements a soccer lineup builder with drag-and-drop functionality, inspired by FIFA 23 Legacy Edition.
+This project implements a soccer squad manager game, inspired by FIFA 23 Legacy Edition.
+It offers two different game modes: Predefined and API.
 
 ### Link to the game:
 
