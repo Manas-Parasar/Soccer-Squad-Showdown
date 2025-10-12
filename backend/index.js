@@ -64,8 +64,7 @@ app.get("/health", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://localhost:27017/soccerSquadDB";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
   .connect(MONGO_URI)

@@ -117,7 +117,7 @@ public class Main {
 
     private static boolean checkIfNodeBackendRunning() {
         try {
-            URL url = new URL("http://localhost:3001/health");
+            URL url = new URL("https://soccer-squad-showdown.onrender.com/health");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(1000);
