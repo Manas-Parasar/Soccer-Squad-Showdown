@@ -77,6 +77,43 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
+    async function ensureBackendRunning() {
+      try {
+        // Check if Node.js backend is running by testing a health endpoint
+        const healthResponse = await fetch("http://localhost:3001/health", {
+          method: "GET",
+        });
+        if (healthResponse.ok) {
+          console.log("Backend is already running.");
+          return;
+        }
+      } catch (err) {
+        console.log("Backend not running, starting via Java backend.");
+      }
+
+      // Backend not running, send request to Java backend to start it
+      try {
+        const startResponse = await fetch("/start-api", { method: "POST" });
+        if (!startResponse.ok) {
+          throw new Error(`Failed to start backend: ${startResponse.status}`);
+        }
+        console.log("Backend start requested successfully.");
+        // Wait for confirmation (assuming the endpoint waits for startup)
+      } catch (err) {
+        console.error("Failed to start backend:", err);
+        throw err; // Propagate error to prevent proceeding
+      }
+    }
+
+    async function stopBackend() {
+      try {
+        await fetch("/stop-backend", { method: "POST" });
+        console.log("Backend stop requested.");
+      } catch (err) {
+        console.error("Failed to stop backend:", err);
+      }
+    }
+
     // --- DOM Elements ---
     const playerSourceSelection = document.getElementById(
       "player-source-selection"
@@ -4369,10 +4406,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (playerSearchBtn) {
-      playerSearchBtn.addEventListener("click", () => {
+      playerSearchBtn.addEventListener("click", async () => {
         const playerName = playerSearchInput.value.trim();
         if (playerName) {
-          searchPlayer(playerName);
+          try {
+            await ensureBackendRunning();
+            searchPlayer(playerName);
+          } catch (err) {
+            console.error("Could not ensure backend is running:", err);
+            // Optionally show user error, but per task, don't change visuals
+          }
         }
       });
     }
@@ -4608,10 +4651,17 @@ document.addEventListener("DOMContentLoaded", () => {
       postMatchNextGameBtn.addEventListener("click", nextGameOfTournament);
 
     const mainMenuBtn = document.getElementById("main-menu-btn");
-    if (mainMenuBtn) mainMenuBtn.addEventListener("click", resetGame);
+    if (mainMenuBtn)
+      mainMenuBtn.addEventListener("click", async () => {
+        await stopBackend();
+        resetGame();
+      });
 
     if (resetTournamentBtn) {
-      resetTournamentBtn.addEventListener("click", resetGame);
+      resetTournamentBtn.addEventListener("click", async () => {
+        await stopBackend();
+        resetGame();
+      });
     }
 
     // Tournament type selection
@@ -4672,14 +4722,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Navbar Home and Brand link functionality
     if (homeLink)
-      homeLink.addEventListener("click", (event) => {
+      homeLink.addEventListener("click", async (event) => {
         event.preventDefault(); // Prevent default link behavior
+        await stopBackend();
         resetGame();
       });
 
     if (navbarBrand)
-      navbarBrand.addEventListener("click", (event) => {
+      navbarBrand.addEventListener("click", async (event) => {
         event.preventDefault(); // Prevent default link behavior
+        await stopBackend();
         resetGame();
       });
 

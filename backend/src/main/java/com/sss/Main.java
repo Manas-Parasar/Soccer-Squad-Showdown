@@ -7,6 +7,9 @@ import com.sss.game.PlayerManager;
 import com.sss.game.Team;
 import com.sss.model.*;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +22,7 @@ public class Main {
     private static final PlayerManager playerManager = new PlayerManager();
 
     public static void main(String[] args) {
-        port(4567); // Set the port for the Spark server
+        port(4568); // Set the port for the Spark server
 
         // Serve static files from the frontend directory
         staticFiles.externalLocation("C:/Dev/Soccer-Squad-Showdown/frontend");
@@ -72,6 +75,23 @@ public class Main {
             ));
         });
 
+        // Route to start the Node.js API backend
+        post("/start-api", (req, res) -> {
+            res.type("application/json");
+            try {
+                boolean isRunning = checkIfNodeBackendRunning();
+                if (isRunning) {
+                    return gson.toJson(Map.of("status", "already running"));
+                } else {
+                    startNodeBackend();
+                    return gson.toJson(Map.of("status", "started"));
+                }
+            } catch (Exception e) {
+                res.status(500);
+                return gson.toJson(Map.of("error", e.getMessage()));
+            }
+        });
+
         // Before-filter to enable CORS
         before((request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
@@ -93,5 +113,24 @@ public class Main {
         });
 
         System.out.println("Spark server started on port 4567. Serving frontend from C:/Dev/Soccer-Squad-Showdown/frontend");
+    }
+
+    private static boolean checkIfNodeBackendRunning() {
+        try {
+            URL url = new URL("http://localhost:3001/health");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(1000);
+            int responseCode = conn.getResponseCode();
+            return responseCode == 200;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static void startNodeBackend() throws IOException {
+        // Start the Node.js backend in the background
+        Runtime.getRuntime().exec("cmd /c start cmd /c \"cd backend && npm run dev\"");
     }
 }
