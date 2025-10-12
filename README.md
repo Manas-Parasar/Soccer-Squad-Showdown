@@ -2,10 +2,6 @@
 
 This project implements a soccer lineup builder with drag-and-drop functionality, inspired by FIFA 23 Legacy Edition.
 
-### How to Run
+### Link to the game:
 
-1.  Navigate to the project directory:
-    ```bash
-    cd c:\Dev\Soccer-Squad-Showdown
-    ```
-2.  Open `frontend/index.html` in your web browser.
+https://soccer-squad-showdown-frontend.onrender.com/
