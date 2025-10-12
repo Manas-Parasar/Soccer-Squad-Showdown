@@ -2063,6 +2063,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (apiPlayerSearchSection)
           apiPlayerSearchSection.classList.remove("hidden");
         if (lineupDisplay) {
+          lineupDisplay.classList.remove("hidden");
           const apiPlayerResults =
             document.getElementById("api-player-results");
           if (apiPlayerResults) {
@@ -2088,10 +2089,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         if (playerSelectionSection)
           playerSelectionSection.classList.remove("hidden");
-        // Hide confirm team button for predefined mode (it's in playerSelectionSection)
-        if (confirmTeamBtn) {
-          confirmTeamBtn.style.display = "none";
-        }
+        if (lineupDisplay) lineupDisplay.classList.remove("hidden");
       }
       const randomizeTeamBtn = document.getElementById("randomize-team-btn");
       if (randomizeTeamBtn) {
