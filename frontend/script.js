@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   try {
+    const BACKEND_URL = "https://soccer-squad-showdown.onrender.com";
+
     window.updateOpponentSelectedPlayerCount = function () {
       try {
         let count = 0;
@@ -80,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function ensureBackendRunning() {
       try {
         // Check if Node.js backend is running by testing a health endpoint
-        const healthResponse = await fetch("http://localhost:3001/health", {
+        const healthResponse = await fetch(`${BACKEND_URL}/health`, {
           method: "GET",
         });
         if (healthResponse.ok) {
@@ -102,15 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (err) {
         console.error("Failed to start backend:", err);
         throw err; // Propagate error to prevent proceeding
-      }
-    }
-
-    async function stopBackend() {
-      try {
-        await fetch("/stop-backend", { method: "POST" });
-        console.log("Backend stop requested.");
-      } catch (err) {
-        console.error("Failed to stop backend:", err);
       }
     }
 
@@ -4423,9 +4416,7 @@ document.addEventListener("DOMContentLoaded", () => {
       apiPlayerResults.innerHTML = `<p class="text-center">Searching...</p>`;
       try {
         const response = await fetch(
-          `http://localhost:3001/api/players?name=${encodeURIComponent(
-            playerName
-          )}`
+          `${BACKEND_URL}/api/players?name=${encodeURIComponent(playerName)}`
         );
         if (!response.ok) {
           if (response.status === 404) {
@@ -4650,14 +4641,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const mainMenuBtn = document.getElementById("main-menu-btn");
     if (mainMenuBtn)
-      mainMenuBtn.addEventListener("click", async () => {
-        await stopBackend();
+      mainMenuBtn.addEventListener("click", () => {
         resetGame();
       });
 
     if (resetTournamentBtn) {
-      resetTournamentBtn.addEventListener("click", async () => {
-        await stopBackend();
+      resetTournamentBtn.addEventListener("click", () => {
         resetGame();
       });
     }
@@ -4720,16 +4709,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Navbar Home and Brand link functionality
     if (homeLink)
-      homeLink.addEventListener("click", async (event) => {
+      homeLink.addEventListener("click", (event) => {
         event.preventDefault(); // Prevent default link behavior
-        await stopBackend();
         resetGame();
       });
 
     if (navbarBrand)
-      navbarBrand.addEventListener("click", async (event) => {
+      navbarBrand.addEventListener("click", (event) => {
         event.preventDefault(); // Prevent default link behavior
-        await stopBackend();
         resetGame();
       });
 
