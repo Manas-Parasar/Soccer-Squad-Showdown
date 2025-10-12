@@ -77,10 +77,11 @@ router.get("/players", async (req, res) => {
       } else {
         // Create and save new player
         const newPlayer = new Player({
-          ...playerData,
           ...stats,
+          ...playerData,
           nameLower: normalize(playerData.name.toLowerCase()),
         });
+        newPlayer.preferredPosition = newPlayer.preferredPosition || "ST";
         await newPlayer.save();
         playerToReturn = newPlayer;
       }
